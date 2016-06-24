@@ -7,7 +7,7 @@ import me.memorytalk.common.json.DateSerializer;
 import java.util.Date;
 
 @Data
-public class EventModel {
+public class AdminEventModel {
 
     private String title;
 
@@ -34,4 +34,5 @@ public class EventModel {
     private Date registrationDate;
 
     private boolean premium;
+
 }

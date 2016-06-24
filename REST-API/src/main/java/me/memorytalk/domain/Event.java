@@ -52,11 +52,23 @@ public class Event implements Serializable {
     private Date registrationDate;
 
     @Column(nullable = false)
-    private boolean isPremium;
+    private boolean premium;
+
+    @Column(nullable = false)
+    private boolean visible;
 
     @Column(nullable = false)
     private Date createdDate;
 
+    @Column(nullable = false)
+    private Date updatedDate;
+
+    @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
+    private List<Gift> gifts;
+
     @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private List<Tag> tags;
+
+    @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
+    private List<Thumbnail> thumbnails;
 }

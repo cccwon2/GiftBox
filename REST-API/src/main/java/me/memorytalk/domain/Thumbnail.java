@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -24,7 +25,10 @@ public class Thumbnail {
     @Column(nullable = false)
     private String large;
 
+    @Column(nullable = false)
+    private Date createdDate;
+
     @ManyToOne
-    @JoinColumn(name = "event", nullable = true)
-    private Event event;
+    @JoinColumn(name = "Attachment", nullable = true)
+    private Attachment Attachment;
 }

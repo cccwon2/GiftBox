@@ -44,6 +44,16 @@ public class GiftboxApplication {
 	}
 
 	@Bean
+	public Docket adminApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("admin-api")
+				.apiInfo(apiInfo())
+				.select()
+				.paths(adminPaths())
+				.build();
+	}
+
+	@Bean
 	public Docket eventApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.groupName("event-api")
@@ -51,6 +61,10 @@ public class GiftboxApplication {
 				.select()
 				.paths(eventPaths())
 				.build();
+	}
+
+	private Predicate<String> adminPaths() {
+		return regex("/admin.*");
 	}
 
 	private Predicate<String> eventPaths() {
