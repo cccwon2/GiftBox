@@ -1,0 +1,10 @@
+.gradle
+.idea
+build
+generated
+generated_tests
+application.properties
+gradle
+gradlew
+gradlew.bat
+REST-API.iml
