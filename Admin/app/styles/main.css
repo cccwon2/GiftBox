@@ -1,0 +1,294 @@
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+body {
+  padding: 0;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 10px;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+}
+.marketing p + h4 {
+  margin-top: 28px;
+}
+
+table, th , td {
+  border: 1px solid;
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+table th {
+  background-color: #b5d592;
+}
+
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+
+  .hide_div {
+    display: none;
+  }
+
+  .show_div {
+    display: block;
+  }
+
+  .paginationclass{
+
+    margin: 19px 28px;
+  }
+
+  .paginationclass span{
+    margin-left:15px;
+    display:inline-block;
+  }
+
+  .pagination-controle li{
+    display: inline-block;
+  }
+
+  .pagination-controle button{
+    font-size: 12px;
+    margin-top: -26px;
+    cursor:pointer;
+
+  }
+
+  .pagination{
+    margin:5px 12px !important;
+  }
+
+  .categoryMenu {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .categoryArea {
+    text-align: center;
+  }
+
+  .wordMenu {
+    color : #d58512;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .reactionWrapper {
+    display: table;
+    height: 160px;
+  }
+
+  .reactionArea {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  table, th, td {
+    border: 0 solid grey;
+    border-collapse: collapse;
+  }
+
+  table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+  }
+  table tr:nth-child(even) {
+    background-color: #ffffff;
+  }
+
+  td {
+    /*
+    margin-top: 1px;
+    margin-bottom: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    */
+  }
+
+  .wordTD {
+    min-width: 100px;
+    max-width: 100px;
+  }
+
+  .scrollWordArea {
+    border: 1px solid gold;
+    height: 150px;
+    margin-bottom: 5px;
+    overflow: auto;
+  }
+
+  .description {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .scrollSentenceArea {
+    border: 1px solid gold;
+    height: 500px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    overflow: auto;
+  }
+
+  .inputWordText {
+    width: 95px;
+  }
+
+  .inputWordButton {
+    float: right;
+    margin-bottom: 5px;
+  }
+
+  .inputSentenceOneText {
+    width: 400px;
+  }
+
+  .inputSentenceFullText {
+    width: 660px;
+  }
+
+  .sentenceTD {
+    min-width: 640px;
+    max-width: 640px;
+  }
+
+  .sentenceFullArea {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .positiveColor {
+    background-color: blue;
+    color: blue;
+  }
+
+  .mutualColor {
+    background-color: green;
+    color: green;
+  }
+
+  .negativeColor {
+    background-color: red;
+    color: red;
+  }
+
+  .scrollGeneratorArea {
+    border: 1px solid gold;
+    height: 182px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    overflow: auto;
+  }
+
+  .generatedSentenceArea {
+    border: 1px solid gold;
+    height: 50px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    overflow: auto;
+  }
+
+  .childCodeValueInput {
+    min-width: 500px;
+    max-width: 500px;
+  }
+
+  .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+  .loading-modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 )
+    url('../images/loading.gif')
+    50% 50%
+    no-repeat;
+  }
+
+  body.loading {
+    overflow: hidden;
+  }
+
+  body.loading .loading-modal {
+    display: block;
+  }
+
+}

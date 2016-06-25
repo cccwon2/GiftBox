@@ -34,7 +34,7 @@ public class EventDetailModel {
     private Date publicationDate;
 
     @JsonSerialize(using = DateSerializer.class)
-    private Date registrationDate;
+    private Date createdDate;
 
     private boolean premium;
 
@@ -44,8 +44,10 @@ public class EventDetailModel {
 
     private List<String> tags;
 
-    public EventDetailModel(Long id, String title, String description, String company, String eventType, String eventPage, String homePage,
-                            Date startDate, Date endDate, Date publicationDate, Date registrationDate, boolean premium) {
+    public EventDetailModel(Long id, String title, String description, String company,
+                            String eventType, String eventPage, String homePage,
+                            Date startDate, Date endDate, Date publicationDate, Date createdDate,
+                            boolean premium) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -56,7 +58,7 @@ public class EventDetailModel {
         this.startDate = startDate;
         this.endDate = endDate;
         this.publicationDate = publicationDate;
-        this.registrationDate = registrationDate;
+        this.createdDate = createdDate;
         this.premium = premium;
     }
 }

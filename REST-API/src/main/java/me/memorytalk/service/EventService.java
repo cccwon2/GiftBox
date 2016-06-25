@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -26,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@Transactional
 public class EventService {
 
     @Autowired
@@ -62,8 +64,8 @@ public class EventService {
         return eventDetailModel;
     }
 
-    public Page<AdminEventModel> getAdminEvents(String visible, Pageable pageable) {
-        return eventRepository.findAdminEventModels(visible, pageable);
+    public Page<AdminEventModel> getAdminEvents(String eventId, String eventTitle, String visible, Pageable pageable) {
+        return eventRepository.findAdminEventModels(eventId, eventTitle, visible, pageable);
     }
 
     public Boolean addAdminEvent(AdminEventDetailForm requestForm, MultipartFile file)
@@ -86,6 +88,11 @@ public class EventService {
         Date endDate = transFormat.parse(endDateToString);
         endDate = new Date(endDate.getTime() + offsetInMillis);
 
+        SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        String publicationDateToString = publicationDateFormat.format(requestForm.getPublicationDate());
+        Date publicationDate = transFormat.parse(publicationDateToString);
+        publicationDate = new Date(publicationDate.getTime() + offsetInMillis);
+
         Event event = new Event();
         event.setTitle(requestForm.getTitle());
         event.setDescription(requestForm.getDescription());
@@ -95,12 +102,10 @@ public class EventService {
         event.setHomePage(requestForm.getHomePage());
         event.setStartDate(startDate);
         event.setEndDate(endDate);
-        event.setPublicationDate(requestForm.getPublicationDate());
-        event.setRegistrationDate(requestForm.getRegistrationDate());
+        event.setPublicationDate(publicationDate);
         event.setPremium(requestForm.isPremium());
         event.setVisible(requestForm.isVisible());
         event.setCreatedDate(new Date());
-        event.setUpdatedDate(new Date());
         eventRepository.save(event);
 
         uploadService.uploadAttachment(event, file);
@@ -138,6 +143,11 @@ public class EventService {
         Date endDate = transFormat.parse(endDateToString);
         endDate = new Date(endDate.getTime() + offsetInMillis);
 
+        SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        String publicationDateToString = publicationDateFormat.format(requestForm.getPublicationDate());
+        Date publicationDate = transFormat.parse(publicationDateToString);
+        publicationDate = new Date(publicationDate.getTime() + offsetInMillis);
+
         Event event = eventRepository.findById(eventId);
         event.setTitle(requestForm.getTitle());
         event.setDescription(requestForm.getDescription());
@@ -147,15 +157,22 @@ public class EventService {
         event.setHomePage(requestForm.getHomePage());
         event.setStartDate(startDate);
         event.setEndDate(endDate);
-        event.setPublicationDate(requestForm.getPublicationDate());
-        event.setRegistrationDate(requestForm.getRegistrationDate());
+        event.setPublicationDate(publicationDate);
         event.setPremium(requestForm.isPremium());
         event.setVisible(requestForm.isVisible());
-        event.setUpdatedDate(new Date());
         eventRepository.save(event);
 
         editGifts(requestForm.getGifts(), event);
         editTags(requestForm.getTags(), event);
+
+        return Boolean.TRUE;
+    }
+
+    public Boolean setAdminEvent(Long eventId, boolean visible) {
+
+        Event event = eventRepository.findById(eventId);
+        event.setVisible(visible);
+        eventRepository.save(event);
 
         return Boolean.TRUE;
     }
@@ -167,13 +184,13 @@ public class EventService {
         return Boolean.TRUE;
     }
 
-    private void addGifts(List<GiftModel> giftModels, Event event) {
+    private void addGifts(List<AdminGiftForm> adminGiftForms, Event event) {
 
-        if(giftModels != null && giftModels.size() > 0) {
-            for(GiftModel giftModel : giftModels) {
+        if(adminGiftForms != null && adminGiftForms.size() > 0) {
+            for(AdminGiftForm adminGiftForm : adminGiftForms) {
                 Gift gift = new Gift();
-                gift.setProduct(giftModel.getProduct());
-                gift.setCount(giftModel.getCount());
+                gift.setProduct(adminGiftForm.getProduct());
+                gift.setCount(adminGiftForm.getCount());
                 gift.setEvent(event);
                 gift.setCreatedDate(new Date());
                 giftRepository.save(gift);
@@ -181,14 +198,14 @@ public class EventService {
         }
     }
 
-    private void editGifts(List<GiftModel> giftModels, Event event) {
+    private void editGifts(List<AdminGiftForm> adminGiftForms, Event event) {
 
         giftRepository.deleteByEventId(event.getId());
-        if(giftModels != null && giftModels.size() > 0) {
-            for(GiftModel giftModel : giftModels) {
+        if(adminGiftForms != null && adminGiftForms.size() > 0) {
+            for(AdminGiftForm adminGiftForm : adminGiftForms) {
                 Gift gift = new Gift();
-                gift.setProduct(giftModel.getProduct());
-                gift.setCount(giftModel.getCount());
+                gift.setProduct(adminGiftForm.getProduct());
+                gift.setCount(adminGiftForm.getCount());
                 gift.setEvent(event);
                 gift.setCreatedDate(new Date());
                 giftRepository.save(gift);

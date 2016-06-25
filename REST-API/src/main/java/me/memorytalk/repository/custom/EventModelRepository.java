@@ -15,5 +15,5 @@ public interface EventModelRepository {
 
     AdminEventDetailModel findAdminEventModel(Long eventId);
 
-    Page<AdminEventModel> findAdminEventModels(String visible, Pageable pageable);
+    Page<AdminEventModel> findAdminEventModels(String eventId, String eventTitle, String visible, Pageable pageable);
 }

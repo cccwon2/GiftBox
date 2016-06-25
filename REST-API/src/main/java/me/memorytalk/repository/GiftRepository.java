@@ -11,5 +11,5 @@ public interface GiftRepository extends JpaRepository<Gift, Long>,
         JpaSpecificationExecutor<Gift>,
         GiftModelRepository{
 
-        Long deleteByEventId(Long eventId);
+        Gift findById(Long id);
 }

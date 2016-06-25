@@ -49,9 +49,6 @@ public class Event implements Serializable {
     private Date publicationDate;
 
     @Column(nullable = false)
-    private Date registrationDate;
-
-    @Column(nullable = false)
     private boolean premium;
 
     @Column(nullable = false)
@@ -59,9 +56,6 @@ public class Event implements Serializable {
 
     @Column(nullable = false)
     private Date createdDate;
-
-    @Column(nullable = false)
-    private Date updatedDate;
 
     @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private List<Attachment> attachments;

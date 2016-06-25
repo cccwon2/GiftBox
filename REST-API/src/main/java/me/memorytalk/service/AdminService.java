@@ -2,13 +2,12 @@ package me.memorytalk.service;
 
 import com.microsoft.azure.storage.StorageException;
 import me.memorytalk.common.constant.GlobalConst;
-import me.memorytalk.dto.AdminEventDetailForm;
-import me.memorytalk.dto.AdminEventDetailModel;
-import me.memorytalk.dto.AdminEventModel;
+import me.memorytalk.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,41 +23,125 @@ public class AdminService {
     @Autowired
     private EventService eventService;
 
-    public Page<AdminEventModel> getEvents(String password, String visible, int page, int size) {
+    @Autowired
+    private GiftService giftService;
 
-        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(password), "Not admin user.");
+    @Autowired
+    private TagService tagService;
+
+    public Boolean login(AdminLoginForm requestForm) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(requestForm.getPassword()), "Not admin user.");
+
+        return Boolean.TRUE;
+    }
+
+    public Page<AdminEventModel> getEvents(String auth, String eventId, String eventTitle, String visible, int page, int size) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         Pageable pageable = new PageRequest(page - 1, size);
 
-        return eventService.getAdminEvents(visible, pageable);
+        return eventService.getAdminEvents(eventId, eventTitle, visible, pageable);
     }
 
-    public Boolean addEvent(String password, AdminEventDetailForm requestForm, MultipartFile file)
+    public Boolean addEvent(String auth, AdminEventDetailForm requestForm, MultipartFile file)
             throws IOException, InvalidKeyException, StorageException, URISyntaxException, ParseException {
 
-        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(password), "Not admin user.");
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return eventService.addAdminEvent(requestForm, file);
     }
 
-    public AdminEventDetailModel getEvent(String password, Long eventId) {
+    public AdminEventDetailModel getEvent(String auth, Long eventId) {
 
-        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(password), "Not admin user.");
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return eventService.getAdminEvent(eventId);
     }
 
-    public Boolean editEvent(String password, Long eventId, AdminEventDetailForm requestForm) throws ParseException {
+    public Boolean editEvent(String auth, Long eventId, AdminEventDetailForm requestForm) throws ParseException {
 
-        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(password), "Not admin user.");
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return eventService.editAdminEvent(eventId, requestForm);
     }
 
-    public Boolean removeEvent(String password, Long eventId) {
+    public Boolean setEvent(String auth, Long eventId, boolean visible) {
 
-        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(password), "Not admin user.");
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return eventService.setAdminEvent(eventId, visible);
+    }
+
+    public Boolean removeEvent(String auth, Long eventId) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return eventService.removeAdminEvent(eventId);
+    }
+
+    public Page<AdminGiftModel> getGifts(String auth, String eventId, String product, int page, int size) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
+        Sort sort = new Sort(order);
+        Pageable pageable = new PageRequest(page - 1, size, sort);
+
+        return giftService.getAdminGifts(eventId, product, pageable);
+    }
+
+    public AdminGiftModel getGift(String auth, Long id) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return giftService.getAdminGift(id);
+    }
+
+    public Boolean editGift(String auth, Long id, String product, int count) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return giftService.editAdminGift(id, product, count);
+    }
+
+    public Boolean removeGift(String auth, Long id) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return giftService.removeAdminGift(id);
+    }
+
+    public Page<AdminTagModel> getTags(String auth, String eventId, String tagName, int page, int size) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
+        Sort sort = new Sort(order);
+        Pageable pageable = new PageRequest(page - 1, size, sort);
+
+        return tagService.getAdminTags(eventId, tagName, pageable);
+    }
+
+    public AdminTagModel getTag(String auth, Long id) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return tagService.getAdminTag(id);
+    }
+
+    public Boolean editTag(String auth, Long id, String name) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return tagService.editAdminTag(id, name);
+    }
+
+    public Boolean removeTag(String auth, Long id) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return tagService.removeAdminTag(id);
     }
 }

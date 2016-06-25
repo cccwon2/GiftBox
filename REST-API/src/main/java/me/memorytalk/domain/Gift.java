@@ -26,9 +26,6 @@ public class Gift implements Serializable {
     @Column(nullable = false)
     private Date createdDate;
 
-    @Column(nullable = false)
-    private Date updatedDate;
-
     @ManyToOne
     @JoinColumn(name = "event", nullable = false)
     private Event event;

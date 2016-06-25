@@ -34,13 +34,7 @@ public class AdminEventDetailModel {
     private Date publicationDate;
 
     @JsonSerialize(using = DateSerializer.class)
-    private Date registrationDate;
-
-    @JsonSerialize(using = DateSerializer.class)
     private Date createdDate;
-
-    @JsonSerialize(using = DateSerializer.class)
-    private Date updatedDate;
 
     private boolean premium;
 
@@ -52,8 +46,9 @@ public class AdminEventDetailModel {
 
     private List<String> tags;
 
-    public AdminEventDetailModel(Long id, String title, String description, String company, String eventType, String eventPage, String homePage,
-                                 Date startDate, Date endDate, Date publicationDate, Date registrationDate, Date createdDate, Date updatedDate,
+    public AdminEventDetailModel(Long id, String title, String description, String company,
+                                 String eventType, String eventPage, String homePage,
+                                 Date startDate, Date endDate, Date publicationDate, Date createdDate,
                                  boolean premium, boolean visible) {
         this.id = id;
         this.title = title;
@@ -65,9 +60,7 @@ public class AdminEventDetailModel {
         this.startDate = startDate;
         this.endDate = endDate;
         this.publicationDate = publicationDate;
-        this.registrationDate = registrationDate;
         this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
         this.premium = premium;
         this.visible = visible;
     }

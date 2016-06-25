@@ -50,7 +50,7 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
                     qEvent.startDate,
                     qEvent.endDate,
                     qEvent.publicationDate,
-                    qEvent.registrationDate,
+                    qEvent.createdDate,
                     qEvent.premium,
                     qAttachment.width,
                     qAttachment.height,
@@ -83,7 +83,7 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
                 qEvent.startDate,
                 qEvent.endDate,
                 qEvent.publicationDate,
-                qEvent.registrationDate,
+                qEvent.createdDate,
                 qEvent.premium
         ));
 
@@ -107,9 +107,7 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
                 qEvent.startDate,
                 qEvent.endDate,
                 qEvent.publicationDate,
-                qEvent.registrationDate,
                 qEvent.createdDate,
-                qEvent.updatedDate,
                 qEvent.premium,
                 qEvent.visible
         ));
@@ -117,7 +115,7 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
         return adminEventDetailModel;
     }
 
-    public Page<AdminEventModel> findAdminEventModels(String visible, Pageable pageable) {
+    public Page<AdminEventModel> findAdminEventModels(String eventId, String eventTitle, String visible, Pageable pageable) {
 
         QEvent qEvent = QEvent.event;
         QAttachment qAttachment = QAttachment.attachment;
@@ -127,10 +125,15 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
 
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
+        if(!StringUtils.isEmpty(eventId)) {
+            whereBuilder.and(qEvent.id.eq(Long.valueOf(eventId)));
+        } else if(!StringUtils.isEmpty(eventTitle)) {
+            whereBuilder.and(qEvent.title.contains(eventTitle));
+        }
         if(!StringUtils.isEmpty(visible)) {
             whereBuilder.and(qEvent.visible.eq(Boolean.valueOf(visible)));
-            query.where(whereBuilder);
         }
+        query.where(whereBuilder);
 
         long total = query.count();
         JPQLQuery pagedQuery = getQuerydsl().applyPagination(pageable, query);
@@ -148,9 +151,7 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
                     qEvent.startDate,
                     qEvent.endDate,
                     qEvent.publicationDate,
-                    qEvent.registrationDate,
                     qEvent.createdDate,
-                    qEvent.updatedDate,
                     qEvent.premium,
                     qEvent.visible,
                     qAttachment.width,

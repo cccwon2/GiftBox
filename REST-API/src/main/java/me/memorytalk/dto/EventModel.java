@@ -35,15 +35,18 @@ public class EventModel {
     private Date publicationDate;
 
     @JsonSerialize(using = DateSerializer.class)
-    private Date registrationDate;
+    private Date createdDate;
 
     private boolean premium;
 
     private List<AttachmentModel> attachments;
 
-    public EventModel(Long id, String title, String description, String company, String eventType, String eventPage, String homePage,
-                      Date startDate, Date endDate, Date publicationDate, Date registrationDate, boolean premium,
-                      int width, int height, String url, String thumbnailS, String thumbnailM, String thumbnailL) {
+    public EventModel(Long id, String title, String description, String company,
+                      String eventType, String eventPage, String homePage,
+                      Date startDate, Date endDate, Date publicationDate, Date createdDate,
+                      boolean premium,
+                      int width, int height, String url,
+                      String thumbnailS, String thumbnailM, String thumbnailL) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -54,7 +57,7 @@ public class EventModel {
         this.startDate = startDate;
         this.endDate = endDate;
         this.publicationDate = publicationDate;
-        this.registrationDate = registrationDate;
+        this.createdDate = createdDate;
         this.premium = premium;
         this.attachments = new ArrayList<>();
         this.attachments.add(new AttachmentModel(width, height, url, thumbnailS, thumbnailM, thumbnailL));

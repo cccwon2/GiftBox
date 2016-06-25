@@ -26,20 +26,22 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/events", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> events(
-            @RequestParam("password") String password,
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("eventId") String eventId,
+            @RequestParam("eventTitle") String eventTitle,
             @RequestParam("visible") String visible,
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Event List",
-                adminService.getEvents(password, visible, page, size)),
+                adminService.getEvents(auth, eventId, eventTitle, visible, page, size)),
                 HttpStatus.OK);
     }
 
     @RequestMapping(value = "/admin/events", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> addEvent(
-            @RequestParam("password") String password,
+            @RequestHeader("Authorization") String auth,
             @RequestPart("event") String event,
             @RequestPart(required = false, name = "file") MultipartFile file)
             throws IOException, InvalidKeyException, ParseException, StorageException, URISyntaxException {
@@ -48,41 +50,150 @@ public class AdminController {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Add Event",
-                adminService.addEvent(password, requestForm, file)),
+                adminService.addEvent(auth, requestForm, file)),
                 HttpStatus.OK);
     }
 
     @RequestMapping(value = "/admin/events/{id}", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> eventDetail(
-            @RequestParam("password") String password,
+            @RequestHeader("Authorization") String auth,
             @PathVariable("id") Long id) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Event Detail",
-                adminService.getEvent(password, id)),
+                adminService.getEvent(auth, id)),
                 HttpStatus.OK);
     }
 
     @RequestMapping(value = "/admin/events/{id}", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> editEvent(
-            @RequestParam("password") String password,
+            @RequestHeader("Authorization") String auth,
             @PathVariable("id") Long id,
             @RequestBody AdminEventDetailForm requestForm) throws ParseException {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Edit Event",
-                adminService.editEvent(password, id, requestForm)),
+                adminService.editEvent(auth, id, requestForm)),
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/banners/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<RestResponse> removeBanner(
-            @RequestParam("password") String password,
+    @RequestMapping(value = "/admin/events/{id}/visible", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> setEvent(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestParam("visible") boolean visible) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Set Event Visible",
+                adminService.setEvent(auth, id, visible)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/events/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RestResponse> removeEvent(
+            @RequestHeader("Authorization") String auth,
             @PathVariable("id") Long id) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Remove Event",
-                adminService.removeEvent(password, id)),
+                adminService.removeEvent(auth, id)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/gifts", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> gifts(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("eventId") String eventId,
+            @RequestParam("product") String product,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Gift List",
+                adminService.getGifts(auth, eventId, product, page, size)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/gifts/{id}", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> gift(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Gift Information",
+                adminService.getGift(auth, id)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/gifts/{id}", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> editGift(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestParam("product") String product,
+            @RequestParam("count") int count) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Edit Gift",
+                adminService.editGift(auth, id, product, count)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/gifts/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RestResponse> removeGift(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Remove Gift",
+                adminService.removeGift(auth, id)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/tags", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> tags(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("eventId") String eventId,
+            @RequestParam("tagName") String tagName,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Tag List",
+                adminService.getTags(auth, eventId, tagName, page, size)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/tags/{id}", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> tag(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Tag Information",
+                adminService.getTag(auth, id)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/tags/{id}", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> editTag(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestParam("name") String name) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Edit Tag",
+                adminService.editTag(auth, id, name)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/tags/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RestResponse> removeTag(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Remove Tag",
+                adminService.removeTag(auth, id)),
                 HttpStatus.OK);
     }
 }

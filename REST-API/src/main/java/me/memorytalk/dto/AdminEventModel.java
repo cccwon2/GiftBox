@@ -40,19 +40,18 @@ public class AdminEventModel {
     @JsonSerialize(using = DateSerializer.class)
     private Date createdDate;
 
-    @JsonSerialize(using = DateSerializer.class)
-    private Date updatedDate;
-
     private boolean premium;
 
     private boolean visible;
 
     private List<AttachmentModel> attachments;
 
-    public AdminEventModel(Long id, String title, String description, String company, String eventType, String eventPage, String homePage,
-                           Date startDate, Date endDate, Date publicationDate, Date registrationDate, Date createdDate, Date updatedDate,
+    public AdminEventModel(Long id, String title, String description, String company,
+                           String eventType, String eventPage, String homePage,
+                           Date startDate, Date endDate, Date publicationDate, Date createdDate,
                            boolean premium, boolean visible,
-                           int width, int height, String url, String thumbnailS, String thumbnailM, String thumbnailL) {
+                           int width, int height, String url,
+                           String thumbnailS, String thumbnailM, String thumbnailL) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -63,9 +62,7 @@ public class AdminEventModel {
         this.startDate = startDate;
         this.endDate = endDate;
         this.publicationDate = publicationDate;
-        this.registrationDate = registrationDate;
         this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
         this.premium = premium;
         this.visible = visible;
         this.attachments = new ArrayList<>();

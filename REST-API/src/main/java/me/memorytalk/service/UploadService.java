@@ -10,7 +10,6 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,9 +55,13 @@ public class UploadService extends BaseObject {
         attachment.setEvent(event);
         attachment.setCreatedDate(new Date());
         attachment.setUrl("");
+        attachment.setThumbnailS("");
+        attachment.setThumbnailM("");
+        attachment.setThumbnailL("");
         // width, height
         attachment.setWidth(width);
         attachment.setHeight(height);
+        attachment.setCreatedDate(new Date());
 
         attachmentRepository.save(attachment);
 
@@ -85,7 +88,6 @@ public class UploadService extends BaseObject {
         return attachmentRepository.save(attachment);
     }
 
-    @Async
     private void addEventThumbnails(InputStream inputStream, String fName, String contentType)
             throws IOException, InvalidKeyException, StorageException, URISyntaxException {
 

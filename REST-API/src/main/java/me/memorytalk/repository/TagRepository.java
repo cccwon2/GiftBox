@@ -11,5 +11,5 @@ public interface TagRepository extends JpaRepository<Tag, Long>,
         JpaSpecificationExecutor<Tag>,
         TagModelRepository {
 
-        Long deleteByEventId(Long eventId);
+        Tag findById(Long id);
 }

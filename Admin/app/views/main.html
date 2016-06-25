@@ -1,0 +1,20 @@
+<div class="jumbotron">
+  <h1>GiftBox Admin</h1>
+  <div class="container">
+    <div ng-hide="checkLogin()">
+      <form ng-submit="login()">
+        <br>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" autofocus="">
+        <br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+      </form>
+    </div>
+  </div>
+  <div ng-show="checkLogin()">
+    <h3>관리자님, 어서오세요!</h3>
+    <button class="btn btn-lg btn-primary btn-block" ng-click="logout()">Log out</button>
+  </div>
+</div>
+
+<div class="row marketing">
+</div>

@@ -1,0 +1,188 @@
+<div ng-show="checkLogin()">
+<div class="container">
+    <ul class="nav nav-tabs">
+        <li ng-class="{active: contactTab()}"><a data-toggle="tab" href="/support#contact">Contact</a></li>
+        <li ng-class="{active: noticeTab()}"><a data-toggle="tab" href="/support#notice">Notice</a></li>
+        <li ng-class="{active: faqTab()}"><a data-toggle="tab" href="/support#faq">FAQ</a></li>
+        <li ng-class="{active: mobileTab()}"><a data-toggle="tab" href="/support#mobile">Mobile</a></li>
+    </ul>
+    <div class="tab-content">
+        <br>
+        <div id="contact" class="tab-pane fade">
+            <div class="col-md-12">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Created Date</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Country</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="contact in contacts">
+                        <td>{{contact.id}}</td>
+                        <td>{{contact.createdDate | limitTo: 10}}</td>
+                        <td>{{contact.email}}</td>
+                        <td>{{contact.username}}</td>
+                        <td>{{contact.country}}</td>
+                        <td style="width: 60px">
+                            <button ng-click="showInquiry(contact.inquiry)">내용</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <uib-pagination total-items="totalWorkItems" ng-model="currentWorkPage" max-size="maxWorkSize" ng-change="workPageChanged()"
+                                class="pagination-sm" boundary-link-numbers="true" rotate="false"></uib-pagination>
+            </div>
+        </div>
+        <div id="notice" class="tab-pane fade">
+            <form ng-submit="addNoticeInfo()">
+                <div class="row">
+                    <div class="col-md-12">
+                        <b>제목 : </b>
+                        <input type="text" style="width:600px" maxlength="200" ng-model="noticeTitle" required>
+                    </div>
+                </div>
+                <br>
+                <textarea ui-tinymce="tinymceOptions" ng-model="noticeContent"></textarea>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div style="float: right">
+                            <button type="submit" class="btn btn-default btn-primary">저장</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="col-md-12">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Created Date</th>
+                        <th>Title</th>
+                        <th>DP</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="notice in notices">
+                        <td>{{notice.id}}</td>
+                        <td>{{notice.createdDate | limitTo: 10}}</td>
+                        <td><span style="cursor:pointer" ng-click="getNoticeInfo(notice.id)">{{notice.title}}</span></td>
+                        <td>{{notice.visible}}</td>
+                        <td style="width: 60px">
+                            <button ng-click="setNoticeVisible(notice.id, notice.visible)">세팅</button>
+                        </td>
+                        <td style="width: 60px">
+                            <button ng-click="removeNotice(notice.id)">삭제</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <uib-pagination total-items="totalNoticeItems" ng-model="currentNoticePage" max-size="maxNoticeSize" ng-change="noticePageChanged()"
+                                class="pagination-sm" boundary-link-numbers="true" rotate="false"></uib-pagination>
+            </div>
+        </div>
+        <div id="faq" class="tab-pane fade">
+            <form ng-submit="addFaqInfo()">
+                <div class="row">
+                    <div class="col-md-12">
+                        <b>제목 : </b>
+                        <input type="text" style="width:600px" maxlength="200" ng-model="faqTitle" required>
+                    </div>
+                </div>
+                <br>
+                <textarea ui-tinymce="tinymceOptions" ng-model="faqContent"></textarea>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div style="float: right">
+                            <button type="submit" class="btn btn-default btn-primary">저장</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="col-md-12">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Created Date</th>
+                        <th>Title</th>
+                        <th>DP</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="faq in faqs">
+                        <td>{{faq.id}}</td>
+                        <td>{{faq.createdDate | limitTo: 10}}</td>
+                        <td><span style="cursor:pointer" ng-click="getFaqInfo(faq.id)">{{faq.title}}</span></td>
+                        <td>{{faq.visible}}</td>
+                        <td style="width: 60px">
+                            <button ng-click="setFaqVisible(faq.id, faq.visible)">세팅</button>
+                        </td>
+                        <td style="width: 60px">
+                            <button ng-click="removeFaq(faq.id)">삭제</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <uib-pagination total-items="totalFaqItems" ng-model="currentFaqPage" max-size="maxFaqSize" ng-change="faqPageChanged()"
+                                class="pagination-sm" boundary-link-numbers="true" rotate="false"></uib-pagination>
+            </div>
+        </div>
+        <div id="mobile" class="tab-pane fade">
+            <div class="col-md-12">
+                <h4>Android App</h4>
+            </div>
+            <div class="col-md-12">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="childCode in androidCodes">
+                        <td>{{childCode.name}}</td>
+                        <td><input type="text" class="childCodeValueInput" ng-model="childCode.value"></td>
+                        <td>
+                            <span class="inputWordButton">
+                                <button class="btn btn-xs btn-warning" type="button"
+                                        ng-click="editDeviceChildCodeValueById(childCode.id, childCode.name, childCode.value)" >수정</button>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <div class="col-md-12">
+                <h4>iPhone App</h4>
+            </div>
+            <div class="col-md-12">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="childCode in iosCodes">
+                        <td>{{childCode.name}}</td>
+                        <td><input type="text" class="childCodeValueInput" ng-model="childCode.value"></td>
+                        <td>
+                            <span class="inputWordButton">
+                                <button class="btn btn-xs btn-warning" type="button"
+                                        ng-click="editDeviceChildCodeValueById(childCode.id, childCode.name, childCode.value)" >수정</button>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div style="text-align: center" ng-hide="checkLogin()">
+    <h3>로그인을 해주세요! <br><br><a href="/">Home으로 가기</a></h3>
+</div>
+<br>

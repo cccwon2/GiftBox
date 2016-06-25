@@ -34,7 +34,7 @@ public class AdminEventDetailForm {
 
     private boolean visible;
 
-    private List<GiftModel> gifts;
+    private List<AdminGiftForm> gifts;
 
     private List<String> tags;
 
@@ -48,10 +48,9 @@ public class AdminEventDetailForm {
                                 @JsonProperty("startDate") Date startDate,
                                 @JsonProperty("endDate") Date endDate,
                                 @JsonProperty("publicationDate") Date publicationDate,
-                                @JsonProperty("registrationDate") Date registrationDate,
                                 @JsonProperty("premium") boolean premium,
                                 @JsonProperty("visible") boolean visible,
-                                @JsonProperty("gifts") List<GiftModel> gifts,
+                                @JsonProperty("gifts") List<AdminGiftForm> gifts,
                                 @JsonProperty("tags") List<String> tags) {
         this.title = title;
         this.description = description;
@@ -62,7 +61,6 @@ public class AdminEventDetailForm {
         this.startDate = startDate;
         this.endDate = endDate;
         this.publicationDate = publicationDate;
-        this.registrationDate = registrationDate;
         this.premium = premium;
         this.visible = visible;
         this.gifts = gifts;
