@@ -4,12 +4,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import me.memorytalk.common.json.DateSerializer;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class AdminEventModel {
+public class AdminEventDetailModel {
 
     private Long id;
 
@@ -49,10 +48,13 @@ public class AdminEventModel {
 
     private List<AttachmentModel> attachments;
 
-    public AdminEventModel(Long id, String title, String description, String company, String eventType, String eventPage, String homePage,
-                           Date startDate, Date endDate, Date publicationDate, Date registrationDate, Date createdDate, Date updatedDate,
-                           boolean premium, boolean visible,
-                           int width, int height, String url, String thumbnailS, String thumbnailM, String thumbnailL) {
+    private List<GiftModel> gifts;
+
+    private List<String> tags;
+
+    public AdminEventDetailModel(Long id, String title, String description, String company, String eventType, String eventPage, String homePage,
+                                 Date startDate, Date endDate, Date publicationDate, Date registrationDate, Date createdDate, Date updatedDate,
+                                 boolean premium, boolean visible) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -68,8 +70,6 @@ public class AdminEventModel {
         this.updatedDate = updatedDate;
         this.premium = premium;
         this.visible = visible;
-        this.attachments = new ArrayList<>();
-        this.attachments.add(new AttachmentModel(width, height, url, thumbnailS, thumbnailM, thumbnailL));
     }
 
 }

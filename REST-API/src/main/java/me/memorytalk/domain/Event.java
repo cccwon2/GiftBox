@@ -64,11 +64,11 @@ public class Event implements Serializable {
     private Date updatedDate;
 
     @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
+    private List<Attachment> attachments;
+
+    @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private List<Gift> gifts;
 
     @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private List<Tag> tags;
-
-    @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
-    private List<Thumbnail> thumbnails;
 }

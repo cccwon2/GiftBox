@@ -21,7 +21,7 @@ public class Gift implements Serializable {
     private String product;
 
     @Column(nullable = false)
-    private String count;
+    private int count;
 
     @Column(nullable = false)
     private Date createdDate;
@@ -30,6 +30,6 @@ public class Gift implements Serializable {
     private Date updatedDate;
 
     @ManyToOne
-    @JoinColumn(name = "event", nullable = true)
+    @JoinColumn(name = "event", nullable = false)
     private Event event;
 }

@@ -24,6 +24,6 @@ public class Tag implements Serializable {
     private Date createdDate;
 
     @ManyToOne
-    @JoinColumn(name = "event", nullable = true)
+    @JoinColumn(name = "event", nullable = false)
     private Event event;
 }

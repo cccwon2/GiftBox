@@ -4,12 +4,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import me.memorytalk.common.json.DateSerializer;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class AdminEventModel {
+public class EventDetailModel {
 
     private Long id;
 
@@ -37,22 +36,16 @@ public class AdminEventModel {
     @JsonSerialize(using = DateSerializer.class)
     private Date registrationDate;
 
-    @JsonSerialize(using = DateSerializer.class)
-    private Date createdDate;
-
-    @JsonSerialize(using = DateSerializer.class)
-    private Date updatedDate;
-
     private boolean premium;
-
-    private boolean visible;
 
     private List<AttachmentModel> attachments;
 
-    public AdminEventModel(Long id, String title, String description, String company, String eventType, String eventPage, String homePage,
-                           Date startDate, Date endDate, Date publicationDate, Date registrationDate, Date createdDate, Date updatedDate,
-                           boolean premium, boolean visible,
-                           int width, int height, String url, String thumbnailS, String thumbnailM, String thumbnailL) {
+    private List<GiftModel> gifts;
+
+    private List<String> tags;
+
+    public EventDetailModel(Long id, String title, String description, String company, String eventType, String eventPage, String homePage,
+                            Date startDate, Date endDate, Date publicationDate, Date registrationDate, boolean premium) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -64,12 +57,6 @@ public class AdminEventModel {
         this.endDate = endDate;
         this.publicationDate = publicationDate;
         this.registrationDate = registrationDate;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
         this.premium = premium;
-        this.visible = visible;
-        this.attachments = new ArrayList<>();
-        this.attachments.add(new AttachmentModel(width, height, url, thumbnailS, thumbnailM, thumbnailL));
     }
-
 }

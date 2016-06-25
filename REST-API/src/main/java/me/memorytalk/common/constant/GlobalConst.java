@@ -10,6 +10,8 @@ public class GlobalConst {
 
     public final static int PAGE_SIZE = 20;
 
+    public final static String ADMIN_PASSWORD = "eovysnsk";
+
     public final static String APP_DEVICE = "device";
 
     public final static String APP_ANDROID = "android";

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -37,15 +36,21 @@ public class Attachment implements Serializable {
     private String url;
 
     @Column(nullable = false)
+    private String thumbnailS;
+
+    @Column(nullable = false)
+    private String thumbnailM;
+
+    @Column(nullable = false)
+    private String thumbnailL;
+
+    @Column(nullable = false)
     private int sort;
 
     @Column(nullable = false)
     private Date createdDate;
 
     @ManyToOne
-    @JoinColumn(name = "event", nullable = true)
+    @JoinColumn(name = "event", nullable = false)
     private Event event;
-
-    @OneToMany(mappedBy="attachment", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
-    private List<Thumbnail> thumbnails;
 }
