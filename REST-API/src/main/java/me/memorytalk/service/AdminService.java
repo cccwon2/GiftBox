@@ -40,7 +40,9 @@ public class AdminService {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
-        Pageable pageable = new PageRequest(page - 1, size);
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
+        Sort sort = new Sort(order);
+        Pageable pageable = new PageRequest(page - 1, size, sort);
 
         return eventService.getAdminEvents(eventId, eventTitle, visible, pageable);
     }
