@@ -106,9 +106,11 @@ angular.module('webAdminApp')
                 $scope.eventPageChanged();
             }
 
-            $scope.addEventInfo = function() {
+            $scope.eventVisibleChangedValue = function() {
+                $scope.eventPageChanged();
+            };
 
-                var file = document.getElementById('eventFile').files[0];
+            $scope.addEventInfo = function() {
                 var tag1 = $.trim($scope.tag1);
                 var tag2 = $.trim($scope.tag2);
                 var tag3 = $.trim($scope.tag3);
@@ -129,10 +131,8 @@ angular.module('webAdminApp')
                 if (tag5 != '') {
                     $scope.eventInfo.tags[4] = tag5;
                 }
-
-                var formData = new FormData();
-
-                if($scope.eventId == 0) {
+                if ($scope.eventId == 0) {
+                    var file = document.getElementById('eventFile').files[0];
                     if(typeof file == 'undefined') {
                         BootstrapDialog.show({
                             type: BootstrapDialog.TYPE_DANGER,
@@ -140,6 +140,7 @@ angular.module('webAdminApp')
                         });
                         return;
                     }
+                    var formData = new FormData();
                     formData.append("event",JSON.stringify($scope.eventInfo));
                     formData.append("file", file);
 
@@ -167,7 +168,7 @@ angular.module('webAdminApp')
                         btnOKClass: 'btn-warning',
                         callback: function (result) {
                             if (result) {
-
+                                $('.close').click();
                                 $('body').append("<div class='loading-modal'></div>");
                                 $('body').addClass("loading");
 
@@ -222,7 +223,7 @@ angular.module('webAdminApp')
                         btnOKClass: 'btn-warning',
                         callback: function (result) {
                             if (result) {
-
+                                $('.close').click();
                                 $('body').append("<div class='loading-modal'></div>");
                                 $('body').addClass("loading");
 
@@ -269,6 +270,7 @@ angular.module('webAdminApp')
                               if(i == 4) $scope.tag5 = response.data.tags[i];
                           }
                           $scope.eventInfo.gifts = response.data.gifts;
+                          $('#addEventButton').click();
                       }
                   }
                 );

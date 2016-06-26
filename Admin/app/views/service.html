@@ -6,171 +6,222 @@
         <li ng-class="{active: tagTab()}"><a data-toggle="tab" href="/service#tag">Tag</a></li>
     </ul>
     <div class="tab-content">
+        <br>
         <div id="event" class="tab-pane fade">
-            <form name="eventForm" ng-submit="addEventInfo()">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>제목</b>
+            <div class="row">
+                <div class="col-md-10"></div>
+                <div class="col-md-2">
+                    <button id="addEventButton" type="button" class="btn btn-info btn-primary" data-toggle="modal" data-target="#addEventModal">이벤트 추가</button>
+                </div>
+            </div>
+            <br>
+            <div class="modal fade" id="addEventModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">이벤트 추가/수정</h4>
                         </div>
-                        <div class="col-md-10">
-                            <input type="text" ng-model="eventInfo.title" maxlength="200" style="width:500px;" required />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>설명</b>
-                        </div>
-                        <div class="col-md-10">
-                            <textarea ng-model="eventInfo.description" style="width:500px;height:50px;" rows="3" required></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>회사</b>
-                        </div>
-                        <div class="col-md-10">
-                            <input type="text" ng-model="eventInfo.company" maxlength="200" style="width:500px;" required />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>이벤트 타입</b>
-                        </div>
-                        <div class="col-md-10">
-                            <input type="text" ng-model="eventInfo.eventType" maxlength="200" style="width:500px;" required />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>이벤트 페이지</b>
-                        </div>
-                        <div class="col-md-10">
-                            <input type="text" ng-model="eventInfo.eventPage" maxlength="200" style="width:500px;" required />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>홈 페이지</b>
-                        </div>
-                        <div class="col-md-10">
-                            <input type="text" ng-model="eventInfo.homePage" maxlength="200" style="width:500px;" required />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>적용 기간</b>
-                        </div>
-                        <div class="col-md-5">
-                            <p class="input-group">
-                                <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.startDate"
-                                       is-open="popupStart.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions"
-                                       ng-required="true" close-text="Close" />
+                        <div class="modal-body" style="height: 500px">
+                            <form name="eventForm" ng-submit="addEventInfo()">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>제목</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="eventInfo.title" maxlength="200" style="width:500px;" required />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>설명</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <textarea ng-model="eventInfo.description" style="width:500px;height:50px;" rows="3" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>회사</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="eventInfo.company" maxlength="200" style="width:500px;" required />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>이벤트 타입</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="eventInfo.eventType" maxlength="200" style="width:500px;" required />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>이벤트 페이지</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="eventInfo.eventPage" maxlength="200" style="width:500px;" required />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>홈 페이지</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="eventInfo.homePage" maxlength="200" style="width:500px;" required />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>적용 기간</b>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.startDate"
+                                                       is-open="popupStart.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions"
+                                                       ng-required="true" close-text="Close" />
                                  <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="openStart()">
                                          <i class="glyphicon glyphicon-calendar"></i>
                                      </button>
                                  </span>
-                            </p>
-                        </div>
-                        <div class="col-md-5">
-                            <p class="input-group">
-                                <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.endDate"
-                                       is-open="popupEnd.opened" min-date="eventInfo.startDate" max-date="maxDate" datepicker-options="dateOptions"
-                                       ng-required="true" close-text="Close" />
+                                            </p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.endDate"
+                                                       is-open="popupEnd.opened" min-date="eventInfo.startDate" max-date="maxDate" datepicker-options="dateOptions"
+                                                       ng-required="true" close-text="Close" />
                                  <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="openEnd()">
                                          <i class="glyphicon glyphicon-calendar"></i>
                                      </button>
                                  </span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>발표일</b>
-                        </div>
-                        <div class="col-md-5">
-                            <p class="input-group">
-                                <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.publicationDate"
-                                       is-open="popupPublication.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions"
-                                       ng-required="true" close-text="Close" />
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>발표일</b>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.publicationDate"
+                                                       is-open="popupPublication.opened" min-date="eventInfo.endDate" max-date="maxDate" datepicker-options="dateOptions"
+                                                       ng-required="true" close-text="Close" />
                                  <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="openPublication()">
                                          <i class="glyphicon glyphicon-calendar"></i>
                                      </button>
                                  </span>
-                            </p>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-5"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>체크 항목</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" ng-model="eventInfo.premium"> Premium
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" ng-model="eventInfo.visible"> DP
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>태그</b>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" ng-model="tag1" maxlength="50" style="width:100px;" required />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" ng-model="tag2" maxlength="50" style="width:100px;" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" ng-model="tag3" maxlength="50" style="width:100px;" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" ng-model="tag4" maxlength="50" style="width:100px;" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" ng-model="tag5" maxlength="50" style="width:100px;" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>상품</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" ng-model="eventInfo.gifts[0].product" maxlength="200" style="width:400px;" required placeholder="Product" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="number" ng-model="eventInfo.gifts[0].count" style="width:100px;" min="1" max="9999999" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>이미지</b><br>(추가에만 적용)
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="file" id="eventFile" name="eventFile" accept="image/*">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-default btn-primary" ng-disabled="!eventForm.$valid">저장</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </form>
                         </div>
-                        <div class="col-md-5"></div>
+                        <div class="modal-footer">
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>체크 항목</b>
-                        </div>
-                        <div class="col-md-10">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="eventInfo.premium"> Premium
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="eventInfo.visible"> DP
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>태그</b>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" ng-model="tag1" maxlength="40" style="width:100px;" required />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" ng-model="tag2" maxlength="40" style="width:100px;" />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" ng-model="tag3" maxlength="40" style="width:100px;" />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" ng-model="tag4" maxlength="40" style="width:100px;" />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" ng-model="tag5" maxlength="40" style="width:100px;" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>상품</b>
-                        </div>
-                        <div class="col-md-8">
-                            <input type="text" ng-model="eventInfo.gifts[0].product" maxlength="200" style="width:350px;" required placeholder="Product" />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" ng-model="eventInfo.gifts[0].count" style="width:50px;" min="1" max="999999" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <b>이미지</b>
-                        </div>
-                        <div class="col-md-10">
-                            <input type="file" id="eventFile" name="eventFile" accept="image/*">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10">
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-default btn-primary" ng-disabled="!eventForm.$valid">저장</button>
-                        </div>
-                    </div>
-                    <br>
                 </div>
-            </form>
-            <div class="col-md-9">
+            </div>
+            <div id="imageModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">이미지 보기</h4>
+                        </div>
+                        <div class="modal-body" style="text-align: center;">
+                            <img ng-src="{{selectedEventImage}}">
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <select  ng-model="searchEventVisible" ng-change="eventVisibleChangedValue()" >
+                            <option value="">== Select DP ==</option>
+                            <option value="true">true</option>
+                            <option value="false">false</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                <br>
+            </div>
+            <div class="col-md-12">
                 <table>
                     <tr>
                         <th>ID</th>
@@ -181,26 +232,27 @@
                         <th>DP</th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                     <tr ng-repeat="event in events">
                         <td>{{event.id}}</td>
-                        <td><span style="cursor:pointer" ng-click="setSelectedEventImage(event.attachments[0].thumbnailS)">
+                        <td><span style="cursor:pointer" data-toggle="modal" data-target="#imageModal" ng-click="setSelectedEventImage(event.attachments[0].thumbnailS)">
                             <img ng-src="{{event.attachments[0].thumbnailS}}" style="width:30px;height: auto"></span></td>
-                        <td><span style="cursor:pointer" ng-click="getEventInfo(event.id)">{{event.title}}</span></td>
-                        <td>{{event.startDate}}</td>
-                        <td>{{event.endDate}}</td>
+                        <td>{{event.title}}</td>
+                        <td style="width:100px">{{event.startDate}}</td>
+                        <td style="width:100px">{{event.endDate}}</td>
                         <td>{{event.visible}}</td>
                         <td style="width: 60px">
                             <button ng-click="setEventVisible(event.id, event.visible)">설정</button>
+                        </td>
+                        <td style="width: 60px">
+                            <button ng-click="getEventInfo(event.id)">수정</button>
                         </td>
                         <td style="width: 60px">
                             <button ng-click="removeEvent(event.id)">삭제</button>
                         </td>
                     </tr>
                 </table>
-            </div>
-            <div class="col-md-3">
-                <img ng-src="{{selectedEventImage}}">
             </div>
             <div class="col-md-12">
                 <uib-pagination total-items="totalEventItems" ng-model="currentEventPage" max-size="maxEventSize" ng-change="eventPageChanged()"
@@ -247,18 +299,14 @@
                         <th>Product</th>
                         <th>Count</th>
                         <th></th>
-                        <th></th>
                     </tr>
                     <tr ng-repeat="gift in gifts">
                         <td>{{gift.eventId}}</td>
                         <td>{{gift.eventTitle}}</td>
-                        <td><input ng-model="gift.product" ng-value="gift.product"></td>
-                        <td><input type="number" ng-model="gift.count" ng-value="gift.count" min="1"></td>
+                        <td><input ng-model="gift.product" ng-value="gift.product" maxlength="200" style="width:300px;"></td>
+                        <td><input type="number" ng-model="gift.count" ng-value="gift.count" min="1" max="9999999"></td>
                         <td style="width: 60px">
                             <button ng-click="editGiftInfo(gift.id, gift.product, gift.count)">수정</button>
-                        </td>
-                        <td style="width: 60px">
-                            <button ng-click="removeGift(gift.id)">삭제</button>
                         </td>
                     </tr>
                 </table>
@@ -307,17 +355,13 @@
                         <th>Event Title</th>
                         <th>Tag Name</th>
                         <th></th>
-                        <th></th>
                     </tr>
                     <tr ng-repeat="tag in tags">
                         <td>{{tag.eventId}}</td>
                         <td>{{tag.eventTitle}}</td>
-                        <td><input ng-model="tagName" ng-value="tag.name"></td>
+                        <td><input ng-model="tagName" ng-value="tag.name" maxlength="50" style="width:300px;"></td>
                         <td style="width: 60px">
                             <button ng-click="editTagInfo(tag.id, tagName)">수정</button>
-                        </td>
-                        <td style="width: 60px">
-                            <button ng-click="removeTag(tag.id)">삭제</button>
                         </td>
                     </tr>
                 </table>
