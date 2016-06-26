@@ -36,27 +36,6 @@ angular.module('webAdminApp')
             $scope.selectedEventImage = '';
             $scope.eventId = 0;
 
-            $scope.eventInfo = {
-                title: '',
-                description: '',
-                company: '',
-                eventType: '',
-                eventPage: '',
-                homePage: '',
-                startDate: new Date(),
-                endDate: new Date(),
-                publicationDate: new Date(),
-                premium: true,
-                visible: true,
-                gifts: [
-                    {
-                        product: '',
-                        count: 3
-                    }
-                ],
-                tags: []
-            };
-
             $scope.minDate = $scope.minDate ? null : new Date();
             $scope.maxDate = new Date(2020, 12, 31);
 
@@ -88,6 +67,37 @@ angular.module('webAdminApp')
             $scope.popupPublication = {
                 opened: false
             };
+
+            $scope.eventInfoInit = function() {
+                $scope.eventInfo = {
+                    title: '',
+                    description: '',
+                    company: '',
+                    eventType: '',
+                    eventPage: '',
+                    homePage: '',
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    publicationDate: new Date(),
+                    premium: true,
+                    visible: true,
+                    gifts: [
+                        {
+                            product: '',
+                            count: 3
+                        }
+                    ],
+                    tags: []
+                };
+                $scope.tag1 = '';
+                $scope.tag2 = '';
+                $scope.tag3 = '';
+                $scope.tag4 = '';
+                $scope.tag5 = '';
+                $('#eventFile').val('');
+            };
+
+            $scope.eventInfoInit();
 
             $scope.eventPageChanged = function() {
                 $http.get(config.apiUrl + '/admin/events?page=' + $scope.currentEventPage + '&size=' + $scope.eventSize
@@ -180,6 +190,7 @@ angular.module('webAdminApp')
                                     }
 
                                     $scope.eventPageChanged();
+                                    $scope.eventInfoInit();
 
                                     $('.loading-modal').remove();
                                     $('body').removeClass("loading");
@@ -234,6 +245,7 @@ angular.module('webAdminApp')
                                         });
 
                                         $scope.eventPageChanged();
+                                        $scope.eventInfoInit();
 
                                         $('.loading-modal').remove();
                                         $('body').removeClass("loading");
