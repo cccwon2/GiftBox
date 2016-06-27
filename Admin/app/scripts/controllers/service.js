@@ -32,6 +32,7 @@ angular.module('webAdminApp')
             $scope.maxEventSize = 10;
             $scope.searchEventId = '';
             $scope.searchEventTitle = '';
+            $scope.searchEventPremium = '';
             $scope.searchEventVisible = '';
             $scope.selectedEventImage = '';
             $scope.eventId = 0;
@@ -79,16 +80,21 @@ angular.module('webAdminApp')
                     startDate: new Date(),
                     endDate: new Date(),
                     publicationDate: new Date(),
-                    premium: true,
+                    premium: false,
                     visible: true,
-                    gifts: [
-                        {
-                            product: '',
-                            count: 3
-                        }
-                    ],
+                    gifts: [],
                     tags: []
                 };
+                $scope.gift1 = { product: '', count: 3 };
+                $scope.gift2 = { product: '', count: 3 };
+                $scope.gift3 = { product: '', count: 3 };
+                $scope.gift4 = { product: '', count: 3 };
+                $scope.gift5 = { product: '', count: 3 };
+                $scope.gift6 = { product: '', count: 3 };
+                $scope.gift7 = { product: '', count: 3 };
+                $scope.gift8 = { product: '', count: 3 };
+                $scope.gift9 = { product: '', count: 3 };
+                $scope.gift10 = { product: '', count: 3 };
                 $scope.tag1 = '';
                 $scope.tag2 = '';
                 $scope.tag3 = '';
@@ -101,7 +107,8 @@ angular.module('webAdminApp')
 
             $scope.eventPageChanged = function() {
                 $http.get(config.apiUrl + '/admin/events?page=' + $scope.currentEventPage + '&size=' + $scope.eventSize
-                  + '&eventId=' + $scope.searchEventId + '&eventTitle=' + $scope.searchEventTitle + '&visible=' + $scope.searchEventVisible,
+                  + '&eventId=' + $scope.searchEventId + '&eventTitle=' + $scope.searchEventTitle
+                  + '&premium=' + $scope.searchEventPremium + '&visible=' + $scope.searchEventVisible,
                   { headers: {'Authorization': $scope.auth }})
                   .success(function (response) {
                       if(response.success) {
@@ -116,31 +123,92 @@ angular.module('webAdminApp')
                 $scope.eventPageChanged();
             }
 
+            $scope.eventPremiumChangedValue = function() {
+                $scope.eventPageChanged();
+            };
+
             $scope.eventVisibleChangedValue = function() {
                 $scope.eventPageChanged();
             };
 
             $scope.addEventInfo = function() {
+                var tagIndex = 0;
                 var tag1 = $.trim($scope.tag1);
                 var tag2 = $.trim($scope.tag2);
                 var tag3 = $.trim($scope.tag3);
                 var tag4 = $.trim($scope.tag4);
                 var tag5 = $.trim($scope.tag5);
                 if (tag1 != '') {
-                    $scope.eventInfo.tags[0] = tag1;
+                    $scope.eventInfo.tags[tagIndex] = tag1;
+                    tagIndex++;
                 }
                 if (tag2 != '') {
-                    $scope.eventInfo.tags[1] = tag2;
+                    $scope.eventInfo.tags[tagIndex] = tag2;
+                    tagIndex++;
                 }
                 if (tag3 != '') {
-                    $scope.eventInfo.tags[2] = tag3;
+                    $scope.eventInfo.tags[tagIndex] = tag3;
+                    tagIndex++;
                 }
                 if (tag4 != '') {
-                    $scope.eventInfo.tags[3] = tag4;
+                    $scope.eventInfo.tags[tagIndex] = tag4;
+                    tagIndex++;
                 }
                 if (tag5 != '') {
-                    $scope.eventInfo.tags[4] = tag5;
+                    $scope.eventInfo.tags[tagIndex] = tag5;
                 }
+
+                var giftIndex = 0;
+                var giftProduct1 = $.trim($scope.gift1.product);
+                var giftProduct2 = $.trim($scope.gift2.product);
+                var giftProduct3 = $.trim($scope.gift3.product);
+                var giftProduct4 = $.trim($scope.gift4.product);
+                var giftProduct5 = $.trim($scope.gift5.product);
+                var giftProduct6 = $.trim($scope.gift6.product);
+                var giftProduct7 = $.trim($scope.gift7.product);
+                var giftProduct8 = $.trim($scope.gift8.product);
+                var giftProduct9 = $.trim($scope.gift9.product);
+                var giftProduct10 = $.trim($scope.gift10.product);
+                if (giftProduct1 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct1, count: $scope.gift1.count };
+                    giftIndex++;
+                }
+                if (giftProduct2 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct2, count: $scope.gift2.count };
+                    giftIndex++;
+                }
+                if (giftProduct3 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct3, count: $scope.gift3.count };
+                    giftIndex++;
+                }
+                if (giftProduct4 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct4, count: $scope.gift4.count };
+                    giftIndex++;
+                }
+                if (giftProduct5 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct5, count: $scope.gift5.count };
+                    giftIndex++;
+                }
+                if (giftProduct6 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct6, count: $scope.gift6.count };
+                    giftIndex++;
+                }
+                if (giftProduct7 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct7, count: $scope.gift7.count };
+                    giftIndex++;
+                }
+                if (giftProduct8 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct8, count: $scope.gift8.count };
+                    giftIndex++;
+                }
+                if (giftProduct9 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct9, count: $scope.gift9.count };
+                    giftIndex++;
+                }
+                if (giftProduct10 != '') {
+                    $scope.eventInfo.gifts[giftIndex] = { product: giftProduct10, count: $scope.gift10.count };
+                }
+
                 if ($scope.eventId == 0) {
                     var file = document.getElementById('eventFile').files[0];
                     if(typeof file == 'undefined') {
@@ -281,7 +349,18 @@ angular.module('webAdminApp')
                               if(i == 3) $scope.tag4 = response.data.tags[i];
                               if(i == 4) $scope.tag5 = response.data.tags[i];
                           }
-                          $scope.eventInfo.gifts = response.data.gifts;
+                          for(var i = 0; i < response.data.gifts.length; i++) {
+                              if(i == 0) $scope.gift1 = response.data.gifts[i];
+                              if(i == 1) $scope.gift2 = response.data.gifts[i];
+                              if(i == 2) $scope.gift3 = response.data.gifts[i];
+                              if(i == 3) $scope.gift4 = response.data.gifts[i];
+                              if(i == 4) $scope.gift5 = response.data.gifts[i];
+                              if(i == 5) $scope.gift6 = response.data.gifts[i];
+                              if(i == 6) $scope.gift7 = response.data.gifts[i];
+                              if(i == 7) $scope.gift8 = response.data.gifts[i];
+                              if(i == 8) $scope.gift9 = response.data.gifts[i];
+                              if(i == 9) $scope.gift10 = response.data.gifts[i];
+                          }
                           $('#addEventButton').click();
                       }
                   }

@@ -17,12 +17,13 @@ public class EventController {
 
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> events(
+            @RequestParam("premium") String premium,
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Event List",
-                eventService.getEvents(page, size)),
+                eventService.getEvents(premium, page, size)),
                 HttpStatus.OK);
     }
 

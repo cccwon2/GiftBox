@@ -22,4 +22,5 @@ public class GlobalConst {
 
     public final static String DEFAULT_ERROR_MESSAGE = "Something Bad Happened ! Please try later";
 
+    public final static String PREMIUM = "premium";
 }

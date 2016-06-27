@@ -25,14 +25,20 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
         super(Event.class);
     }
 
-    public Page<EventModel> findEventModels(Pageable pageable) {
+    public Page<EventModel> findEventModels(String premium, Pageable pageable) {
 
         QEvent qEvent = QEvent.event;
         QAttachment qAttachment = QAttachment.attachment;
 
         JPQLQuery query = from(qEvent);
         query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
-        query.where(qEvent.visible.isTrue());
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+        whereBuilder.and(qEvent.visible.isTrue());
+        if(!StringUtils.isEmpty(premium)) {
+            whereBuilder.and(qEvent.premium.eq(Boolean.valueOf(premium)));
+        }
+        query.where(whereBuilder);
 
         long total = query.count();
         JPQLQuery pagedQuery = getQuerydsl().applyPagination(pageable, query);
@@ -115,7 +121,7 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
         return adminEventDetailModel;
     }
 
-    public Page<AdminEventModel> findAdminEventModels(String eventId, String eventTitle, String visible, Pageable pageable) {
+    public Page<AdminEventModel> findAdminEventModels(String eventId, String eventTitle, String premium, String visible, Pageable pageable) {
 
         QEvent qEvent = QEvent.event;
         QAttachment qAttachment = QAttachment.attachment;
@@ -129,6 +135,9 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
             whereBuilder.and(qEvent.id.eq(Long.valueOf(eventId)));
         } else if(!StringUtils.isEmpty(eventTitle)) {
             whereBuilder.and(qEvent.title.contains(eventTitle));
+        }
+        if(!StringUtils.isEmpty(premium)) {
+            whereBuilder.and(qEvent.premium.eq(Boolean.valueOf(premium)));
         }
         if(!StringUtils.isEmpty(visible)) {
             whereBuilder.and(qEvent.visible.eq(Boolean.valueOf(visible)));

@@ -29,13 +29,14 @@ public class AdminController {
             @RequestHeader("Authorization") String auth,
             @RequestParam("eventId") String eventId,
             @RequestParam("eventTitle") String eventTitle,
+            @RequestParam("premium") String premium,
             @RequestParam("visible") String visible,
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Event List",
-                adminService.getEvents(auth, eventId, eventTitle, visible, page, size)),
+                adminService.getEvents(auth, eventId, eventTitle, premium, visible, page, size)),
                 HttpStatus.OK);
     }
 

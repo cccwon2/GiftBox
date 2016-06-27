@@ -36,7 +36,7 @@ public class AdminService {
         return Boolean.TRUE;
     }
 
-    public Page<AdminEventModel> getEvents(String auth, String eventId, String eventTitle, String visible, int page, int size) {
+    public Page<AdminEventModel> getEvents(String auth, String eventId, String eventTitle, String premium, String visible, int page, int size) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
@@ -44,7 +44,7 @@ public class AdminService {
         Sort sort = new Sort(order);
         Pageable pageable = new PageRequest(page - 1, size, sort);
 
-        return eventService.getAdminEvents(eventId, eventTitle, visible, pageable);
+        return eventService.getAdminEvents(eventId, eventTitle, premium, visible, pageable);
     }
 
     public Boolean addEvent(String auth, AdminEventDetailForm requestForm, MultipartFile file)

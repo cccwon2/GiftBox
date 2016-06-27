@@ -45,13 +45,13 @@ public class EventService {
     @Autowired
     private TagRepository tagRepository;
 
-    public Page<EventModel> getEvents(int page, int size) {
+    public Page<EventModel> getEvents(String premium, int page, int size) {
 
         Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
         Sort sort = new Sort(order);
         Pageable pageable = new PageRequest(page - 1, size, sort);
 
-        return eventRepository.findEventModels(pageable);
+        return eventRepository.findEventModels(premium, pageable);
     }
 
     public EventDetailModel getEvent(Long eventId) {
@@ -64,8 +64,8 @@ public class EventService {
         return eventDetailModel;
     }
 
-    public Page<AdminEventModel> getAdminEvents(String eventId, String eventTitle, String visible, Pageable pageable) {
-        return eventRepository.findAdminEventModels(eventId, eventTitle, visible, pageable);
+    public Page<AdminEventModel> getAdminEvents(String eventId, String eventTitle, String premium, String visible, Pageable pageable) {
+        return eventRepository.findAdminEventModels(eventId, eventTitle, premium, visible, pageable);
     }
 
     public Boolean addAdminEvent(AdminEventDetailForm requestForm, MultipartFile file)

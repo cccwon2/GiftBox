@@ -9,11 +9,11 @@ import org.springframework.data.domain.Pageable;
 
 public interface EventModelRepository {
 
-    Page<EventModel> findEventModels(Pageable pageable);
+    Page<EventModel> findEventModels(String premium, Pageable pageable);
 
     EventDetailModel findEventModel(Long eventId);
 
     AdminEventDetailModel findAdminEventModel(Long eventId);
 
-    Page<AdminEventModel> findAdminEventModels(String eventId, String eventTitle, String visible, Pageable pageable);
+    Page<AdminEventModel> findAdminEventModels(String eventId, String eventTitle, String premium, String visible, Pageable pageable);
 }
