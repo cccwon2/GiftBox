@@ -51,7 +51,13 @@ public class EventService {
         Sort sort = new Sort(order);
         Pageable pageable = new PageRequest(page - 1, size, sort);
 
-        return eventRepository.findEventModels(premium, pageable);
+        Page<EventModel> eventModels = eventRepository.findEventModels(premium, pageable);
+        for(EventModel eventModel : eventModels) {
+            List<String> tags = tagRepository.findTags(eventModel.getId());
+            eventModel.setTags(tags);
+        }
+
+        return eventModels;
     }
 
     public EventDetailModel getEvent(Long eventId) {
