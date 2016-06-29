@@ -179,11 +179,12 @@ public class AdminController {
     public ResponseEntity<RestResponse> editTag(
             @RequestHeader("Authorization") String auth,
             @PathVariable("id") Long id,
-            @RequestParam("name") String name) {
+            @RequestParam("name") String name,
+            @RequestParam("color") String color) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Edit Tag",
-                adminService.editTag(auth, id, name)),
+                adminService.editTag(auth, id, name, color)),
                 HttpStatus.OK);
     }
 

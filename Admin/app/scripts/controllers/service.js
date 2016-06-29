@@ -607,14 +607,37 @@ angular.module('webAdminApp')
                 $scope.tagPageChanged();
             }
 
+            $scope.tagColorBinding = function(_tagId) {
+                $('#' + _tagId).minicolors({
+                    control: $(this).attr('data-control') || 'hue',
+                    defaultValue: $(this).attr('data-defaultValue') || '',
+                    format: $(this).attr('data-format') || 'hex',
+                    keywords: $(this).attr('data-keywords') || '',
+                    inline: $(this).attr('data-inline') === 'true',
+                    letterCase: $(this).attr('data-letterCase') || 'lowercase',
+                    opacity: $(this).attr('data-opacity'),
+                    position: $(this).attr('data-position') || 'bottom left',
+                    swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+                    change: function(value, opacity) {
+                        if( !value ) return;
+                        if( opacity ) value += ', ' + opacity;
+                        if( typeof console === 'object' ) {
+                            console.log(value);
+                        }
+                    },
+                    theme: 'bootstrap'
+                });
+            };
+
             $scope.searchTags = function() {
                 $scope.tagPageChanged();
             };
 
-            $scope.editTagInfo = function(_tagId, _tagName) {
+            $scope.editTagInfo = function(_tagId, _tagName, _tagColor) {
 
                 var formData = new FormData();
                 formData.append('name', _tagName);
+                formData.append('color', _tagColor);
 
                 var req = {
                     method: 'POST',
@@ -627,8 +650,8 @@ angular.module('webAdminApp')
                 };
 
                 BootstrapDialog.confirm({
-                    title: 'Tag Name 수정' ,
-                    message: 'Tag ID: ' + _tagId + ', Tag Name: ' + _tagName + '\n 위와 같이 수정할까요?',
+                    title: 'Tag 수정' ,
+                    message: 'Tag ID: ' + _tagId + '\n Tag Name: ' + _tagName + '\n Tag Color: ' + _tagColor + '\n 위와 같이 수정할까요?',
                     type: BootstrapDialog.TYPE_WARNING,
                     closable: true,
                     draggable: true,
@@ -640,7 +663,7 @@ angular.module('webAdminApp')
                             $http(req).success(function (response) {
                                 if(response.success) {
                                     BootstrapDialog.show({
-                                        message: 'Tag Name 수정 성공!'
+                                        message: 'Tag 수정 성공!'
                                     });
                                 }
 

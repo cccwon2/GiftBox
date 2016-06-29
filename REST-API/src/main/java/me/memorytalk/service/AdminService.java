@@ -133,11 +133,11 @@ public class AdminService {
         return tagService.getAdminTag(id);
     }
 
-    public Boolean editTag(String auth, Long id, String name) {
+    public Boolean editTag(String auth, Long id, String name, String color) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
-        return tagService.editAdminTag(id, name);
+        return tagService.editAdminTag(id, name, color);
     }
 
     public Boolean removeTag(String auth, Long id) {

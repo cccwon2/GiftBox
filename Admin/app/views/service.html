@@ -413,14 +413,16 @@
                         <th>Event ID</th>
                         <th>Event Title</th>
                         <th>Tag Name</th>
+                        <th>Tag Color</th>
                         <th></th>
                     </tr>
                     <tr ng-repeat="tag in tags">
                         <td>{{tag.eventId}}</td>
                         <td>{{tag.eventTitle}}</td>
-                        <td><input ng-model="tagName" ng-value="tag.name" maxlength="50" style="width:300px;"></td>
+                        <td><input type="text" ng-model="tag.name" maxlength="50" style="width:200px;"></td>
+                        <td><input id="{{tag.id}}" type="text" ng-model="tag.color" class="form-control tagColor tagColor2" data-control="hue" ng-bind="tagColorBinding(tag.id)"></td>
                         <td style="width: 60px">
-                            <button ng-click="editTagInfo(tag.id, tagName)">수정</button>
+                            <button ng-click="editTagInfo(tag.id, tag.name, tag.color)">수정</button>
                         </td>
                     </tr>
                 </table>
@@ -441,6 +443,7 @@
 <script>
     $(function(){
         $('.tagColor').each( function() {
+            console.log($(this).val());
             $(this).minicolors({
                 control: $(this).attr('data-control') || 'hue',
                 defaultValue: $(this).attr('data-defaultValue') || '',

@@ -25,11 +25,12 @@ public class TagService {
         return tagRepository.findAdminTagModel(id);
     }
 
-    protected Boolean editAdminTag(Long id, String name) {
+    protected Boolean editAdminTag(Long id, String name, String color) {
 
         Tag tag = tagRepository.findById(id);
         Assert.notNull(tag, "No tag info.");
         tag.setName(name);
+        tag.setColor(color);
         tagRepository.save(tag);
 
         return Boolean.TRUE;
