@@ -27,7 +27,7 @@ public class EventModel {
 
     private List<AttachmentModel> attachments;
 
-    private List<String> tags;
+    private List<TagModel> tags;
 
     public EventModel(Long id, String title, String company, String homePage,
                       Date startDate, Date endDate,

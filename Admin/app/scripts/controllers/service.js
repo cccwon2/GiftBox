@@ -95,11 +95,11 @@ angular.module('webAdminApp')
                 $scope.gift8 = { product: '', count: 3 };
                 $scope.gift9 = { product: '', count: 3 };
                 $scope.gift10 = { product: '', count: 3 };
-                $scope.tag1 = '';
-                $scope.tag2 = '';
-                $scope.tag3 = '';
-                $scope.tag4 = '';
-                $scope.tag5 = '';
+                $scope.tag1 = { name: '', color: ''};
+                $scope.tag2 = { name: '', color: ''};
+                $scope.tag3 = { name: '', color: ''};
+                $scope.tag4 = { name: '', color: ''};
+                $scope.tag5 = { name: '', color: ''};
                 $('#eventFile').val('');
             };
 
@@ -133,29 +133,29 @@ angular.module('webAdminApp')
 
             $scope.addEventInfo = function() {
                 var tagIndex = 0;
-                var tag1 = $.trim($scope.tag1);
-                var tag2 = $.trim($scope.tag2);
-                var tag3 = $.trim($scope.tag3);
-                var tag4 = $.trim($scope.tag4);
-                var tag5 = $.trim($scope.tag5);
+                var tag1 = $.trim($scope.tag1.name);
+                var tag2 = $.trim($scope.tag2.name);
+                var tag3 = $.trim($scope.tag3.name);
+                var tag4 = $.trim($scope.tag4.name);
+                var tag5 = $.trim($scope.tag5.name);
                 if (tag1 != '') {
-                    $scope.eventInfo.tags[tagIndex] = tag1;
+                    $scope.eventInfo.tags[tagIndex] = { name: tag1, color: $scope.tag1.color };
                     tagIndex++;
                 }
                 if (tag2 != '') {
-                    $scope.eventInfo.tags[tagIndex] = tag2;
+                    $scope.eventInfo.tags[tagIndex] = { name: tag2, color: $scope.tag2.color };
                     tagIndex++;
                 }
                 if (tag3 != '') {
-                    $scope.eventInfo.tags[tagIndex] = tag3;
+                    $scope.eventInfo.tags[tagIndex] = { name: tag3, color: $scope.tag3.color };
                     tagIndex++;
                 }
                 if (tag4 != '') {
-                    $scope.eventInfo.tags[tagIndex] = tag4;
+                    $scope.eventInfo.tags[tagIndex] = { name: tag4, color: $scope.tag4.color };
                     tagIndex++;
                 }
                 if (tag5 != '') {
-                    $scope.eventInfo.tags[tagIndex] = tag5;
+                    $scope.eventInfo.tags[tagIndex] = { name: tag5, color: $scope.tag5.color };
                 }
 
                 var giftIndex = 0;
@@ -326,6 +326,9 @@ angular.module('webAdminApp')
             };
 
             $scope.getEventInfo = function(id) {
+
+                $scope.eventInfoInit();
+
                 $http.get(config.apiUrl + '/admin/events/' + id,
                   { headers: {'Authorization': $scope.auth }})
                   .success(function (response) {

@@ -44,7 +44,7 @@ public class AdminEventDetailModel {
 
     private List<GiftModel> gifts;
 
-    private List<String> tags;
+    private List<TagModel> tags;
 
     public AdminEventDetailModel(Long id, String title, String description, String company,
                                  String eventType, String eventPage, String homePage,

@@ -8,6 +8,7 @@ import me.memorytalk.domain.QEvent;
 import me.memorytalk.domain.QTag;
 import me.memorytalk.domain.Tag;
 import me.memorytalk.dto.AdminTagModel;
+import me.memorytalk.dto.TagModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,14 +24,19 @@ public class TagRepositoryImpl extends QueryDslRepositorySupport implements TagM
         super(Tag.class);
     }
 
-    public List<String> findTags(Long eventId) {
+    public List<TagModel> findTagModels(Long eventId) {
 
         QTag qTag = QTag.tag;
         QEvent qEvent = QEvent.event;
         JPQLQuery query = from(qTag);
         query.innerJoin(qTag.event, qEvent).on(qEvent.id.eq(eventId));
 
-        return query.list(qTag.name);
+        List<TagModel> tagModels = query.list(ConstructorExpression.create(TagModel.class,
+                qTag.name,
+                qTag.color
+        ));
+
+        return tagModels;
     }
 
     public Long deleteByEventId(Long eventId) {
@@ -53,6 +59,7 @@ public class TagRepositoryImpl extends QueryDslRepositorySupport implements TagM
                 qTag.id,
                 qTag.createdDate,
                 qTag.name,
+                qTag.color,
                 qEvent.id,
                 qEvent.title
         ));
@@ -85,6 +92,7 @@ public class TagRepositoryImpl extends QueryDslRepositorySupport implements TagM
                     qTag.id,
                     qTag.createdDate,
                     qTag.name,
+                    qTag.color,
                     qEvent.id,
                     qEvent.title
             ));

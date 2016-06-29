@@ -18,6 +18,8 @@ public class AdminTagModel {
 
     private String name;
 
+    private String color;
+
     private Long eventId;
 
     private String eventTitle;

@@ -20,6 +20,9 @@ public class Tag implements Serializable {
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private String color;
+
     @Column(nullable = false)
     private Date createdDate;
 

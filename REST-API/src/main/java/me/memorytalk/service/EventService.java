@@ -53,7 +53,7 @@ public class EventService {
 
         Page<EventModel> eventModels = eventRepository.findEventModels(premium, pageable);
         for(EventModel eventModel : eventModels) {
-            List<String> tags = tagRepository.findTags(eventModel.getId());
+            List<TagModel> tags = tagRepository.findTagModels(eventModel.getId());
             eventModel.setTags(tags);
         }
 
@@ -65,7 +65,7 @@ public class EventService {
         EventDetailModel eventDetailModel = eventRepository.findEventModel(eventId);
         eventDetailModel.setAttachments(attachmentRepository.findAttachmentModels(eventId));
         eventDetailModel.setGifts(giftRepository.findGiftModels(eventId));
-        eventDetailModel.setTags(tagRepository.findTags(eventId));
+        eventDetailModel.setTags(tagRepository.findTagModels(eventId));
 
         return eventDetailModel;
     }
@@ -127,7 +127,7 @@ public class EventService {
         AdminEventDetailModel adminEventDetailModel = eventRepository.findAdminEventModel(eventId);
         adminEventDetailModel.setAttachments(attachmentRepository.findAttachmentModels(eventId));
         adminEventDetailModel.setGifts(giftRepository.findGiftModels(eventId));
-        adminEventDetailModel.setTags(tagRepository.findTags(eventId));
+        adminEventDetailModel.setTags(tagRepository.findTagModels(eventId));
 
         return adminEventDetailModel;
     }
@@ -219,38 +219,32 @@ public class EventService {
         }
     }
 
-    private List<String> addTags(List<String> tagNames, Event event) {
+    private void addTags(List<AdminTagForm> tagItems, Event event) {
 
-        List<String> tags = new ArrayList<>();
-        if(tagNames != null && tagNames.size() > 0) {
-            for(String tagName : tagNames) {
+        if(tagItems != null && tagItems.size() > 0) {
+            for(AdminTagForm tagItem : tagItems) {
                 Tag tag = new Tag();
-                tag.setName(tagName);
+                tag.setName(tagItem.getName());
+                tag.setColor(tagItem.getColor());
                 tag.setEvent(event);
                 tag.setCreatedDate(new Date());
                 tagRepository.save(tag);
-                tags.add(tag.getName());
             }
         }
-
-        return tags;
     }
 
-    private List<String> editTags(List<String> tagNames, Event event) {
+    private void editTags(List<AdminTagForm> tagItems, Event event) {
 
         tagRepository.deleteByEventId(event.getId());
-        List<String> tags = new ArrayList<>();
-        if(tagNames != null && tagNames.size() > 0) {
-            for (String tagName : tagNames) {
+        if(tagItems != null && tagItems.size() > 0) {
+            for (AdminTagForm tagItem : tagItems) {
                 Tag tag = new Tag();
-                tag.setName(tagName);
+                tag.setName(tagItem.getName());
+                tag.setColor(tagItem.getColor());
                 tag.setEvent(event);
                 tag.setCreatedDate(new Date());
                 tagRepository.save(tag);
-                tags.add(tagName);
             }
         }
-
-        return tags;
     }
 }

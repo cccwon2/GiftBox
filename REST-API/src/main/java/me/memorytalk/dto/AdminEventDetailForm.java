@@ -36,7 +36,7 @@ public class AdminEventDetailForm {
 
     private List<AdminGiftForm> gifts;
 
-    private List<String> tags;
+    private List<AdminTagForm> tags;
 
     @JsonCreator
     public AdminEventDetailForm(@JsonProperty("title") String title,
@@ -51,7 +51,7 @@ public class AdminEventDetailForm {
                                 @JsonProperty("premium") boolean premium,
                                 @JsonProperty("visible") boolean visible,
                                 @JsonProperty("gifts") List<AdminGiftForm> gifts,
-                                @JsonProperty("tags") List<String> tags) {
+                                @JsonProperty("tags") List<AdminTagForm> tags) {
         this.title = title;
         this.description = description;
         this.company = company;
