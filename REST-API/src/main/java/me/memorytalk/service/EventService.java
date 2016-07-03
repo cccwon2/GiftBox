@@ -3,13 +3,13 @@ package me.memorytalk.service;
 import com.microsoft.azure.storage.StorageException;
 import me.memorytalk.common.constant.GlobalConst;
 import me.memorytalk.domain.Event;
+import me.memorytalk.domain.EventType;
 import me.memorytalk.domain.Gift;
-import me.memorytalk.domain.Tag;
 import me.memorytalk.dto.*;
 import me.memorytalk.repository.AttachmentRepository;
 import me.memorytalk.repository.EventRepository;
 import me.memorytalk.repository.GiftRepository;
-import me.memorytalk.repository.TagRepository;
+import me.memorytalk.repository.EventTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +43,7 @@ public class EventService {
     private GiftRepository giftRepository;
 
     @Autowired
-    private TagRepository tagRepository;
+    private EventTypeRepository eventTypeRepository;
 
     public Page<EventModel> getEvents(String premium, int page, int size) {
 
@@ -53,8 +53,8 @@ public class EventService {
 
         Page<EventModel> eventModels = eventRepository.findEventModels(premium, pageable);
         for(EventModel eventModel : eventModels) {
-            List<TagModel> tags = tagRepository.findTagModels(eventModel.getId());
-            eventModel.setTags(tags);
+            List<EventTypeModel> eventTypes = eventTypeRepository.findEventTypeModels(eventModel.getId());
+            eventModel.setEventTypes(eventTypes);
         }
 
         return eventModels;
@@ -65,7 +65,7 @@ public class EventService {
         EventDetailModel eventDetailModel = eventRepository.findEventModel(eventId);
         eventDetailModel.setAttachments(attachmentRepository.findAttachmentModels(eventId));
         eventDetailModel.setGifts(giftRepository.findGiftModels(eventId));
-        eventDetailModel.setTags(tagRepository.findTagModels(eventId));
+        eventDetailModel.setEventTypes(eventTypeRepository.findEventTypeModels(eventId));
 
         return eventDetailModel;
     }
@@ -103,12 +103,14 @@ public class EventService {
         event.setTitle(requestForm.getTitle());
         event.setDescription(requestForm.getDescription());
         event.setCompany(requestForm.getCompany());
-        event.setEventType(requestForm.getEventType());
+        event.setEventTarget(requestForm.getEventTarget());
         event.setEventPage(requestForm.getEventPage());
-        event.setHomePage(requestForm.getHomePage());
+        event.setPrizePage(requestForm.getPrizePage());
         event.setStartDate(startDate);
         event.setEndDate(endDate);
         event.setPublicationDate(publicationDate);
+        event.setPublicationContent1(requestForm.getPublicationContent1());
+        event.setPublicationContent2(requestForm.getPublicationContent2());
         event.setPremium(requestForm.isPremium());
         event.setVisible(requestForm.isVisible());
         event.setCreatedDate(new Date());
@@ -117,7 +119,7 @@ public class EventService {
         uploadService.uploadAttachment(event, file);
 
         addGifts(requestForm.getGifts(), event);
-        addTags(requestForm.getTags(), event);
+        addTags(requestForm.getEventTypes(), event);
 
         return Boolean.TRUE;
     }
@@ -127,7 +129,7 @@ public class EventService {
         AdminEventDetailModel adminEventDetailModel = eventRepository.findAdminEventModel(eventId);
         adminEventDetailModel.setAttachments(attachmentRepository.findAttachmentModels(eventId));
         adminEventDetailModel.setGifts(giftRepository.findGiftModels(eventId));
-        adminEventDetailModel.setTags(tagRepository.findTagModels(eventId));
+        adminEventDetailModel.setEventTypes(eventTypeRepository.findEventTypeModels(eventId));
 
         return adminEventDetailModel;
     }
@@ -158,18 +160,20 @@ public class EventService {
         event.setTitle(requestForm.getTitle());
         event.setDescription(requestForm.getDescription());
         event.setCompany(requestForm.getCompany());
-        event.setEventType(requestForm.getEventType());
+        event.setEventTarget(requestForm.getEventTarget());
         event.setEventPage(requestForm.getEventPage());
-        event.setHomePage(requestForm.getHomePage());
+        event.setPrizePage(requestForm.getPrizePage());
         event.setStartDate(startDate);
         event.setEndDate(endDate);
         event.setPublicationDate(publicationDate);
+        event.setPublicationContent1(requestForm.getPublicationContent1());
+        event.setPublicationContent2(requestForm.getPublicationContent2());
         event.setPremium(requestForm.isPremium());
         event.setVisible(requestForm.isVisible());
         eventRepository.save(event);
 
         editGifts(requestForm.getGifts(), event);
-        editTags(requestForm.getTags(), event);
+        editTags(requestForm.getEventTypes(), event);
 
         return Boolean.TRUE;
     }
@@ -219,31 +223,31 @@ public class EventService {
         }
     }
 
-    private void addTags(List<AdminTagForm> tagItems, Event event) {
+    private void addTags(List<AdminEventTypeForm> tagItems, Event event) {
 
         if(tagItems != null && tagItems.size() > 0) {
-            for(AdminTagForm tagItem : tagItems) {
-                Tag tag = new Tag();
-                tag.setName(tagItem.getName());
-                tag.setColor(tagItem.getColor());
-                tag.setEvent(event);
-                tag.setCreatedDate(new Date());
-                tagRepository.save(tag);
+            for(AdminEventTypeForm tagItem : tagItems) {
+                EventType eventType = new EventType();
+                eventType.setName(tagItem.getName());
+                eventType.setColor(tagItem.getColor());
+                eventType.setEvent(event);
+                eventType.setCreatedDate(new Date());
+                eventTypeRepository.save(eventType);
             }
         }
     }
 
-    private void editTags(List<AdminTagForm> tagItems, Event event) {
+    private void editTags(List<AdminEventTypeForm> tagItems, Event event) {
 
-        tagRepository.deleteByEventId(event.getId());
+        eventTypeRepository.deleteByEventId(event.getId());
         if(tagItems != null && tagItems.size() > 0) {
-            for (AdminTagForm tagItem : tagItems) {
-                Tag tag = new Tag();
-                tag.setName(tagItem.getName());
-                tag.setColor(tagItem.getColor());
-                tag.setEvent(event);
-                tag.setCreatedDate(new Date());
-                tagRepository.save(tag);
+            for (AdminEventTypeForm tagItem : tagItems) {
+                EventType eventType = new EventType();
+                eventType.setName(tagItem.getName());
+                eventType.setColor(tagItem.getColor());
+                eventType.setEvent(event);
+                eventType.setCreatedDate(new Date());
+                eventTypeRepository.save(eventType);
             }
         }
     }

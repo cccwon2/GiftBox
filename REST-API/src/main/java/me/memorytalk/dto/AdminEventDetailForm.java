@@ -16,11 +16,11 @@ public class AdminEventDetailForm {
 
     private String company;
 
-    private String eventType;
+    private String eventTarget;
 
     private String eventPage;
 
-    private String homePage;
+    private String prizePage;
 
     private Date startDate;
 
@@ -28,7 +28,9 @@ public class AdminEventDetailForm {
 
     private Date publicationDate;
 
-    private Date registrationDate;
+    private String publicationContent1;
+
+    private String publicationContent2;
 
     private boolean premium;
 
@@ -36,34 +38,38 @@ public class AdminEventDetailForm {
 
     private List<AdminGiftForm> gifts;
 
-    private List<AdminTagForm> tags;
+    private List<AdminEventTypeForm> eventTypes;
 
     @JsonCreator
     public AdminEventDetailForm(@JsonProperty("title") String title,
                                 @JsonProperty("description") String description,
                                 @JsonProperty("company") String company,
-                                @JsonProperty("eventType") String eventType,
+                                @JsonProperty("eventTarget") String eventTarget,
                                 @JsonProperty("eventPage") String eventPage,
-                                @JsonProperty("homePage") String homePage,
+                                @JsonProperty("prizePage") String prizePage,
                                 @JsonProperty("startDate") Date startDate,
                                 @JsonProperty("endDate") Date endDate,
                                 @JsonProperty("publicationDate") Date publicationDate,
+                                @JsonProperty("publicationContent1") String publicationContent1,
+                                @JsonProperty("publicationContent2") String publicationContent2,
                                 @JsonProperty("premium") boolean premium,
                                 @JsonProperty("visible") boolean visible,
                                 @JsonProperty("gifts") List<AdminGiftForm> gifts,
-                                @JsonProperty("tags") List<AdminTagForm> tags) {
+                                @JsonProperty("eventTypes") List<AdminEventTypeForm> eventTypes) {
         this.title = title;
         this.description = description;
         this.company = company;
-        this.eventType = eventType;
+        this.eventTarget = eventTarget;
         this.eventPage = eventPage;
-        this.homePage = homePage;
+        this.prizePage = prizePage;
         this.startDate = startDate;
         this.endDate = endDate;
         this.publicationDate = publicationDate;
+        this.publicationContent1 = publicationContent1;
+        this.publicationContent2 = publicationContent2;
         this.premium = premium;
         this.visible = visible;
         this.gifts = gifts;
-        this.tags = tags;
+        this.eventTypes = eventTypes;
     }
 }

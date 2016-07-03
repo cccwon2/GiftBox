@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "events")
 public class Event implements Serializable {
 
-    private static final long serialVersionUID = -3210385684140527959L;
+    private static final long serialVersionUID = -1394199278362987746L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,13 +31,13 @@ public class Event implements Serializable {
     private String company;
 
     @Column(nullable = false)
-    private String eventType;
-
-    @Column(nullable = false)
-    private String homePage;
+    private String eventTarget;
 
     @Column(nullable = false)
     private String eventPage;
+
+    @Column(nullable = false)
+    private String prizePage;
 
     @Column(nullable = false)
     private Date startDate;
@@ -45,8 +45,14 @@ public class Event implements Serializable {
     @Column(nullable = false)
     private Date endDate;
 
-    @Column(nullable = false)
+    @Column
     private Date publicationDate;
+
+    @Column
+    private String publicationContent1;
+
+    @Column
+    private String publicationContent2;
 
     @Column(nullable = false)
     private boolean premium;
@@ -64,5 +70,5 @@ public class Event implements Serializable {
     private List<Gift> gifts;
 
     @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
-    private List<Tag> tags;
+    private List<EventType> eventTypes;
 }

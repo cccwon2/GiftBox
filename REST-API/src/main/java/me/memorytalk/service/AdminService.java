@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.text.ParseException;
+import java.util.List;
 
 @Service
 public class AdminService {
@@ -27,7 +28,10 @@ public class AdminService {
     private GiftService giftService;
 
     @Autowired
-    private TagService tagService;
+    private EventTypeService eventTypeService;
+
+    @Autowired
+    private EventTypeCodeService eventTypeCodeService;
 
     public Boolean login(AdminLoginForm requestForm) {
 
@@ -115,35 +119,86 @@ public class AdminService {
         return giftService.removeAdminGift(id);
     }
 
-    public Page<AdminTagModel> getTags(String auth, String eventId, String tagName, int page, int size) {
+    public Page<AdminEventTypeModel> getEventTypes(String auth, String eventId, String sort, int page, int size) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
-        Sort sort = new Sort(order);
-        Pageable pageable = new PageRequest(page - 1, size, sort);
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(order));
 
-        return tagService.getAdminTags(eventId, tagName, pageable);
+        return eventTypeService.getAdminEventTypes(eventId, sort, pageable);
     }
 
-    public AdminTagModel getTag(String auth, Long id) {
+    public Boolean addEventType(String auth, String name, String color, String sort) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
-        return tagService.getAdminTag(id);
+        return eventTypeService.addAdminEventType(name, color, sort);
     }
 
-    public Boolean editTag(String auth, Long id, String name, String color) {
+    public AdminEventTypeModel getEventType(String auth, Long id) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
-        return tagService.editAdminTag(id, name, color);
+        return eventTypeService.getAdminEventType(id);
     }
 
-    public Boolean removeTag(String auth, Long id) {
+    public Boolean editEventType(String auth, Long id, String name, String color, String sort) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
-        return tagService.removeAdminTag(id);
+        return eventTypeService.editAdminEventType(id, name, color, sort);
+    }
+
+    public Boolean removeEventType(String auth, Long id) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return eventTypeService.removeAdminEventType(id);
+    }
+
+    public List<AdminEventTypeCodeModel> getEventTypeCodes(String auth, String sort) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return eventTypeCodeService.getAdminEventTypeCodes(sort);
+    }
+
+    public Page<AdminEventTypeCodeModel> getEventTypeCodes(String auth, String sort, int page, int size) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(order));
+
+        return eventTypeCodeService.getAdminEventTypeCodes(sort, pageable);
+    }
+
+    public Boolean addEventTypeCode(String auth, String name, String color, String sort) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return eventTypeCodeService.addAdminEventTypeCode(name, color, sort);
+    }
+
+    public AdminEventTypeCodeModel getEventTypeCode(String auth, Long id) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return eventTypeCodeService.getAdminEventTypeCode(id);
+    }
+
+    public Boolean editEventTypeCode(String auth, Long id, String name, String color, String sort) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return eventTypeCodeService.editAdminEventTypeCode(id, name, color, sort);
+    }
+
+    public Boolean removeEventTypeCode(String auth, Long id) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return eventTypeCodeService.removeAdminEventTypeCode(id);
     }
 }

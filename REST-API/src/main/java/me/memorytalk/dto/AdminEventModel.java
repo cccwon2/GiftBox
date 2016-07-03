@@ -19,11 +19,11 @@ public class AdminEventModel {
 
     private String company;
 
-    private String eventType;
+    private String eventTarget;
 
     private String eventPage;
 
-    private String homePage;
+    private String prizePage;
 
     @JsonSerialize(using = DateSerializer.class)
     private Date startDate;
@@ -35,10 +35,11 @@ public class AdminEventModel {
     private Date publicationDate;
 
     @JsonSerialize(using = DateSerializer.class)
-    private Date registrationDate;
-
-    @JsonSerialize(using = DateSerializer.class)
     private Date createdDate;
+
+    private String publicationContent1;
+
+    private String publicationContent2;
 
     private boolean premium;
 
@@ -46,9 +47,10 @@ public class AdminEventModel {
 
     private List<AttachmentModel> attachments;
 
-    public AdminEventModel(Long id, String title, String description, String company,
-                           String eventType, String eventPage, String homePage,
+    public AdminEventModel(Long id, String title, String description,
+                           String company, String eventTarget, String eventPage, String prizePage,
                            Date startDate, Date endDate, Date publicationDate, Date createdDate,
+                           String publicationContent1, String publicationContent2,
                            boolean premium, boolean visible,
                            int width, int height, String url,
                            String thumbnailS, String thumbnailM, String thumbnailL) {
@@ -56,13 +58,15 @@ public class AdminEventModel {
         this.title = title;
         this.description = description;
         this.company = company;
-        this.eventType = eventType;
+        this.eventTarget = eventTarget;
         this.eventPage = eventPage;
-        this.homePage = homePage;
+        this.prizePage = prizePage;
         this.startDate = startDate;
         this.endDate = endDate;
         this.publicationDate = publicationDate;
         this.createdDate = createdDate;
+        this.publicationContent1 = publicationContent1;
+        this.publicationContent2 = publicationContent2;
         this.premium = premium;
         this.visible = visible;
         this.attachments = new ArrayList<>();

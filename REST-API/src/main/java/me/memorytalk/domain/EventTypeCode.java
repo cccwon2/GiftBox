@@ -10,8 +10,10 @@ import java.util.Date;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "tags")
-public class Tag implements Serializable {
+@Table(name = "eventTypeCodes")
+public class EventTypeCode implements Serializable {
+
+    private static final long serialVersionUID = 1943580678513277015L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,13 +22,12 @@ public class Tag implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String color;
 
     @Column(nullable = false)
-    private Date createdDate;
+    private String sort;
 
-    @ManyToOne
-    @JoinColumn(name = "event", nullable = false)
-    private Event event;
+    @Column(nullable = false)
+    private Date createdDate;
 }

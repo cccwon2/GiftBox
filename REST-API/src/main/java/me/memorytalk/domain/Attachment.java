@@ -51,6 +51,14 @@ public class Attachment implements Serializable {
     private Date createdDate;
 
     @ManyToOne
-    @JoinColumn(name = "event", nullable = false)
+    @JoinColumn(name = "banner")
+    private Banner banner;
+
+    @ManyToOne
+    @JoinColumn(name = "event")
     private Event event;
+
+    @ManyToOne
+    @JoinColumn(name = "popup")
+    private Popup popup;
 }

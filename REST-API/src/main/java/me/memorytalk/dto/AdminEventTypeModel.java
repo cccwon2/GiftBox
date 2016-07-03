@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class AdminTagModel {
+public class AdminEventTypeModel {
 
     private Long id;
 
@@ -19,6 +19,8 @@ public class AdminTagModel {
     private String name;
 
     private String color;
+
+    private String sort;
 
     private Long eventId;
 

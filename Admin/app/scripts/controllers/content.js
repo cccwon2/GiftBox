@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('webAdminApp')
-    .controller('ServiceCtrl', [
+    .controller('ContentCtrl', [
         'config', '$http', '$scope', '$cookieStore', '$location',
         function (config, $http, $scope, $cookieStore, $location) {
 
@@ -16,10 +16,10 @@ angular.module('webAdminApp')
             };
 
             $scope.eventTab = function() {
-                if($location.url() === '/service' || $location.url() === '/service#event') {
+                if($location.url() === '/content' || $location.url() === '/content#event') {
                     $('#event').addClass('in active');
+                    $('#eventTypeCode').removeClass('in active');
                     $('#gift').removeClass('in active');
-                    $('#tag').removeClass('in active');
                     return true;
                 }
                 else
@@ -74,16 +74,18 @@ angular.module('webAdminApp')
                     title: '',
                     description: '',
                     company: '',
-                    eventType: '',
+                    eventTarget: '',
                     eventPage: '',
-                    homePage: '',
+                    prizePage: '',
                     startDate: new Date(),
                     endDate: new Date(),
                     publicationDate: new Date(),
+                    publicationContent1: '',
+                    publicationContent2: '',
                     premium: false,
                     visible: true,
                     gifts: [],
-                    tags: []
+                    eventTypes: []
                 };
                 $scope.gift1 = { product: '', count: 3 };
                 $scope.gift2 = { product: '', count: 3 };
@@ -95,11 +97,6 @@ angular.module('webAdminApp')
                 $scope.gift8 = { product: '', count: 3 };
                 $scope.gift9 = { product: '', count: 3 };
                 $scope.gift10 = { product: '', count: 3 };
-                $scope.tag1 = { name: '', color: ''};
-                $scope.tag2 = { name: '', color: ''};
-                $scope.tag3 = { name: '', color: ''};
-                $scope.tag4 = { name: '', color: ''};
-                $scope.tag5 = { name: '', color: ''};
                 $('#eventFile').val('');
             };
 
@@ -119,7 +116,7 @@ angular.module('webAdminApp')
                 );
             };
 
-            if($location.url() === '/service' || $location.url() === '/service#event') {
+            if($location.url() === '/content' || $location.url() === '/content#event') {
                 $scope.eventPageChanged();
             }
 
@@ -132,32 +129,6 @@ angular.module('webAdminApp')
             };
 
             $scope.addEventInfo = function() {
-                var tagIndex = 0;
-                var tag1 = $.trim($scope.tag1.name);
-                var tag2 = $.trim($scope.tag2.name);
-                var tag3 = $.trim($scope.tag3.name);
-                var tag4 = $.trim($scope.tag4.name);
-                var tag5 = $.trim($scope.tag5.name);
-                if (tag1 != '') {
-                    $scope.eventInfo.tags[tagIndex] = { name: tag1, color: $scope.tag1.color };
-                    tagIndex++;
-                }
-                if (tag2 != '') {
-                    $scope.eventInfo.tags[tagIndex] = { name: tag2, color: $scope.tag2.color };
-                    tagIndex++;
-                }
-                if (tag3 != '') {
-                    $scope.eventInfo.tags[tagIndex] = { name: tag3, color: $scope.tag3.color };
-                    tagIndex++;
-                }
-                if (tag4 != '') {
-                    $scope.eventInfo.tags[tagIndex] = { name: tag4, color: $scope.tag4.color };
-                    tagIndex++;
-                }
-                if (tag5 != '') {
-                    $scope.eventInfo.tags[tagIndex] = { name: tag5, color: $scope.tag5.color };
-                }
-
                 var giftIndex = 0;
                 var giftProduct1 = $.trim($scope.gift1.product);
                 var giftProduct2 = $.trim($scope.gift2.product);
@@ -278,16 +249,18 @@ angular.module('webAdminApp')
                             'title': $scope.eventInfo.title,
                             'description': $scope.eventInfo.description,
                             'company': $scope.eventInfo.company,
-                            'eventType': $scope.eventInfo.eventType,
+                            'eventTarget': $scope.eventInfo.eventTarget,
                             'eventPage': $scope.eventInfo.eventPage,
-                            'homePage': $scope.eventInfo.homePage,
+                            'prizePage': $scope.eventInfo.prizePage,
                             'startDate': $scope.eventInfo.startDate,
                             'endDate': $scope.eventInfo.endDate,
                             'publicationDate': $scope.eventInfo.publicationDate,
+                            'publicationContent1': $scope.eventInfo.publicationContent1,
+                            'publicationContent2': $scope.eventInfo.publicationContent2,
                             'premium': $scope.eventInfo.premium,
                             'visible': $scope.eventInfo.visible,
                             'gifts': $scope.eventInfo.gifts,
-                            'tags': $scope.eventInfo.tags
+                            'eventTypes': $scope.eventInfo.eventTypes
                         }
                     };
 
@@ -325,11 +298,11 @@ angular.module('webAdminApp')
                 }
             };
 
-            $scope.getEventInfo = function(id) {
+            $scope.getEventInfo = function(_eventId) {
 
                 $scope.eventInfoInit();
 
-                $http.get(config.apiUrl + '/admin/events/' + id,
+                $http.get(config.apiUrl + '/admin/events/' + _eventId,
                   { headers: {'Authorization': $scope.auth }})
                   .success(function (response) {
                       if(response.success) {
@@ -337,21 +310,16 @@ angular.module('webAdminApp')
                           $scope.eventInfo.title = response.data.title;
                           $scope.eventInfo.description = response.data.description;
                           $scope.eventInfo.company = response.data.company;
-                          $scope.eventInfo.eventType = response.data.eventType;
+                          $scope.eventInfo.eventTarget = response.data.eventTarget;
                           $scope.eventInfo.eventPage = response.data.eventPage;
-                          $scope.eventInfo.homePage = response.data.homePage;
+                          $scope.eventInfo.prizePage = response.data.prizePage;
                           $scope.eventInfo.startDate = new Date(response.data.startDate);
                           $scope.eventInfo.endDate = new Date(response.data.endDate);
                           $scope.eventInfo.publicationDate = new Date(response.data.publicationDate);
+                          $scope.eventInfo.publicationContent1 = response.data.publicationContent1;
+                          $scope.eventInfo.publicationContent2 = response.data.publicationContent2;
                           $scope.eventInfo.premium = response.data.premium;
                           $scope.eventInfo.visible = response.data.visible;
-                          for(var i = 0; i < response.data.tags.length; i++) {
-                              if(i == 0) $scope.tag1 = response.data.tags[i];
-                              if(i == 1) $scope.tag2 = response.data.tags[i];
-                              if(i == 2) $scope.tag3 = response.data.tags[i];
-                              if(i == 3) $scope.tag4 = response.data.tags[i];
-                              if(i == 4) $scope.tag5 = response.data.tags[i];
-                          }
                           for(var i = 0; i < response.data.gifts.length; i++) {
                               if(i == 0) $scope.gift1 = response.data.gifts[i];
                               if(i == 1) $scope.gift2 = response.data.gifts[i];
@@ -457,11 +425,216 @@ angular.module('webAdminApp')
                 $scope.selectedEventImage = _url;
             };
 
-            $scope.giftTab = function() {
-                if($location.url() === '/service#gift') {
+            $scope.eventTypeCodeTab = function() {
+                if($location.url() === '/content#eventTypeCode') {
                     $('#event').removeClass('in active');
+                    $('#eventTypeCode').addClass('in active');
+                    $('#gift').removeClass('in active');
+                    return true;
+                }
+                else
+                    return false;
+            };
+
+            $scope.totalEventTypeCodeItems = 0;
+            $scope.currentEventTypeCodePage = 1;
+            $scope.eventTypeCodeSize = 10;
+            $scope.maxEventTypeCodeSize = 10;
+            $scope.searchEventTypeCodeEventId = '';
+            $scope.searchEventTypeCodeSort = '';
+
+            $scope.eventTypeCodeInfoInit = function() {
+                $scope.eventTypeCodeInfo = {
+                    name: '',
+                    color: '',
+                    sort: ''
+                };
+            };
+
+            $scope.eventTypeCodeInfoInit();
+
+            $scope.addEventTypeCodeInfo = function() {
+
+                var formData = new FormData();
+                formData.append('name', $.trim($scope.eventTypeCodeInfo.name));
+                formData.append('color', $scope.eventTypeCodeInfo.color);
+                formData.append('sort', $scope.eventTypeCodeInfo.sort);
+
+                var req = {
+                    method: 'POST',
+                    url: config.apiUrl + '/admin/eventTypeCodes',
+                    headers: {
+                        'Authorization': $scope.auth,
+                        'Content-Type': undefined
+                    },
+                    data: angular.identity(formData)
+                };
+
+                BootstrapDialog.confirm({
+                    title: '위 이벤트 타입 항목을 등록할까요?',
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    btnCancelLabel: 'Cancel',
+                    btnOKLabel: 'OK',
+                    btnOKClass: 'btn-warning',
+                    callback: function (result) {
+                        if (result) {
+                            $('.close').click();
+                            $('body').append("<div class='loading-modal'></div>");
+                            $('body').addClass("loading");
+
+                            $http(req).success(function (response) {
+                                if (response.success) {
+                                    BootstrapDialog.show({
+                                        message: '이벤트 타입 항목 등록 성공!'
+                                    });
+                                }
+
+                                $scope.eventTypeCodeInfoInit();
+                                $scope.eventTypeCodePageChanged();
+
+                                $('.loading-modal').remove();
+                                $('body').removeClass("loading");
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.eventTypeCodePageChanged = function() {
+                $http.get(config.apiUrl + '/admin/eventTypeCodes?page='
+                  + $scope.currentEventTypeCodePage + '&size=' + $scope.eventTypeCodeSize
+                  + '&sort=' + $scope.searchEventTypeCodeSort,
+                  { headers: {'Authorization': $scope.auth }})
+                  .success(function (response) {
+                      if(response.success) {
+                          $scope.eventTypeCodes = response.data.content;
+                          $scope.totalEventTypeCodeItems= response.data.totalElements;
+                      }
+                  }
+                );
+            };
+
+            if($location.url() === '/content#eventTypeCode') {
+                $scope.eventTypeCodePageChanged();
+            }
+
+            $scope.eventTypeCodeSortChangedValue = function() {
+                $scope.eventTypeCodePageChanged();
+            };
+
+            $scope.eventTypeCodeColorBinding = function(_eventTypeCodeId) {
+                $('#' + _eventTypeCodeId).minicolors({
+                    control: $(this).attr('data-control') || 'hue',
+                    defaultValue: $(this).attr('data-defaultValue') || '',
+                    format: $(this).attr('data-format') || 'hex',
+                    keywords: $(this).attr('data-keywords') || '',
+                    inline: $(this).attr('data-inline') === 'true',
+                    letterCase: $(this).attr('data-letterCase') || 'lowercase',
+                    opacity: $(this).attr('data-opacity'),
+                    position: $(this).attr('data-position') || 'bottom left',
+                    swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+                    change: function(value, opacity) {
+                        if( !value ) return;
+                        if( opacity ) value += ', ' + opacity;
+                        if( typeof console === 'object' ) {
+                            console.log(value);
+                        }
+                    },
+                    theme: 'bootstrap'
+                });
+            };
+
+            $scope.searchEventTypeCodes = function() {
+                $scope.eventTypeCodePageChanged();
+            };
+
+            $scope.editEventTypeCodeInfo = function(_eventTypeCodeId, _eventTypeCodeName, _eventTypeCodeColor, _eventTypeCodeSort) {
+
+                var formData = new FormData();
+                formData.append('name', $.trim(_eventTypeCodeName));
+                formData.append('color', _eventTypeCodeColor);
+                formData.append('sort', _eventTypeCodeSort);
+
+                var req = {
+                    method: 'POST',
+                    url: config.apiUrl + '/admin/eventTypeCodes/' + _eventTypeCodeId,
+                    headers: {
+                        'Authorization': $scope.auth,
+                        'Content-Type': undefined
+                    },
+                    data: angular.identity(formData)
+                };
+
+                BootstrapDialog.confirm({
+                    title: '이벤트 타입 항목 수정' ,
+                    message: '이름: ' + _eventTypeCodeName
+                    + '\n색깔: ' + _eventTypeCodeColor
+                    + '\n분류: ' + _eventTypeCodeSort
+                    + '\n위와 같이 수정할까요?',
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    btnCancelLabel: 'Cancel',
+                    btnOKLabel: 'OK',
+                    btnOKClass: 'btn-warning',
+                    callback: function(result) {
+                        if(result) {
+                            $http(req).success(function (response) {
+                                if(response.success) {
+                                    BootstrapDialog.show({
+                                        message: '이벤트 타입 항목 수정 성공!'
+                                    });
+                                }
+
+                                $scope.eventTypeCodePageChanged();
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.removeEventTypeCode = function(_eventTypeCodeId) {
+
+                var req = {
+                    method: 'DELETE',
+                    url: config.apiUrl + '/admin/eventTypeCodes/' + _eventTypeCodeId,
+                    headers: {
+                        'Authorization': $scope.auth
+                    }
+                };
+
+                BootstrapDialog.confirm({
+                    title: '이벤트 타입 항목 삭제' ,
+                    message: '이벤트 타입 항목 ID: ' + _eventTypeCodeId + '\n 위 이벤트 타입 항목을 삭제할까요?',
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    btnCancelLabel: 'Cancel',
+                    btnOKLabel: 'OK',
+                    btnOKClass: 'btn-warning',
+                    callback: function(result) {
+                        if(result) {
+                            $http(req).success(function (response) {
+                                if(response.success) {
+                                    BootstrapDialog.show({
+                                        message: '이벤트 타입 항목 삭제 성공!'
+                                    });
+                                }
+
+                                $scope.eventTypeCodePageChanged();
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.giftTab = function() {
+                if($location.url() === '/content#gift') {
+                    $('#event').removeClass('in active');
+                    $('#eventTypeCode').removeClass('in active');
                     $('#gift').addClass('in active');
-                    $('#tag').removeClass('in active');
                     return true;
                 }
                 else
@@ -488,7 +661,7 @@ angular.module('webAdminApp')
                 );
             };
 
-            if($location.url() === '/service#gift') {
+            if($location.url() === '/content#gift') {
                 $scope.giftPageChanged();
             }
 
@@ -566,143 +739,6 @@ angular.module('webAdminApp')
                                 }
 
                                 $scope.giftPageChanged();
-                            });
-                        }
-                    }
-                });
-            };
-
-            $scope.tagTab = function() {
-                if($location.url() === '/service#tag') {
-                    $('#event').removeClass('in active');
-                    $('#gift').removeClass('in active');
-                    $('#tag').addClass('in active');
-                    return true;
-                }
-                else
-                    return false;
-            };
-
-            $scope.totalTagItems = 0;
-            $scope.currentTagPage = 1;
-            $scope.tagSize = 10;
-            $scope.maxTagSize = 10;
-            $scope.searchTagEventId = '';
-            $scope.searchTagName = '';
-
-            $scope.tagPageChanged = function() {
-                $http.get(config.apiUrl + '/admin/tags?page=' + $scope.currentTagPage + '&size=' + $scope.tagSize
-                  + '&eventId=' + $scope.searchTagEventId + '&tagName=' + $scope.searchTagName,
-                  { headers: {'Authorization': $scope.auth }})
-                  .success(function (response) {
-                      if(response.success) {
-                          $scope.tags = response.data.content;
-                          $scope.totalTagItems= response.data.totalElements;
-                      }
-                  }
-                );
-            };
-
-            if($location.url() === '/service#tag') {
-                $scope.tagPageChanged();
-            }
-
-            $scope.tagColorBinding = function(_tagId) {
-                $('#' + _tagId).minicolors({
-                    control: $(this).attr('data-control') || 'hue',
-                    defaultValue: $(this).attr('data-defaultValue') || '',
-                    format: $(this).attr('data-format') || 'hex',
-                    keywords: $(this).attr('data-keywords') || '',
-                    inline: $(this).attr('data-inline') === 'true',
-                    letterCase: $(this).attr('data-letterCase') || 'lowercase',
-                    opacity: $(this).attr('data-opacity'),
-                    position: $(this).attr('data-position') || 'bottom left',
-                    swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
-                    change: function(value, opacity) {
-                        if( !value ) return;
-                        if( opacity ) value += ', ' + opacity;
-                        if( typeof console === 'object' ) {
-                            console.log(value);
-                        }
-                    },
-                    theme: 'bootstrap'
-                });
-            };
-
-            $scope.searchTags = function() {
-                $scope.tagPageChanged();
-            };
-
-            $scope.editTagInfo = function(_tagId, _tagName, _tagColor) {
-
-                var formData = new FormData();
-                formData.append('name', _tagName);
-                formData.append('color', _tagColor);
-
-                var req = {
-                    method: 'POST',
-                    url: config.apiUrl + '/admin/tags/' + _tagId,
-                    headers: {
-                        'Authorization': $scope.auth,
-                        'Content-Type': undefined
-                    },
-                    data: angular.identity(formData)
-                };
-
-                BootstrapDialog.confirm({
-                    title: 'Tag 수정' ,
-                    message: 'Tag ID: ' + _tagId + '\n Tag Name: ' + _tagName + '\n Tag Color: ' + _tagColor + '\n 위와 같이 수정할까요?',
-                    type: BootstrapDialog.TYPE_WARNING,
-                    closable: true,
-                    draggable: true,
-                    btnCancelLabel: 'Cancel',
-                    btnOKLabel: 'OK',
-                    btnOKClass: 'btn-warning',
-                    callback: function(result) {
-                        if(result) {
-                            $http(req).success(function (response) {
-                                if(response.success) {
-                                    BootstrapDialog.show({
-                                        message: 'Tag 수정 성공!'
-                                    });
-                                }
-
-                                $scope.tagPageChanged();
-                            });
-                        }
-                    }
-                });
-            };
-
-            $scope.removeTag = function(_tagId) {
-
-                var req = {
-                    method: 'DELETE',
-                    url: config.apiUrl + '/admin/tags/' + _tagId,
-                    headers: {
-                        'Authorization': $scope.auth
-                    }
-                };
-
-                BootstrapDialog.confirm({
-                    title: 'Tag 삭제' ,
-                    message: 'Tag ID: ' + _tagId + '\n 위 태그를 삭제할까요?',
-                    type: BootstrapDialog.TYPE_WARNING,
-                    closable: true,
-                    draggable: true,
-                    btnCancelLabel: 'Cancel',
-                    btnOKLabel: 'OK',
-                    btnOKClass: 'btn-warning',
-                    callback: function(result) {
-                        if(result) {
-                            $http(req).success(function (response) {
-                                if(response.success) {
-                                    BootstrapDialog.show({
-                                        message: 'Tag 삭제 성공!'
-                                    });
-                                }
-
-                                $scope.tagPageChanged();
                             });
                         }
                     }

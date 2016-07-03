@@ -150,52 +150,139 @@ public class AdminController {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/tags", method = RequestMethod.GET)
-    public ResponseEntity<RestResponse> tags(
+    @RequestMapping(value = "/admin/eventTypes", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> eventTypes(
             @RequestHeader("Authorization") String auth,
             @RequestParam("eventId") String eventId,
-            @RequestParam("tagName") String tagName,
+            @RequestParam("sort") String sort,
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
-                "Tag List",
-                adminService.getTags(auth, eventId, tagName, page, size)),
+                "EventType List",
+                adminService.getEventTypes(auth, eventId, sort, page, size)),
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/tags/{id}", method = RequestMethod.GET)
-    public ResponseEntity<RestResponse> tag(
+    @RequestMapping(value = "/admin/eventTypes", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> addEventType(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("name") String name,
+            @RequestParam("color") String color,
+            @RequestParam("sort") String sort) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Add EventType",
+                adminService.addEventType(auth, name, color, sort)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/eventTypes/{id}", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> eventType(
             @RequestHeader("Authorization") String auth,
             @PathVariable("id") Long id) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
-                "Tag Information",
-                adminService.getTag(auth, id)),
+                "EventType Information",
+                adminService.getEventType(auth, id)),
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/tags/{id}", method = RequestMethod.POST)
-    public ResponseEntity<RestResponse> editTag(
+    @RequestMapping(value = "/admin/eventTypes/{id}", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> editEventType(
             @RequestHeader("Authorization") String auth,
             @PathVariable("id") Long id,
             @RequestParam("name") String name,
-            @RequestParam("color") String color) {
+            @RequestParam("color") String color,
+            @RequestParam("sort") String sort) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
-                "Edit Tag",
-                adminService.editTag(auth, id, name, color)),
+                "Edit EventType",
+                adminService.editEventType(auth, id, name, color, sort)),
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/tags/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<RestResponse> removeTag(
+    @RequestMapping(value = "/admin/eventTypes/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RestResponse> removeEventType(
             @RequestHeader("Authorization") String auth,
             @PathVariable("id") Long id) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
-                "Remove Tag",
-                adminService.removeTag(auth, id)),
+                "Remove EventType",
+                adminService.removeEventType(auth, id)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/eventTypeCodes/{sort}", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> eventTypeCodesBySort(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("sort") String sort) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "EventTypeCode List By Sort",
+                adminService.getEventTypeCodes(auth, sort)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/eventTypeCodes", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> eventTypeCodes(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("sort") String sort,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "EventTypeCode List",
+                adminService.getEventTypeCodes(auth, sort, page, size)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/eventTypeCodes", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> addEventTypeCode(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("name") String name,
+            @RequestParam("color") String color,
+            @RequestParam("sort") String sort) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Add EventType",
+                adminService.addEventTypeCode(auth, name, color, sort)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/eventTypeCodes/{id}", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> eventTypeCode(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "EventTypeCode Information",
+                adminService.getEventTypeCode(auth, id)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/eventTypeCodes/{id}", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> editEventTypeCode(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestParam("name") String name,
+            @RequestParam("color") String color,
+            @RequestParam("sort") String sort) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Edit EventTypeCode",
+                adminService.editEventTypeCode(auth, id, name, color, sort)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/eventTypeCodes/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RestResponse> removeEventTypeCode(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Remove EventType",
+                adminService.removeEventTypeCode(auth, id)),
                 HttpStatus.OK);
     }
 }
