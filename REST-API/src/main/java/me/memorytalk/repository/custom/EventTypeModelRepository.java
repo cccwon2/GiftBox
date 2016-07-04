@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface EventTypeModelRepository {
 
+    List<Long> findEventTypeCodeIds(Long eventId);
+
     List<EventTypeModel> findEventTypeModels(Long eventId);
 
     Long deleteByEventId(Long eventId);

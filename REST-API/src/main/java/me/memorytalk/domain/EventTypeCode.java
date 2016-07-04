@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,4 +31,7 @@ public class EventTypeCode implements Serializable {
 
     @Column(nullable = false)
     private Date createdDate;
+
+    @OneToMany(mappedBy="eventTypeCode", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
+    private List<EventType> eventTypes;
 }

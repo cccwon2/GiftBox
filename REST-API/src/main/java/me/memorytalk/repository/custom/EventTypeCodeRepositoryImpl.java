@@ -42,23 +42,6 @@ public class EventTypeCodeRepositoryImpl extends QueryDslRepositorySupport imple
         return adminEventTypeCodeModels;
     }
 
-    public AdminEventTypeCodeModel findAdminEventTypeCodeModel(Long id) {
-
-        QEventTypeCode qEventTypeCode = QEventTypeCode.eventTypeCode;
-
-        JPQLQuery query = from(qEventTypeCode);
-        query.where(qEventTypeCode.id.eq(id));
-
-        AdminEventTypeCodeModel adminEventTypeCodeModel = query.uniqueResult(ConstructorExpression.create(AdminEventTypeCodeModel.class,
-                qEventTypeCode.id,
-                qEventTypeCode.name,
-                qEventTypeCode.color,
-                qEventTypeCode.sort
-        ));
-
-        return adminEventTypeCodeModel;
-    }
-
     public Page<AdminEventTypeCodeModel> findAdminEventTypeCodeModels(String sort, Pageable pageable) {
 
         QEventTypeCode qEventTypeCode = QEventTypeCode.eventTypeCode;

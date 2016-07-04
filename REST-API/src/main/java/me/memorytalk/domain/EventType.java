@@ -13,20 +13,11 @@ import java.util.Date;
 @Table(name = "eventTypes")
 public class EventType implements Serializable {
 
-    private static final long serialVersionUID = -8341333882323835198L;
+    private static final long serialVersionUID = -2406570685136894777L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column
-    private String color;
-
-    @Column
-    private String sort;
 
     @Column(nullable = false)
     private Date createdDate;
@@ -34,4 +25,8 @@ public class EventType implements Serializable {
     @ManyToOne
     @JoinColumn(name = "event", nullable = false)
     private Event event;
+
+    @ManyToOne
+    @JoinColumn(name = "eventTypeCode", nullable = false)
+    private EventTypeCode eventTypeCode;
 }

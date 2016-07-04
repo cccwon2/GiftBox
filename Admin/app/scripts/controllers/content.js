@@ -85,7 +85,7 @@ angular.module('webAdminApp')
                     premium: false,
                     visible: true,
                     gifts: [],
-                    eventTypes: []
+                    eventTypeCodeIds: []
                 };
                 $scope.gift1 = { product: '', count: 3 };
                 $scope.gift2 = { product: '', count: 3 };
@@ -100,7 +100,43 @@ angular.module('webAdminApp')
                 $('#eventFile').val('');
             };
 
+            $scope.eventTypePlacesInit = function() {
+                $http.get(config.apiUrl + '/admin/eventTypeCodes/place',
+                  { headers: {'Authorization': $scope.auth }})
+                  .success(function (response) {
+                      if(response.success) {
+                          $scope.eventTypePlaces = response.data;
+                      }
+                  }
+                );
+            };
+
+            $scope.eventTypeFormsInit = function() {
+                $http.get(config.apiUrl + '/admin/eventTypeCodes/form',
+                  { headers: {'Authorization': $scope.auth }})
+                  .success(function (response) {
+                      if(response.success) {
+                          $scope.eventTypeForms = response.data;
+                      }
+                  }
+                );
+            };
+
+            $scope.eventTypeMethodsInit = function() {
+                $http.get(config.apiUrl + '/admin/eventTypeCodes/method',
+                  { headers: {'Authorization': $scope.auth }})
+                  .success(function (response) {
+                      if(response.success) {
+                          $scope.eventTypeMethods = response.data;
+                      }
+                  }
+                );
+            };
+
             $scope.eventInfoInit();
+            $scope.eventTypePlacesInit();
+            $scope.eventTypeFormsInit();
+            $scope.eventTypeMethodsInit();
 
             $scope.eventPageChanged = function() {
                 $http.get(config.apiUrl + '/admin/events?page=' + $scope.currentEventPage + '&size=' + $scope.eventSize
@@ -129,6 +165,26 @@ angular.module('webAdminApp')
             };
 
             $scope.addEventInfo = function() {
+                var eventTypeCodeIndex = 0;
+                for(var i = 0; i < $scope.eventTypePlaces.length; i++) {
+                    if($scope.eventTypePlaces[i].checked == true) {
+                        $scope.eventInfo.eventTypeCodeIds[eventTypeCodeIndex] = $scope.eventTypePlaces[i].id;
+                        eventTypeCodeIndex++;
+                    }
+                }
+                for(var i = 0; i < $scope.eventTypeForms.length; i++) {
+                    if($scope.eventTypeForms[i].checked == true) {
+                        $scope.eventInfo.eventTypeCodeIds[eventTypeCodeIndex] = $scope.eventTypeForms[i].id;
+                        eventTypeCodeIndex++;
+                    }
+                }
+                for(var i = 0; i < $scope.eventTypeMethods.length; i++) {
+                    if($scope.eventTypeMethods[i].checked == true) {
+                        $scope.eventInfo.eventTypeCodeIds[eventTypeCodeIndex] = $scope.eventTypeMethods[i].id;
+                        eventTypeCodeIndex++;
+                    }
+                }
+
                 var giftIndex = 0;
                 var giftProduct1 = $.trim($scope.gift1.product);
                 var giftProduct2 = $.trim($scope.gift2.product);
@@ -260,7 +316,7 @@ angular.module('webAdminApp')
                             'premium': $scope.eventInfo.premium,
                             'visible': $scope.eventInfo.visible,
                             'gifts': $scope.eventInfo.gifts,
-                            'eventTypes': $scope.eventInfo.eventTypes
+                            'eventTypeCodeIds': $scope.eventInfo.eventTypeCodeIds
                         }
                     };
 
@@ -301,6 +357,9 @@ angular.module('webAdminApp')
             $scope.getEventInfo = function(_eventId) {
 
                 $scope.eventInfoInit();
+                $scope.eventTypePlacesInit();
+                $scope.eventTypeFormsInit();
+                $scope.eventTypeMethodsInit();
 
                 $http.get(config.apiUrl + '/admin/events/' + _eventId,
                   { headers: {'Authorization': $scope.auth }})
@@ -320,6 +379,23 @@ angular.module('webAdminApp')
                           $scope.eventInfo.publicationContent2 = response.data.publicationContent2;
                           $scope.eventInfo.premium = response.data.premium;
                           $scope.eventInfo.visible = response.data.visible;
+                          for(var i = 0; i < response.data.eventTypeCodeIds.length; i++) {
+                              for(var j = 0; j < $scope.eventTypePlaces.length; j++) {
+                                  if(response.data.eventTypeCodeIds[i] == $scope.eventTypePlaces[j].id) {
+                                      $scope.eventTypePlaces[j].checked = true;
+                                  }
+                              }
+                              for(var j = 0; j < $scope.eventTypeForms.length; j++) {
+                                  if(response.data.eventTypeCodeIds[i] == $scope.eventTypeForms[j].id) {
+                                      $scope.eventTypeForms[j].checked = true;
+                                  }
+                              }
+                              for(var j = 0; j < $scope.eventTypeMethods.length; j++) {
+                                  if(response.data.eventTypeCodeIds[i] == $scope.eventTypeMethods[j].id) {
+                                      $scope.eventTypeMethods[j].checked = true;
+                                  }
+                              }
+                          }
                           for(var i = 0; i < response.data.gifts.length; i++) {
                               if(i == 0) $scope.gift1 = response.data.gifts[i];
                               if(i == 1) $scope.gift2 = response.data.gifts[i];
@@ -496,6 +572,14 @@ angular.module('webAdminApp')
 
                                 $('.loading-modal').remove();
                                 $('body').removeClass("loading");
+                            }).error(function(err) {
+                                BootstrapDialog.show({
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    message: '이미 존재하는 이벤트 타입 항목입니다!'
+                                });
+
+                                $('.loading-modal').remove();
+                                $('body').removeClass("loading");
                             });
                         }
                     }
@@ -525,7 +609,7 @@ angular.module('webAdminApp')
             };
 
             $scope.eventTypeCodeColorBinding = function(_eventTypeCodeId) {
-                $('#' + _eventTypeCodeId).minicolors({
+                $('#eventTypeCode_' + _eventTypeCodeId).minicolors({
                     control: $(this).attr('data-control') || 'hue',
                     defaultValue: $(this).attr('data-defaultValue') || '',
                     format: $(this).attr('data-format') || 'hex',
@@ -557,6 +641,13 @@ angular.module('webAdminApp')
                 formData.append('color', _eventTypeCodeColor);
                 formData.append('sort', _eventTypeCodeSort);
 
+                var eventTypeCodeSort = '위치';
+                if(_eventTypeCodeSort == 'form') {
+                    eventTypeCodeSort = '형태';
+                } else if(_eventTypeCodeSort == 'method') {
+                    eventTypeCodeSort = '방식';
+                }
+
                 var req = {
                     method: 'POST',
                     url: config.apiUrl + '/admin/eventTypeCodes/' + _eventTypeCodeId,
@@ -571,7 +662,7 @@ angular.module('webAdminApp')
                     title: '이벤트 타입 항목 수정' ,
                     message: '이름: ' + _eventTypeCodeName
                     + '\n색깔: ' + _eventTypeCodeColor
-                    + '\n분류: ' + _eventTypeCodeSort
+                    + '\n분류: ' + eventTypeCodeSort
                     + '\n위와 같이 수정할까요?',
                     type: BootstrapDialog.TYPE_WARNING,
                     closable: true,

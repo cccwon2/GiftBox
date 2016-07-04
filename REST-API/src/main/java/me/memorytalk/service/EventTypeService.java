@@ -1,7 +1,9 @@
 package me.memorytalk.service;
 
 import me.memorytalk.domain.EventType;
+import me.memorytalk.domain.EventTypeCode;
 import me.memorytalk.dto.AdminEventTypeModel;
+import me.memorytalk.repository.EventTypeCodeRepository;
 import me.memorytalk.repository.EventTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,9 @@ public class EventTypeService {
     @Autowired
     private EventTypeRepository eventTypeRepository;
 
+    @Autowired
+    private EventTypeCodeRepository eventTypeCodeRepository;
+
     protected Page<AdminEventTypeModel> getAdminEventTypes(String eventId, String sort, Pageable pageable) {
 
         return eventTypeRepository.findAdminEventTypeModels(eventId, sort, pageable);
@@ -25,25 +30,15 @@ public class EventTypeService {
         return eventTypeRepository.findAdminEventTypeModel(id);
     }
 
-    protected Boolean addAdminEventType(String name, String color, String sort) {
-
-        EventType eventType = new EventType();
-        eventType.setName(name);
-        eventType.setColor(color);
-        eventType.setSort(sort);
-        eventTypeRepository.save(eventType);
-
-        return Boolean.TRUE;
-    }
-
-    protected Boolean editAdminEventType(Long id, String name, String color, String sort) {
+    protected Boolean editAdminEventType(Long id, Long eventTypeCodeId) {
 
         EventType eventType = eventTypeRepository.findById(id);
         Assert.notNull(eventType, "No eventType info.");
 
-        eventType.setName(name);
-        eventType.setColor(color);
-        eventType.setSort(sort);
+        EventTypeCode eventTypeCode = eventTypeCodeRepository.findById(eventTypeCodeId);
+        Assert.notNull(eventTypeCode, "No eventTypeCode info.");
+
+        eventType.setEventTypeCode(eventTypeCode);
         eventTypeRepository.save(eventType);
 
         return Boolean.TRUE;

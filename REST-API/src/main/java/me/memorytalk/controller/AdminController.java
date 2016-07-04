@@ -164,19 +164,6 @@ public class AdminController {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/eventTypes", method = RequestMethod.POST)
-    public ResponseEntity<RestResponse> addEventType(
-            @RequestHeader("Authorization") String auth,
-            @RequestParam("name") String name,
-            @RequestParam("color") String color,
-            @RequestParam("sort") String sort) {
-
-        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
-                "Add EventType",
-                adminService.addEventType(auth, name, color, sort)),
-                HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/admin/eventTypes/{id}", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> eventType(
             @RequestHeader("Authorization") String auth,
@@ -192,13 +179,11 @@ public class AdminController {
     public ResponseEntity<RestResponse> editEventType(
             @RequestHeader("Authorization") String auth,
             @PathVariable("id") Long id,
-            @RequestParam("name") String name,
-            @RequestParam("color") String color,
-            @RequestParam("sort") String sort) {
+            @RequestParam("eventTypeCodeId") Long eventTypeCodeId) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Edit EventType",
-                adminService.editEventType(auth, id, name, color, sort)),
+                adminService.editEventType(auth, id, eventTypeCodeId)),
                 HttpStatus.OK);
     }
 
@@ -247,17 +232,6 @@ public class AdminController {
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Add EventType",
                 adminService.addEventTypeCode(auth, name, color, sort)),
-                HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/admin/eventTypeCodes/{id}", method = RequestMethod.GET)
-    public ResponseEntity<RestResponse> eventTypeCode(
-            @RequestHeader("Authorization") String auth,
-            @PathVariable("id") Long id) {
-
-        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
-                "EventTypeCode Information",
-                adminService.getEventTypeCode(auth, id)),
                 HttpStatus.OK);
     }
 

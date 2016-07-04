@@ -28,11 +28,6 @@ public class EventTypeCodeService {
         return eventTypeCodeRepository.findAdminEventTypeCodeModels(sort, pageable);
     }
 
-    protected AdminEventTypeCodeModel getAdminEventTypeCode(Long id) {
-
-        return eventTypeCodeRepository.findAdminEventTypeCodeModel(id);
-    }
-
     protected Boolean addAdminEventTypeCode(String name, String color, String sort) {
 
         EventTypeCode eventTypeCode = eventTypeCodeRepository.findByName(name);

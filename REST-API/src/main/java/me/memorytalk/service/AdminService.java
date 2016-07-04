@@ -129,13 +129,6 @@ public class AdminService {
         return eventTypeService.getAdminEventTypes(eventId, sort, pageable);
     }
 
-    public Boolean addEventType(String auth, String name, String color, String sort) {
-
-        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
-
-        return eventTypeService.addAdminEventType(name, color, sort);
-    }
-
     public AdminEventTypeModel getEventType(String auth, Long id) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
@@ -143,11 +136,11 @@ public class AdminService {
         return eventTypeService.getAdminEventType(id);
     }
 
-    public Boolean editEventType(String auth, Long id, String name, String color, String sort) {
+    public Boolean editEventType(String auth, Long id, Long eventTypeCodeId) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
-        return eventTypeService.editAdminEventType(id, name, color, sort);
+        return eventTypeService.editAdminEventType(id, eventTypeCodeId);
     }
 
     public Boolean removeEventType(String auth, Long id) {
@@ -179,13 +172,6 @@ public class AdminService {
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return eventTypeCodeService.addAdminEventTypeCode(name, color, sort);
-    }
-
-    public AdminEventTypeCodeModel getEventTypeCode(String auth, Long id) {
-
-        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
-
-        return eventTypeCodeService.getAdminEventTypeCode(id);
     }
 
     public Boolean editEventTypeCode(String auth, Long id, String name, String color, String sort) {

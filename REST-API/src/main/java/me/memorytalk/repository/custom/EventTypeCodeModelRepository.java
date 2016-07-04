@@ -10,7 +10,5 @@ public interface EventTypeCodeModelRepository {
 
     List<AdminEventTypeCodeModel> findAdminEventTypeCodeModels(String sort);
 
-    AdminEventTypeCodeModel findAdminEventTypeCodeModel(Long id);
-
     Page<AdminEventTypeCodeModel> findAdminEventTypeCodeModels(String sort, Pageable pageable);
 }

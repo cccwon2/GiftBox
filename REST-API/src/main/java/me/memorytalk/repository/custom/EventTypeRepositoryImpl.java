@@ -7,6 +7,7 @@ import com.mysema.query.types.ConstructorExpression;
 import me.memorytalk.domain.EventType;
 import me.memorytalk.domain.QEvent;
 import me.memorytalk.domain.QEventType;
+import me.memorytalk.domain.QEventTypeCode;
 import me.memorytalk.dto.AdminEventTypeModel;
 import me.memorytalk.dto.EventTypeModel;
 import org.springframework.data.domain.Page;
@@ -24,17 +25,37 @@ public class EventTypeRepositoryImpl extends QueryDslRepositorySupport implement
         super(EventType.class);
     }
 
+    public List<Long> findEventTypeCodeIds(Long eventId) {
+
+        QEventType qEventType = QEventType.eventType;
+        QEvent qEvent = QEvent.event;
+        QEventTypeCode qEventTypeCode = QEventTypeCode.eventTypeCode;
+
+        JPQLQuery query = from(qEventType);
+        query.innerJoin(qEventType.event, qEvent).on(qEvent.id.eq(eventId));
+        query.innerJoin(qEventType.eventTypeCode, qEventTypeCode);
+
+        List<Long> eventTypeCodeIds = query.list(ConstructorExpression.create(Long.class,
+                qEventTypeCode.id
+        ));
+
+        return eventTypeCodeIds;
+    }
+
     public List<EventTypeModel> findEventTypeModels(Long eventId) {
 
         QEventType qEventType = QEventType.eventType;
         QEvent qEvent = QEvent.event;
+        QEventTypeCode qEventTypeCode = QEventTypeCode.eventTypeCode;
+
         JPQLQuery query = from(qEventType);
         query.innerJoin(qEventType.event, qEvent).on(qEvent.id.eq(eventId));
+        query.innerJoin(qEventType.eventTypeCode, qEventTypeCode);
 
         List<EventTypeModel> eventTypeModels = query.list(ConstructorExpression.create(EventTypeModel.class,
-                qEventType.name,
-                qEventType.color,
-                qEventType.sort
+                qEventTypeCode.name,
+                qEventTypeCode.color,
+                qEventTypeCode.sort
         ));
 
         return eventTypeModels;
@@ -51,17 +72,19 @@ public class EventTypeRepositoryImpl extends QueryDslRepositorySupport implement
 
         QEventType qEventType = QEventType.eventType;
         QEvent qEvent = QEvent.event;
+        QEventTypeCode qEventTypeCode = QEventTypeCode.eventTypeCode;
 
         JPQLQuery query = from(qEventType);
         query.innerJoin(qEventType.event, qEvent);
         query.where(qEventType.id.eq(id));
+        query.innerJoin(qEventType.eventTypeCode, qEventTypeCode);
 
         AdminEventTypeModel adminEventTypeModel = query.uniqueResult(ConstructorExpression.create(AdminEventTypeModel.class,
                 qEventType.id,
                 qEventType.createdDate,
-                qEventType.name,
-                qEventType.color,
-                qEventType.sort,
+                qEventTypeCode.name,
+                qEventTypeCode.color,
+                qEventTypeCode.sort,
                 qEvent.id,
                 qEvent.title
         ));
@@ -73,15 +96,17 @@ public class EventTypeRepositoryImpl extends QueryDslRepositorySupport implement
 
         QEventType qEventType = QEventType.eventType;
         QEvent qEvent = QEvent.event;
+        QEventTypeCode qEventTypeCode = QEventTypeCode.eventTypeCode;
 
         JPQLQuery query = from(qEventType);
         query.innerJoin(qEventType.event, qEvent);
+        query.innerJoin(qEventType.eventTypeCode, qEventTypeCode);
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
         if(!StringUtils.isEmpty(eventId)) {
             whereBuilder.and(qEvent.id.eq(Long.valueOf(eventId)));
         } else if(!StringUtils.isEmpty(sort)) {
-            whereBuilder.and(qEventType.sort.contains(sort));
+            whereBuilder.and(qEventTypeCode.sort.contains(sort));
         }
         query.where(whereBuilder);
 
@@ -93,9 +118,9 @@ public class EventTypeRepositoryImpl extends QueryDslRepositorySupport implement
             adminEventTypeModels = pagedQuery.list(ConstructorExpression.create(AdminEventTypeModel.class,
                     qEventType.id,
                     qEventType.createdDate,
-                    qEventType.name,
-                    qEventType.color,
-                    qEventType.sort,
+                    qEventTypeCode.name,
+                    qEventTypeCode.color,
+                    qEventTypeCode.sort,
                     qEvent.id,
                     qEvent.title
             ));

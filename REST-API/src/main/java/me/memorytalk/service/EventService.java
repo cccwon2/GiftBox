@@ -4,12 +4,10 @@ import com.microsoft.azure.storage.StorageException;
 import me.memorytalk.common.constant.GlobalConst;
 import me.memorytalk.domain.Event;
 import me.memorytalk.domain.EventType;
+import me.memorytalk.domain.EventTypeCode;
 import me.memorytalk.domain.Gift;
 import me.memorytalk.dto.*;
-import me.memorytalk.repository.AttachmentRepository;
-import me.memorytalk.repository.EventRepository;
-import me.memorytalk.repository.GiftRepository;
-import me.memorytalk.repository.EventTypeRepository;
+import me.memorytalk.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,6 +42,9 @@ public class EventService {
 
     @Autowired
     private EventTypeRepository eventTypeRepository;
+
+    @Autowired
+    private EventTypeCodeRepository eventTypeCodeRepository;
 
     public Page<EventModel> getEvents(String premium, int page, int size) {
 
@@ -119,7 +120,7 @@ public class EventService {
         uploadService.uploadAttachment(event, file);
 
         addGifts(requestForm.getGifts(), event);
-        addTags(requestForm.getEventTypes(), event);
+        addEventTypes(requestForm.getEventTypeCodeIds(), event);
 
         return Boolean.TRUE;
     }
@@ -129,7 +130,7 @@ public class EventService {
         AdminEventDetailModel adminEventDetailModel = eventRepository.findAdminEventModel(eventId);
         adminEventDetailModel.setAttachments(attachmentRepository.findAttachmentModels(eventId));
         adminEventDetailModel.setGifts(giftRepository.findGiftModels(eventId));
-        adminEventDetailModel.setEventTypes(eventTypeRepository.findEventTypeModels(eventId));
+        adminEventDetailModel.setEventTypeCodeIds(eventTypeRepository.findEventTypeCodeIds(eventId));
 
         return adminEventDetailModel;
     }
@@ -173,7 +174,7 @@ public class EventService {
         eventRepository.save(event);
 
         editGifts(requestForm.getGifts(), event);
-        editTags(requestForm.getEventTypes(), event);
+        editEventTypes(requestForm.getEventTypeCodeIds(), event);
 
         return Boolean.TRUE;
     }
@@ -223,29 +224,29 @@ public class EventService {
         }
     }
 
-    private void addTags(List<AdminEventTypeForm> tagItems, Event event) {
+    private void addEventTypes(List<Long> eventTypeCodeIds, Event event) {
 
-        if(tagItems != null && tagItems.size() > 0) {
-            for(AdminEventTypeForm tagItem : tagItems) {
+        if(eventTypeCodeIds.size() > 0) {
+            for(Long eventTypeCodeId : eventTypeCodeIds) {
+                EventTypeCode eventTypeCode = eventTypeCodeRepository.findById(eventTypeCodeId);
                 EventType eventType = new EventType();
-                eventType.setName(tagItem.getName());
-                eventType.setColor(tagItem.getColor());
                 eventType.setEvent(event);
+                eventType.setEventTypeCode(eventTypeCode);
                 eventType.setCreatedDate(new Date());
                 eventTypeRepository.save(eventType);
             }
         }
     }
 
-    private void editTags(List<AdminEventTypeForm> tagItems, Event event) {
+    private void editEventTypes(List<Long> eventTypeCodeIds, Event event) {
 
         eventTypeRepository.deleteByEventId(event.getId());
-        if(tagItems != null && tagItems.size() > 0) {
-            for (AdminEventTypeForm tagItem : tagItems) {
+        if(eventTypeCodeIds.size() > 0) {
+            for (Long eventTypeCodeId : eventTypeCodeIds) {
+                EventTypeCode eventTypeCode = eventTypeCodeRepository.findById(eventTypeCodeId);
                 EventType eventType = new EventType();
-                eventType.setName(tagItem.getName());
-                eventType.setColor(tagItem.getColor());
                 eventType.setEvent(event);
+                eventType.setEventTypeCode(eventTypeCode);
                 eventType.setCreatedDate(new Date());
                 eventTypeRepository.save(eventType);
             }
