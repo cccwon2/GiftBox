@@ -117,7 +117,7 @@ public class EventService {
         event.setCreatedDate(new Date());
         eventRepository.save(event);
 
-        uploadService.uploadAttachment(event, file);
+        uploadService.uploadEventAttachment(event, file);
 
         addGifts(requestForm.getGifts(), event);
         addEventTypes(requestForm.getEventTypeCodeIds(), event);

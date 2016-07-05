@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.storage.StorageException;
 import io.swagger.annotations.Api;
 import me.memorytalk.common.base.RestResponse;
+import me.memorytalk.dto.AdminBannerForm;
 import me.memorytalk.dto.AdminEventDetailForm;
+import me.memorytalk.dto.AdminPopupForm;
 import me.memorytalk.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -257,6 +259,132 @@ public class AdminController {
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Remove EventType",
                 adminService.removeEventTypeCode(auth, id)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/banners", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> banners(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("visible") String visible,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Banner List",
+                adminService.getBanners(auth, visible, page, size)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/banners", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> addBanner(
+            @RequestHeader("Authorization") String auth,
+            @RequestPart("banner") String banner,
+            @RequestPart(required = false, name = "file") MultipartFile file)
+            throws IOException, InvalidKeyException, ParseException, StorageException, URISyntaxException {
+
+        AdminBannerForm requestForm = new ObjectMapper().readValue(banner, AdminBannerForm.class);
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Add Banner",
+                adminService.addBanner(auth, requestForm, file)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/banners/{id}", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> editBanner(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestBody AdminBannerForm requestForm) throws ParseException {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Edit Banner",
+                adminService.editBanner(auth, id, requestForm)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/banners/{id}/visible", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> setBanner(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestParam("visible") boolean visible) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Set Banner Visible",
+                adminService.setBanner(auth, id, visible)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/banners/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RestResponse> removeBanner(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Remove Banner",
+                adminService.removeBanner(auth, id)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/popups", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> popups(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("visible") String visible,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Popup List",
+                adminService.getPopups(auth, visible, page, size)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/popups", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> addPopup(
+            @RequestHeader("Authorization") String auth,
+            @RequestPart("popup") String popup,
+            @RequestPart(required = false, name = "file") MultipartFile file)
+            throws IOException, InvalidKeyException, ParseException, StorageException, URISyntaxException {
+
+        AdminPopupForm requestForm = new ObjectMapper().readValue(popup, AdminPopupForm.class);
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Add Popup",
+                adminService.addPopup(auth, requestForm, file)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/popups/{id}", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> editPopup(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestBody AdminPopupForm requestForm) throws ParseException {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Edit Popup",
+                adminService.editPopup(auth, id, requestForm)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/popups/{id}/visible", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> setPopup(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestParam("visible") boolean visible) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Set Popup Visible",
+                adminService.setPopup(auth, id, visible)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/popups/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RestResponse> removePopup(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Remove Popup",
+                adminService.removePopup(auth, id)),
                 HttpStatus.OK);
     }
 }

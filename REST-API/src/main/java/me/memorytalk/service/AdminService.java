@@ -22,6 +22,9 @@ import java.util.List;
 public class AdminService {
 
     @Autowired
+    private BannerService bannerService;
+
+    @Autowired
     private EventService eventService;
 
     @Autowired
@@ -32,6 +35,9 @@ public class AdminService {
 
     @Autowired
     private EventTypeCodeService eventTypeCodeService;
+
+    @Autowired
+    private PopupService popupService;
 
     public Boolean login(AdminLoginForm requestForm) {
 
@@ -186,5 +192,85 @@ public class AdminService {
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return eventTypeCodeService.removeAdminEventTypeCode(id);
+    }
+
+    public Page<AdminBannerModel> getBanners(String auth, String visible, int page, int size) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
+        Sort sort = new Sort(order);
+        Pageable pageable = new PageRequest(page - 1, size, sort);
+
+        return bannerService.getAdminBanners(visible, pageable);
+    }
+
+    public Boolean addBanner(String auth, AdminBannerForm requestForm, MultipartFile file)
+            throws IOException, InvalidKeyException, StorageException, URISyntaxException, ParseException {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return bannerService.addAdminBanner(requestForm, file);
+    }
+
+    public Boolean editBanner(String auth, Long bannerId, AdminBannerForm requestForm) throws ParseException {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return bannerService.editAdminBanner(bannerId, requestForm);
+    }
+
+    public Boolean setBanner(String auth, Long bannerId, boolean visible) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return bannerService.setAdminBanner(bannerId, visible);
+    }
+
+    public Boolean removeBanner(String auth, Long bannerId) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return bannerService.removeAdminBanner(bannerId);
+    }
+
+    public Page<AdminPopupModel> getPopups(String auth, String visible, int page, int size) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
+        Sort sort = new Sort(order);
+        Pageable pageable = new PageRequest(page - 1, size, sort);
+
+        return popupService.getAdminPopups(visible, pageable);
+    }
+
+    public Boolean addPopup(String auth, AdminPopupForm requestForm, MultipartFile file)
+            throws IOException, InvalidKeyException, StorageException, URISyntaxException, ParseException {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return popupService.addAdminPopup(requestForm, file);
+    }
+
+    public Boolean editPopup(String auth, Long popupId, AdminPopupForm requestForm) throws ParseException {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return popupService.editAdminPopup(popupId, requestForm);
+    }
+
+    public Boolean setPopup(String auth, Long popupId, boolean visible) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return popupService.setAdminPopup(popupId, visible);
+    }
+
+    public Boolean removePopup(String auth, Long popupId) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return popupService.removeAdminPopup(popupId);
     }
 }

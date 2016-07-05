@@ -18,14 +18,11 @@ public class Popup implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
-
     @Column
     private Long eventId;
 
     @Column
-    private String url;
+    private String popupPage;
 
     @Column(nullable = false)
     private Date startDate;
@@ -35,6 +32,9 @@ public class Popup implements Serializable {
 
     @Column(nullable = false)
     private boolean visible;
+
+    @Column(nullable = false)
+    private Date createdDate;
 
     @OneToMany(mappedBy="popup", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private List<Attachment> attachments;

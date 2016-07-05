@@ -4,7 +4,9 @@ import com.microsoft.azure.storage.StorageException;
 import me.memorytalk.common.base.BaseObject;
 import me.memorytalk.common.util.AzureImageUtil;
 import me.memorytalk.domain.Attachment;
+import me.memorytalk.domain.Banner;
 import me.memorytalk.domain.Event;
+import me.memorytalk.domain.Popup;
 import me.memorytalk.repository.AttachmentRepository;
 import net.coobird.thumbnailator.Thumbnails;
 import org.joda.time.DateTime;
@@ -32,7 +34,7 @@ public class UploadService extends BaseObject {
     @Autowired
     private AttachmentRepository attachmentRepository;
 
-    protected Attachment uploadAttachment(Event event, MultipartFile file)
+    protected Attachment uploadEventAttachment(Event event, MultipartFile file)
             throws IOException, InvalidKeyException, StorageException, URISyntaxException {
 
         // image(jpg/jpeg/png) validation
@@ -72,7 +74,7 @@ public class UploadService extends BaseObject {
         // reset bufferedInputStream
         bufferedInputStream.reset();
         String url = azureImage.upload("attachments", bufferedInputStream, size, azureFilename, contentType);
-        addEventThumbnails(bufferedInputStream, azureFilename, contentType);
+        addThumbnails(bufferedInputStream, azureFilename, contentType);
 
         String attachementName = url.substring(url.lastIndexOf("/") + 1);
         url = String.format("http://az685860.vo.msecnd.net/attachments/%s", attachementName);
@@ -88,7 +90,119 @@ public class UploadService extends BaseObject {
         return attachmentRepository.save(attachment);
     }
 
-    private void addEventThumbnails(InputStream inputStream, String fName, String contentType)
+    protected Attachment uploadBannerAttachment(Banner banner, MultipartFile file)
+            throws IOException, InvalidKeyException, StorageException, URISyntaxException {
+
+        // image(jpg/jpeg/png) validation
+        String contentType = validateImageFile(file);
+        String originalFilename = file.getOriginalFilename();
+        long size = file.getSize();
+
+        InputStream inputStream = file.getInputStream();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        bufferedInputStream.mark(Integer.MAX_VALUE);
+        BufferedImage bufferedImage = ImageIO.read(bufferedInputStream);
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+
+        Attachment attachment = new Attachment();
+        attachment.setContentType(contentType);
+        attachment.setOriginalFilename(originalFilename);
+        attachment.setSize(size);
+        attachment.setSort(1);
+        attachment.setBanner(banner);
+        attachment.setCreatedDate(new Date());
+        attachment.setUrl("");
+        attachment.setThumbnailS("");
+        attachment.setThumbnailM("");
+        attachment.setThumbnailL("");
+        // width, height
+        attachment.setWidth(width);
+        attachment.setHeight(height);
+        attachment.setCreatedDate(new Date());
+
+        attachmentRepository.save(attachment);
+
+        String attachmentId = attachment.getId().toString();
+        AzureImageUtil azureImage = new AzureImageUtil();
+        String azureFilename = String.format("%s_%s", attachmentId, new DateTime(DateTimeZone.UTC).toString("yyyyMMddHHmmss"));
+
+        // reset bufferedInputStream
+        bufferedInputStream.reset();
+        String url = azureImage.upload("attachments", bufferedInputStream, size, azureFilename, contentType);
+        addThumbnails(bufferedInputStream, azureFilename, contentType);
+
+        String attachementName = url.substring(url.lastIndexOf("/") + 1);
+        url = String.format("http://az685860.vo.msecnd.net/attachments/%s", attachementName);
+        String thumbnailS  = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_S", attachementName);
+        String thumbnailM = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_M", attachementName);
+        String thumbnailL = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_L", attachementName);
+
+        attachment.setUrl(url);
+        attachment.setThumbnailS(thumbnailS);
+        attachment.setThumbnailM(thumbnailM);
+        attachment.setThumbnailL(thumbnailL);
+
+        return attachmentRepository.save(attachment);
+    }
+
+    protected Attachment uploadPopupAttachment(Popup popup, MultipartFile file)
+            throws IOException, InvalidKeyException, StorageException, URISyntaxException {
+
+        // image(jpg/jpeg/png) validation
+        String contentType = validateImageFile(file);
+        String originalFilename = file.getOriginalFilename();
+        long size = file.getSize();
+
+        InputStream inputStream = file.getInputStream();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        bufferedInputStream.mark(Integer.MAX_VALUE);
+        BufferedImage bufferedImage = ImageIO.read(bufferedInputStream);
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+
+        Attachment attachment = new Attachment();
+        attachment.setContentType(contentType);
+        attachment.setOriginalFilename(originalFilename);
+        attachment.setSize(size);
+        attachment.setSort(1);
+        attachment.setPopup(popup);
+        attachment.setCreatedDate(new Date());
+        attachment.setUrl("");
+        attachment.setThumbnailS("");
+        attachment.setThumbnailM("");
+        attachment.setThumbnailL("");
+        // width, height
+        attachment.setWidth(width);
+        attachment.setHeight(height);
+        attachment.setCreatedDate(new Date());
+
+        attachmentRepository.save(attachment);
+
+        String attachmentId = attachment.getId().toString();
+        AzureImageUtil azureImage = new AzureImageUtil();
+        String azureFilename = String.format("%s_%s", attachmentId, new DateTime(DateTimeZone.UTC).toString("yyyyMMddHHmmss"));
+
+        // reset bufferedInputStream
+        bufferedInputStream.reset();
+        String url = azureImage.upload("attachments", bufferedInputStream, size, azureFilename, contentType);
+        addThumbnails(bufferedInputStream, azureFilename, contentType);
+
+        String attachementName = url.substring(url.lastIndexOf("/") + 1);
+        url = String.format("http://az685860.vo.msecnd.net/attachments/%s", attachementName);
+        String thumbnailS  = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_S", attachementName);
+        String thumbnailM = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_M", attachementName);
+        String thumbnailL = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_L", attachementName);
+
+        attachment.setUrl(url);
+        attachment.setThumbnailS(thumbnailS);
+        attachment.setThumbnailM(thumbnailM);
+        attachment.setThumbnailL(thumbnailL);
+
+        return attachmentRepository.save(attachment);
+    }
+
+    private void addThumbnails(InputStream inputStream, String fName, String contentType)
             throws IOException, InvalidKeyException, StorageException, URISyntaxException {
 
         inputStream.reset();
