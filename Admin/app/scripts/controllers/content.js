@@ -37,9 +37,6 @@ angular.module('webAdminApp')
             $scope.selectedEventImage = '';
             $scope.eventId = 0;
 
-            $scope.minDate = $scope.minDate ? null : new Date();
-            $scope.maxDate = new Date(2020, 12, 31);
-
             $scope.dateOptions = {
                 formatYear: 'yy',
                 startingDay: 1
@@ -661,7 +658,7 @@ angular.module('webAdminApp')
                 BootstrapDialog.confirm({
                     title: '이벤트 타입 항목 수정' ,
                     message: '이름: ' + _eventTypeCodeName
-                    + '\n색깔: ' + _eventTypeCodeColor
+                    + '\n컬러: ' + _eventTypeCodeColor
                     + '\n분류: ' + eventTypeCodeSort
                     + '\n위와 같이 수정할까요?',
                     type: BootstrapDialog.TYPE_WARNING,

@@ -4,6 +4,7 @@ import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.types.ConstructorExpression;
 import me.memorytalk.domain.Popup;
+import me.memorytalk.domain.QAttachment;
 import me.memorytalk.domain.QPopup;
 import me.memorytalk.dto.AdminPopupModel;
 import me.memorytalk.dto.PopupModel;
@@ -25,7 +26,11 @@ public class PopupRepositoryImpl extends QueryDslRepositorySupport implements Po
     public Page<PopupModel> findPopupModels(Pageable pageable) {
 
         QPopup qPopup = QPopup.popup;
+        QAttachment qAttachment = QAttachment.attachment;
+
         JPQLQuery query = from(qPopup);
+        query.leftJoin(qPopup.attachments, qAttachment).on(qAttachment.sort.eq(1));
+        query.where(qPopup.visible.isTrue());
 
         long total = query.count();
         JPQLQuery pagedQuery = getQuerydsl().applyPagination(pageable, query);
@@ -37,7 +42,13 @@ public class PopupRepositoryImpl extends QueryDslRepositorySupport implements Po
                     qPopup.eventId,
                     qPopup.popupPage,
                     qPopup.startDate,
-                    qPopup.endDate
+                    qPopup.endDate,
+                    qAttachment.width,
+                    qAttachment.height,
+                    qAttachment.url,
+                    qAttachment.thumbnailS,
+                    qAttachment.thumbnailM,
+                    qAttachment.thumbnailL
             ));
         } else {
             popupModels = Collections.<PopupModel>emptyList();
@@ -49,7 +60,11 @@ public class PopupRepositoryImpl extends QueryDslRepositorySupport implements Po
     public Page<AdminPopupModel> findAdminPopupModels(String visible, Pageable pageable) {
 
         QPopup qPopup = QPopup.popup;
+        QAttachment qAttachment = QAttachment.attachment;
+
         JPQLQuery query = from(qPopup);
+        query.leftJoin(qPopup.attachments, qAttachment).on(qAttachment.sort.eq(1));
+
         BooleanBuilder whereBuilder = new BooleanBuilder();
         if(!StringUtils.isEmpty(visible)) {
             whereBuilder.and(qPopup.visible.eq(Boolean.valueOf(visible)));
@@ -67,7 +82,13 @@ public class PopupRepositoryImpl extends QueryDslRepositorySupport implements Po
                     qPopup.popupPage,
                     qPopup.startDate,
                     qPopup.endDate,
-                    qPopup.visible
+                    qPopup.visible,
+                    qAttachment.width,
+                    qAttachment.height,
+                    qAttachment.url,
+                    qAttachment.thumbnailS,
+                    qAttachment.thumbnailM,
+                    qAttachment.thumbnailL
             ));
         } else {
             adminPopupModels = Collections.<AdminPopupModel>emptyList();

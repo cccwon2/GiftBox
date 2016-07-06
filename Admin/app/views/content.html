@@ -97,7 +97,7 @@
                                         <div class="col-md-5">
                                             <p class="input-group">
                                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.startDate"
-                                                       is-open="popupStart.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions"
+                                                       is-open="popupStart.opened" datepicker-options="dateOptions"
                                                        ng-required="true" close-text="Close" />
                                  <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="openStart()">
@@ -109,7 +109,7 @@
                                         <div class="col-md-5">
                                             <p class="input-group">
                                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.endDate"
-                                                       is-open="popupEnd.opened" min-date="eventInfo.startDate" max-date="maxDate" datepicker-options="dateOptions"
+                                                       is-open="popupEnd.opened" min-date="eventInfo.startDate" datepicker-options="dateOptions"
                                                        ng-required="true" close-text="Close" />
                                  <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="openEnd()">
@@ -126,7 +126,7 @@
                                         <div class="col-md-10">
                                             <p class="input-group" style="width: 350px">
                                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.publicationDate"
-                                                       is-open="popupPublication.opened" min-date="eventInfo.endDate" max-date="maxDate" datepicker-options="dateOptions"
+                                                       is-open="popupPublication.opened" min-date="eventInfo.endDate" datepicker-options="dateOptions"
                                                        ng-required="true" close-text="Close" />
                                  <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="openPublication()">
@@ -134,8 +134,8 @@
                                      </button>
                                  </span>
                                             </p>
-                                            <input type="text" ng-model="eventInfo.publicationContent1" maxlength="100" style="width:500px;" required placeholder="Publication Content1" /><br>
-                                            <input type="text" ng-model="eventInfo.publicationContent2" maxlength="100" style="width:500px;" required placeholder="Publication Content2" />
+                                            <input type="text" ng-model="eventInfo.publicationContent1" style="width:500px;" placeholder="Publication Content1" /><br>
+                                            <input type="text" ng-model="eventInfo.publicationContent2" style="width:500px;" placeholder="Publication Content2" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -296,11 +296,11 @@
             <div class="col-md-12">
                 <table>
                     <tr>
-                        <th>ID</th>
-                        <th>Image</th>
-                        <th>Title</th>
-                        <th>Start</th>
-                        <th>End</th>
+                        <th>이벤트 ID</th>
+                        <th>이미지</th>
+                        <th>제목</th>
+                        <th>시작일</th>
+                        <th>종료일</th>
                         <th>DP</th>
                         <th></th>
                         <th></th>
@@ -370,7 +370,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <b>색깔</b>
+                                            <b>컬러</b>
                                         </div>
                                         <div class="col-md-10">
                                             <input type="text" ng-model="eventTypeCodeInfo.color" maxlength="10" class="form-control eventTypeCodeColor" style="width:120px;" data-control="hue" required />
@@ -409,7 +409,7 @@
                 <table>
                     <tr>
                         <th>이름</th>
-                        <th>색깔</th>
+                        <th>컬러</th>
                         <th>분류</th>
                         <th></th>
                     </tr>
@@ -442,7 +442,7 @@
                         <div class="col-md-9">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <b>Event ID</b>
+                                    <b>이벤트 ID</b>
                                 </div>
                                 <div class="col-md-6">
                                     <input ng-model="searchGiftEventId" style="width:300px;" />
@@ -450,7 +450,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <b>Product</b>
+                                    <b>상품</b>
                                 </div>
                                 <div class="col-md-6">
                                     <input type="text" ng-model="searchGiftProduct" maxlength="200" style="width:300px;" />
@@ -467,10 +467,10 @@
             <div class="col-md-12">
                 <table>
                     <tr>
-                        <th>Event ID</th>
-                        <th>Event Title</th>
-                        <th>Product</th>
-                        <th>Count</th>
+                        <th>이벤트 ID</th>
+                        <th>이벤트 제목</th>
+                        <th>상품</th>
+                        <th>수량</th>
                         <th></th>
                     </tr>
                     <tr ng-repeat="gift in gifts">

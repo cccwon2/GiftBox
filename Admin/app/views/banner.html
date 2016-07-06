@@ -44,6 +44,18 @@
 								</div>
 								<div class="row">
 									<div class="col-md-2">
+										<b>체크항목</b>
+									</div>
+									<div class="col-md-10">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" ng-model="bannerInfo.visible"> DP
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-2">
 										<b>이미지</b>
 									</div>
 									<div class="col-md-10">
@@ -66,9 +78,26 @@
 				</div>
 			</div>
 		</div>
+		<div id="imageModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">이미지 보기</h4>
+					</div>
+					<div class="modal-body" style="text-align: center;">
+						<img ng-src="{{selectedBannerImage}}">
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+
+			</div>
+		</div>
 		<div class="col-md-12">
 			<table>
 				<tr>
+					<th>이미지</th>
 					<th>이벤트 ID</th>
 					<th>배너 페이지</th>
 					<th></th>
@@ -76,14 +105,16 @@
 					<th></th>
 				</tr>
 				<tr ng-repeat="banner in banners">
-					<td><input type="text" ng-model="banner.eventId" style="width:200px;"></td>
+					<td><span style="cursor:pointer" data-toggle="modal" data-target="#imageModal" ng-click="setSelectedBannerImage(banner.attachments[0].thumbnailS)">
+                            <img ng-src="{{banner.attachments[0].thumbnailS}}" style="width:30px;height: auto"></span></td>
+					<td><input type="text" ng-model="banner.eventId"></td>
 					<td><input type="text" ng-model="banner.bannerPage" style="width:200px;"></td>
 					<td>{{banner.visible}}</td>
 					<td style="width: 60px">
 						<button ng-click="setBannerVisible(banner.id, banner.visible)">설정</button>
 					</td>
 					<td style="width: 60px">
-						<button ng-click="editBannerInfo(banner.id, banner.eventId, banner.bannerPage)">수정</button>
+						<button ng-click="editBannerInfo(banner.id, banner.eventId, banner.bannerPage, banner.visible)">수정</button>
 					</td>
 				</tr>
 			</table>

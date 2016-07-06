@@ -54,6 +54,16 @@ public class GiftboxApplication {
 	}
 
 	@Bean
+	public Docket bannerApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("banner-api")
+				.apiInfo(apiInfo())
+				.select()
+				.paths(bannerPaths())
+				.build();
+	}
+
+	@Bean
 	public Docket eventApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.groupName("event-api")
@@ -63,12 +73,30 @@ public class GiftboxApplication {
 				.build();
 	}
 
+	@Bean
+	public Docket popupApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("popup-api")
+				.apiInfo(apiInfo())
+				.select()
+				.paths(popupPaths())
+				.build();
+	}
+
 	private Predicate<String> adminPaths() {
 		return regex("/admin.*");
 	}
 
+	private Predicate<String> bannerPaths() {
+		return regex("/banner.*");
+	}
+
 	private Predicate<String> eventPaths() {
 		return regex("/event.*");
+	}
+
+	private Predicate<String> popupPaths() {
+		return regex("/popup.*");
 	}
 
 	private ApiInfo apiInfo() {

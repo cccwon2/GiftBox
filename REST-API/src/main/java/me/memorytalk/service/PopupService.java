@@ -57,9 +57,9 @@ public class PopupService {
         Popup popup = new Popup();
         popup.setEventId(requestForm.getEventId());
         popup.setPopupPage(requestForm.getPopupPage());
-        popup.setVisible(requestForm.isVisible());
         popup.setStartDate(startDate);
         popup.setEndDate(endDate);
+        popup.setVisible(requestForm.isVisible());
         popup.setCreatedDate(new Date());
         popupRepository.save(popup);
 
@@ -89,7 +89,6 @@ public class PopupService {
         Popup popup = popupRepository.findById(popupId);
         popup.setEventId(requestForm.getEventId());
         popup.setPopupPage(requestForm.getPopupPage());
-        popup.setVisible(requestForm.isVisible());
         popup.setStartDate(startDate);
         popup.setEndDate(endDate);
         popup.setCreatedDate(new Date());

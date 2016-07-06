@@ -52,7 +52,6 @@ public class BannerService {
         Banner banner = bannerRepository.findById(bannerId);
         banner.setEventId(requestForm.getEventId());
         banner.setBannerPage(requestForm.getBannerPage());
-        banner.setVisible(requestForm.isVisible());
         banner.setCreatedDate(new Date());
         bannerRepository.save(banner);
 

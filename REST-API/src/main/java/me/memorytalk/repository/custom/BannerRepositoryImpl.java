@@ -4,6 +4,7 @@ import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.types.ConstructorExpression;
 import me.memorytalk.domain.Banner;
+import me.memorytalk.domain.QAttachment;
 import me.memorytalk.domain.QBanner;
 import me.memorytalk.dto.AdminBannerModel;
 import me.memorytalk.dto.BannerModel;
@@ -25,7 +26,11 @@ public class BannerRepositoryImpl extends QueryDslRepositorySupport implements B
     public Page<BannerModel> findBannerModels(Pageable pageable) {
 
         QBanner qBanner = QBanner.banner;
+        QAttachment qAttachment = QAttachment.attachment;
+
         JPQLQuery query = from(qBanner);
+        query.leftJoin(qBanner.attachments, qAttachment).on(qAttachment.sort.eq(1));
+        query.where(qBanner.visible.isTrue());
 
         long total = query.count();
         JPQLQuery pagedQuery = getQuerydsl().applyPagination(pageable, query);
@@ -35,7 +40,13 @@ public class BannerRepositoryImpl extends QueryDslRepositorySupport implements B
             bannerModels = pagedQuery.list(ConstructorExpression.create(BannerModel.class,
                     qBanner.id,
                     qBanner.eventId,
-                    qBanner.bannerPage
+                    qBanner.bannerPage,
+                    qAttachment.width,
+                    qAttachment.height,
+                    qAttachment.url,
+                    qAttachment.thumbnailS,
+                    qAttachment.thumbnailM,
+                    qAttachment.thumbnailL
             ));
         } else {
             bannerModels = Collections.<BannerModel>emptyList();
@@ -47,7 +58,11 @@ public class BannerRepositoryImpl extends QueryDslRepositorySupport implements B
     public Page<AdminBannerModel> findAdminBannerModels(String visible, Pageable pageable) {
 
         QBanner qBanner = QBanner.banner;
+        QAttachment qAttachment = QAttachment.attachment;
+
         JPQLQuery query = from(qBanner);
+        query.leftJoin(qBanner.attachments, qAttachment).on(qAttachment.sort.eq(1));
+
         BooleanBuilder whereBuilder = new BooleanBuilder();
         if(!StringUtils.isEmpty(visible)) {
             whereBuilder.and(qBanner.visible.eq(Boolean.valueOf(visible)));
@@ -63,7 +78,13 @@ public class BannerRepositoryImpl extends QueryDslRepositorySupport implements B
                     qBanner.id,
                     qBanner.eventId,
                     qBanner.bannerPage,
-                    qBanner.visible
+                    qBanner.visible,
+                    qAttachment.width,
+                    qAttachment.height,
+                    qAttachment.url,
+                    qAttachment.thumbnailS,
+                    qAttachment.thumbnailM,
+                    qAttachment.thumbnailL
             ));
         } else {
             adminBannerModels = Collections.<AdminBannerModel>emptyList();
