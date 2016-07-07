@@ -44,22 +44,6 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <b>제목</b>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <input type="text" ng-model="eventInfo.title" maxlength="200" style="width:500px;" required placeholder="Title" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <b>설명</b>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <textarea ng-model="eventInfo.description" style="width:500px;height:50px;" rows="3" required placeholder="Description"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
                                             <b>주관업체</b>
                                         </div>
                                         <div class="col-md-10">
@@ -68,10 +52,34 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-2">
+                                            <b>제목</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="eventInfo.title" maxlength="200" style="width:500px;" required placeholder="Title" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>이미지</b><br>(추가에만 적용)
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="file" id="eventFile" name="eventFile" accept="image/*">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>설명</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <textarea ng-model="eventInfo.description" style="width:500px;height:50px;" rows="3" placeholder="Description"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
                                             <b>응모대상</b>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" ng-model="eventInfo.eventTarget" maxlength="200" style="width:500px;" required placeholder="Event Target" />
+                                            <textarea type="text" ng-model="eventInfo.eventTarget" maxlength="250" style="width:500px;height:50px;" rows="3" placeholder="Event Target"></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -79,7 +87,7 @@
                                             <b>응모 페이지</b>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" ng-model="eventInfo.eventPage" maxlength="200" style="width:500px;" required placeholder="Event Page" />
+                                            <input type="text" ng-model="eventInfo.eventPage" maxlength="200" style="width:500px;" placeholder="Event Page" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -87,7 +95,7 @@
                                             <b>확인 페이지</b>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" ng-model="eventInfo.prizePage" maxlength="200" style="width:500px;" required placeholder="Prize Page" />
+                                            <input type="text" ng-model="eventInfo.prizePage" maxlength="200" style="width:500px;" placeholder="Prize Page" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -97,8 +105,7 @@
                                         <div class="col-md-5">
                                             <p class="input-group">
                                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.startDate"
-                                                       is-open="popupStart.opened" datepicker-options="dateOptions"
-                                                       ng-required="true" close-text="Close" />
+                                                       is-open="popupStart.opened" datepicker-options="dateOptions" close-text="Close" />
                                  <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="openStart()">
                                          <i class="glyphicon glyphicon-calendar"></i>
@@ -109,8 +116,7 @@
                                         <div class="col-md-5">
                                             <p class="input-group">
                                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.endDate"
-                                                       is-open="popupEnd.opened" min-date="eventInfo.startDate" datepicker-options="dateOptions"
-                                                       ng-required="true" close-text="Close" />
+                                                       is-open="popupEnd.opened" datepicker-options="dateOptions" close-text="Close" />
                                  <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="openEnd()">
                                          <i class="glyphicon glyphicon-calendar"></i>
@@ -126,8 +132,7 @@
                                         <div class="col-md-10">
                                             <p class="input-group" style="width: 350px">
                                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="eventInfo.publicationDate"
-                                                       is-open="popupPublication.opened" min-date="eventInfo.endDate" datepicker-options="dateOptions"
-                                                       ng-required="true" close-text="Close" />
+                                                       is-open="popupPublication.opened" datepicker-options="dateOptions" close-text="Close" />
                                  <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="openPublication()">
                                          <i class="glyphicon glyphicon-calendar"></i>
@@ -193,7 +198,7 @@
                                         <div class="col-md-10">
                                             <div class="row">
                                                 <div class="col-md-10">
-                                                    <input type="text" ng-model="gift1.product" maxlength="200" style="width:400px;" required placeholder="Product" />
+                                                    <input type="text" ng-model="gift1.product" maxlength="200" style="width:400px;" placeholder="Product" />
                                                     <input type="number" ng-model="gift1.count" style="width:100px;" min="1" max="9999999" />
                                                 </div>
                                             </div>
@@ -251,14 +256,6 @@
                                                     <input type="number" ng-model="gift10.count" style="width:100px;" min="1" max="9999999" />
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <b>이미지</b><br>(추가에만 적용)
-                                        </div>
-                                        <div class="col-md-10">
-                                            <input type="file" id="eventFile" name="eventFile" accept="image/*">
                                         </div>
                                     </div>
                                     <div class="row">

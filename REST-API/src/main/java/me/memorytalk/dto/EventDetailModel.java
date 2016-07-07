@@ -2,7 +2,7 @@ package me.memorytalk.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
-import me.memorytalk.common.json.DateTimeSerializer;
+import me.memorytalk.common.json.DateSerializer;
 
 import java.util.Date;
 import java.util.List;
@@ -24,16 +24,16 @@ public class EventDetailModel {
 
     private String prizePage;
 
-    @JsonSerialize(using = DateTimeSerializer.class)
+    @JsonSerialize(using = DateSerializer.class)
     private Date startDate;
 
-    @JsonSerialize(using = DateTimeSerializer.class)
+    @JsonSerialize(using = DateSerializer.class)
     private Date endDate;
 
-    @JsonSerialize(using = DateTimeSerializer.class)
+    @JsonSerialize(using = DateSerializer.class)
     private Date publicationDate;
 
-    @JsonSerialize(using = DateTimeSerializer.class)
+    @JsonSerialize(using = DateSerializer.class)
     private Date createdDate;
 
     private String publicationContent1;

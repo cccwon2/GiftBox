@@ -135,21 +135,20 @@ angular.module('webAdminApp')
 
             $scope.editPopupInfo = function(_popupId, _eventId, _popupPage, _popupStartDate, _popupEndDate, _visible) {
 
-                var formData = new FormData();
-                formData.append('eventId', _eventId);
-                formData.append('popupPage', _popupPage);
-                formData.append('startDate', _popupStartDate);
-                formData.append('endDate', _popupEndDate);
-                formData.append('visible', _visible);
-
                 var req = {
                     method: 'POST',
                     url: config.apiUrl + '/admin/popups/' + _popupId,
                     headers: {
                         'Authorization': $scope.auth,
-                        'Content-Type': undefined
+                        'Content-Type': 'application/json'
                     },
-                    data: angular.identity(formData)
+                    data: {
+                        'eventId': _eventId,
+                        'popupPage': _popupPage,
+                        'startDate' : _popupStartDate,
+                        'endDate' : _popupEndDate,
+                        'visible': _visible
+                    }
                 };
 
                 BootstrapDialog.confirm({

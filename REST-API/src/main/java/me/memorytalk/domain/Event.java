@@ -24,25 +24,25 @@ public class Event implements Serializable {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(length = 500)
     private String description;
 
     @Column(nullable = false)
     private String company;
 
-    @Column(nullable = false)
+    @Column
     private String eventTarget;
 
-    @Column(nullable = false)
+    @Column
     private String eventPage;
 
-    @Column(nullable = false)
+    @Column
     private String prizePage;
 
-    @Column(nullable = false)
+    @Column
     private Date startDate;
 
-    @Column(nullable = false)
+    @Column
     private Date endDate;
 
     @Column

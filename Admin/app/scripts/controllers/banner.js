@@ -112,19 +112,18 @@ angular.module('webAdminApp')
 
             $scope.editBannerInfo = function(_bannerId, _eventId, _bannerPage, _visible) {
 
-                var formData = new FormData();
-                formData.append('eventId', _eventId);
-                formData.append('bannerPage', _bannerPage);
-                formData.append('visible', _visible);
-
                 var req = {
                     method: 'POST',
                     url: config.apiUrl + '/admin/banners/' + _bannerId,
                     headers: {
                         'Authorization': $scope.auth,
-                        'Content-Type': undefined
+                        'Content-Type': 'application/json'
                     },
-                    data: angular.identity(formData)
+                    data: {
+                        'eventId': _eventId,
+                        'bannerPage': _bannerPage,
+                        'visible': _visible
+                    }
                 };
 
                 BootstrapDialog.confirm({

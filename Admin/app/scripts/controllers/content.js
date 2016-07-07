@@ -74,9 +74,9 @@ angular.module('webAdminApp')
                     eventTarget: '',
                     eventPage: '',
                     prizePage: '',
-                    startDate: new Date(),
-                    endDate: new Date(),
-                    publicationDate: new Date(),
+                    startDate: '',
+                    endDate: '',
+                    publicationDate: '',
                     publicationContent1: '',
                     publicationContent2: '',
                     premium: false,
@@ -283,6 +283,7 @@ angular.module('webAdminApp')
 
                                     $scope.eventPageChanged();
                                     $scope.eventInfoInit();
+                                    $scope.eventId = 0;
 
                                     $('.loading-modal').remove();
                                     $('body').removeClass("loading");
@@ -340,6 +341,7 @@ angular.module('webAdminApp')
 
                                         $scope.eventPageChanged();
                                         $scope.eventInfoInit();
+                                        $scope.eventId = 0;
 
                                         $('.loading-modal').remove();
                                         $('body').removeClass("loading");

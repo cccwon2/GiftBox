@@ -80,25 +80,35 @@ public class EventService {
 
         uploadService.validateImageFile(file);
 
+        Date startDate = null;
+        Date endDate = null;
+        Date publicationDate = null;
+
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         TimeZone tz = TimeZone.getDefault();
         Calendar cal = GregorianCalendar.getInstance(tz);
         int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
 
-        SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
-        String startDateToString = startDateFormat.format(requestForm.getStartDate());
-        Date startDate = transFormat.parse(startDateToString);
-        startDate = new Date(startDate.getTime() + offsetInMillis);
+        if(requestForm.getStartDate() != null) {
+            SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+            String startDateToString = startDateFormat.format(requestForm.getStartDate());
+            startDate = transFormat.parse(startDateToString);
+            startDate = new Date(startDate.getTime() + offsetInMillis);
+        }
 
-        SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
-        String endDateToString = endDateFormat.format(requestForm.getEndDate());
-        Date endDate = transFormat.parse(endDateToString);
-        endDate = new Date(endDate.getTime() + offsetInMillis);
+        if(requestForm.getEndDate() != null) {
+            SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+            String endDateToString = endDateFormat.format(requestForm.getEndDate());
+            endDate = transFormat.parse(endDateToString);
+            endDate = new Date(endDate.getTime() + offsetInMillis);
+        }
 
-        SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
-        String publicationDateToString = publicationDateFormat.format(requestForm.getPublicationDate());
-        Date publicationDate = transFormat.parse(publicationDateToString);
-        publicationDate = new Date(publicationDate.getTime() + offsetInMillis);
+        if(requestForm.getPublicationDate() != null) {
+            SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+            String publicationDateToString = publicationDateFormat.format(requestForm.getPublicationDate());
+            publicationDate = transFormat.parse(publicationDateToString);
+            publicationDate = new Date(publicationDate.getTime() + offsetInMillis);
+        }
 
         Event event = new Event();
         event.setTitle(requestForm.getTitle());
@@ -137,25 +147,35 @@ public class EventService {
 
     public Boolean editAdminEvent(Long eventId, AdminEventDetailForm requestForm) throws ParseException {
 
+        Date startDate = null;
+        Date endDate = null;
+        Date publicationDate = null;
+
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         TimeZone tz = TimeZone.getDefault();
         Calendar cal = GregorianCalendar.getInstance(tz);
         int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
 
-        SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
-        String startDateToString = startDateFormat.format(requestForm.getStartDate());
-        Date startDate = transFormat.parse(startDateToString);
-        startDate = new Date(startDate.getTime() + offsetInMillis);
+        if(requestForm.getStartDate() != null) {
+            SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+            String startDateToString = startDateFormat.format(requestForm.getStartDate());
+            startDate = transFormat.parse(startDateToString);
+            startDate = new Date(startDate.getTime() + offsetInMillis);
+        }
 
-        SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
-        String endDateToString = endDateFormat.format(requestForm.getEndDate());
-        Date endDate = transFormat.parse(endDateToString);
-        endDate = new Date(endDate.getTime() + offsetInMillis);
+        if(requestForm.getEndDate() != null) {
+            SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+            String endDateToString = endDateFormat.format(requestForm.getEndDate());
+            endDate = transFormat.parse(endDateToString);
+            endDate = new Date(endDate.getTime() + offsetInMillis);
+        }
 
-        SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
-        String publicationDateToString = publicationDateFormat.format(requestForm.getPublicationDate());
-        Date publicationDate = transFormat.parse(publicationDateToString);
-        publicationDate = new Date(publicationDate.getTime() + offsetInMillis);
+        if(requestForm.getPublicationDate() != null) {
+            SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+            String publicationDateToString = publicationDateFormat.format(requestForm.getPublicationDate());
+            publicationDate = transFormat.parse(publicationDateToString);
+            publicationDate = new Date(publicationDate.getTime() + offsetInMillis);
+        }
 
         Event event = eventRepository.findById(eventId);
         event.setTitle(requestForm.getTitle());
