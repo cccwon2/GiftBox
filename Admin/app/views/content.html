@@ -27,7 +27,9 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <button id="addEventButton" type="button" class="btn btn-info btn-primary" data-toggle="modal" data-target="#addEventModal">이벤트 추가</button>
+                        <button type="button" class="btn btn-info btn-primary" ng-click="addEventInfoModal()">이벤트 추가</button>
+                        <input id="addEventInput" type="hidden" data-backdrop="static" data-toggle="modal" data-target="#addEventModal">
+                        <input id="editEventInput" type="hidden" data-backdrop="static" data-toggle="modal" data-target="#editEventModal">
                     </div>
                 </div>
                 <br>
@@ -37,10 +39,10 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">이벤트 추가/수정</h4>
+                            <h4 class="modal-title">이벤트 추가</h4>
                         </div>
                         <div class="modal-body" style="height: 950px">
-                            <form name="eventForm" ng-submit="addEventInfo()">
+                            <form name="eventForm" ng-submit="saveNewEventInfo()">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -60,7 +62,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <b>이미지</b><br>(추가에만 적용)
+                                            <b>이미지</b>
                                         </div>
                                         <div class="col-md-10">
                                             <input type="file" id="eventFile" name="eventFile" accept="image/*">
@@ -274,6 +276,240 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="editEventModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">이벤트 수정</h4>
+                        </div>
+                        <div class="modal-body" style="height: 950px">
+                            <form name="editEventForm" ng-submit="saveEditEventInfo()">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>주관업체</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="editEventInfo.company" maxlength="200" style="width:500px;" required placeholder="Company" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>제목</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="editEventInfo.title" maxlength="200" style="width:500px;" required placeholder="Title" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>설명</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <textarea ng-model="editEventInfo.description" style="width:500px;height:50px;" rows="3" placeholder="Description"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>응모대상</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <textarea type="text" ng-model="editEventInfo.eventTarget" maxlength="250" style="width:500px;height:50px;" rows="3" placeholder="Event Target"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>응모 페이지</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="editEventInfo.eventPage" maxlength="200" style="width:500px;" placeholder="Event Page" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>확인 페이지</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="editEventInfo.prizePage" maxlength="200" style="width:500px;" placeholder="Prize Page" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>응모 기간</b>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" uib-datepicker-popup ng-model="editEventInfo.startDate"
+                                                       is-open="editPopupStart.opened" datepicker-options="dateOptions" close-text="Close" />
+                                 <span class="input-group-btn">
+                                     <button type="button" class="btn btn-default" ng-click="editOpenStart()">
+                                         <i class="glyphicon glyphicon-calendar"></i>
+                                     </button>
+                                 </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" uib-datepicker-popup ng-model="editEventInfo.endDate"
+                                                       is-open="editPopupEnd.opened" datepicker-options="dateOptions" close-text="Close" />
+                                 <span class="input-group-btn">
+                                     <button type="button" class="btn btn-default" ng-click="editOpenEnd()">
+                                         <i class="glyphicon glyphicon-calendar"></i>
+                                     </button>
+                                 </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>발표 일정</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <p class="input-group" style="width: 350px">
+                                                <input type="text" class="form-control" uib-datepicker-popup ng-model="editEventInfo.publicationDate"
+                                                       is-open="editPopupPublication.opened" datepicker-options="dateOptions" close-text="Close" />
+                                 <span class="input-group-btn">
+                                     <button type="button" class="btn btn-default" ng-click="editOpenPublication()">
+                                         <i class="glyphicon glyphicon-calendar"></i>
+                                     </button>
+                                 </span>
+                                            </p>
+                                            <input type="text" ng-model="editEventInfo.publicationContent1" style="width:500px;" placeholder="Publication Content1" /><br>
+                                            <input type="text" ng-model="editEventInfo.publicationContent2" style="width:500px;" placeholder="Publication Content2" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>체크 항목</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" ng-model="editEventInfo.premium"> Premium
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" ng-model="editEventInfo.visible"> DP
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>이벤트 타입</b>
+                                        </div>
+                                        <div class="col-md-10" style="height: 200px;overflow: scroll;">
+                                            <div class="row col-md-10">
+                                            <span ng-repeat="editEventTypePlace in editEventTypePlaces" style="float:left;width:90px;">
+                                                <label class="checkbox" for="{{editEventTypePlace.id}}">&nbsp;
+                                                    <input type="checkbox" ng-model="editEventTypePlace.checked" name="group" id="{{editEventTypePlace.id}}" />
+                                                    <span style="border:3px solid {{editEventTypePlace.color}};">{{editEventTypePlace.name}}</span>
+                                                </label>
+                                            </span>
+                                            </div>
+                                            <div class="row col-md-10">
+                                            <span ng-repeat="editEventTypeForm in editEventTypeForms" style="float:left;width:90px;">
+                                                <label class="checkbox" for="{{editEventTypeForm.id}}">&nbsp;
+                                                    <input type="checkbox" ng-model="editEventTypeForm.checked" name="group" id="{{editEventTypeForm.id}}" />
+                                                    <span style="border:3px solid {{editEventTypeForm.color}};">{{editEventTypeForm.name}}</span>
+                                                </label>
+                                            </span>
+                                            </div>
+                                            <div class="row col-md-10">
+                                            <span ng-repeat="editEventTypeMethod in editEventTypeMethods" style="float:left;width:90px;">
+                                                <label class="checkbox" for="{{editEventTypeMethod.id}}">&nbsp;
+                                                    <input type="checkbox" ng-model="editEventTypeMethod.checked" name="group" id="{{editEventTypeMethod.id}}" />
+                                                    <span style="border:3px solid {{editEventTypeMethod.color}};">{{editEventTypeMethod.name}}</span>
+                                                </label>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>상품</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift1.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift1.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift2.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift2.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift3.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift3.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift4.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift4.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift5.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift5.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift6.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift6.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift7.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift7.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift8.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift8.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift9.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift9.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input type="text" ng-model="editGift10.product" maxlength="200" style="width:400px;" placeholder="Product" />
+                                                    <input type="number" ng-model="editGift10.count" style="width:100px;" min="1" max="9999999" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-default btn-primary" ng-disabled="!editEventForm.$valid">저장</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="imageModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -315,7 +551,7 @@
                             <button ng-click="setEventVisible(event.id, event.visible)">설정</button>
                         </td>
                         <td style="width: 60px">
-                            <button ng-click="getEventInfo(event.id)">수정</button>
+                            <button ng-click="editEventInfoModal(event.id)">수정</button>
                         </td>
                         <td style="width: 60px">
                             <button ng-click="removeEvent(event.id)">삭제</button>
@@ -518,4 +754,5 @@
             });
         });
     });
+
 </script>
