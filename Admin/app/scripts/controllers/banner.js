@@ -199,7 +199,7 @@ angular.module('webAdminApp')
 
                 var req = {
                     method: 'DELETE',
-                    url: config.apiUrl + '/admin/banners/' + _banenrId,
+                    url: config.apiUrl + '/admin/banners/' + _bannerId,
                     headers: {
                         'Authorization': $scope.auth
                     }

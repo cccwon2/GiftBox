@@ -81,14 +81,26 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/events/{id}/visible", method = RequestMethod.POST)
-    public ResponseEntity<RestResponse> setEvent(
+    public ResponseEntity<RestResponse> setEventVisible(
             @RequestHeader("Authorization") String auth,
             @PathVariable("id") Long id,
             @RequestParam("visible") boolean visible) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Set Event Visible",
-                adminService.setEvent(auth, id, visible)),
+                adminService.setEventVisible(auth, id, visible)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/events/{id}/premium", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> setEventPremium(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestParam("premium") boolean premium) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Set Event Premium",
+                adminService.setEventPremium(auth, id, premium)),
                 HttpStatus.OK);
     }
 

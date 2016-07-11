@@ -2,6 +2,7 @@ package me.memorytalk.service;
 
 import me.memorytalk.domain.EventTypeCode;
 import me.memorytalk.dto.AdminEventTypeCodeModel;
+import me.memorytalk.dto.EventTypeCodeModel;
 import me.memorytalk.repository.EventTypeCodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,11 @@ public class EventTypeCodeService {
 
     @Autowired
     private EventTypeCodeRepository eventTypeCodeRepository;
+
+    public List<EventTypeCodeModel> getEventTypeCodes(String sort) {
+
+        return eventTypeCodeRepository.findEventTypeCodeModels(sort);
+    }
 
     protected List<AdminEventTypeCodeModel> getAdminEventTypeCodes(String sort) {
 

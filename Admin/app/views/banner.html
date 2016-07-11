@@ -103,6 +103,7 @@
 					<th>DP</th>
 					<th></th>
 					<th></th>
+					<th></th>
 				</tr>
 				<tr ng-repeat="banner in banners">
 					<td><span style="cursor:pointer" data-toggle="modal" data-target="#imageModal" ng-click="setSelectedBannerImage(banner.attachments[0].thumbnailS)">
@@ -115,6 +116,9 @@
 					</td>
 					<td style="width: 60px">
 						<button ng-click="editBannerInfo(banner.id, banner.eventId, banner.bannerPage, banner.visible)">수정</button>
+					</td>
+					<td style="width: 60px">
+						<button ng-click="removeBanner(banner.id)">삭제</button>
 					</td>
 				</tr>
 			</table>

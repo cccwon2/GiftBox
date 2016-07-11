@@ -24,7 +24,7 @@ public class Event implements Serializable {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 500)
+    @Column(length = 1000)
     private String description;
 
     @Column(nullable = false)
@@ -53,6 +53,9 @@ public class Event implements Serializable {
 
     @Column
     private String publicationContent2;
+
+    @Column
+    private String publicationType;
 
     @Column(nullable = false)
     private boolean premium;

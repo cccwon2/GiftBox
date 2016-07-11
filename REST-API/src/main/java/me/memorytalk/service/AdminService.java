@@ -79,11 +79,18 @@ public class AdminService {
         return eventService.editAdminEvent(eventId, requestForm);
     }
 
-    public Boolean setEvent(String auth, Long eventId, boolean visible) {
+    public Boolean setEventVisible(String auth, Long eventId, boolean visible) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
-        return eventService.setAdminEvent(eventId, visible);
+        return eventService.setAdminEventVisible(eventId, visible);
+    }
+
+    public Boolean setEventPremium(String auth, Long eventId, boolean premium) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return eventService.setAdminEventPremium(eventId, premium);
     }
 
     public Boolean removeEvent(String auth, Long eventId) {

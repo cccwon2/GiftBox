@@ -40,6 +40,8 @@ public class AdminEventDetailModel {
 
     private String publicationContent2;
 
+    private String publicationType;
+
     private boolean premium;
 
     private boolean visible;
@@ -53,7 +55,7 @@ public class AdminEventDetailModel {
     public AdminEventDetailModel(Long id, String title, String description,
                                  String company, String eventTarget, String eventPage, String prizePage,
                                  Date startDate, Date endDate, Date publicationDate, Date createdDate,
-                                 String publicationContent1, String publicationContent2,
+                                 String publicationContent1, String publicationContent2, String publicationType,
                                  boolean premium, boolean visible) {
         this.id = id;
         this.title = title;
@@ -68,6 +70,7 @@ public class AdminEventDetailModel {
         this.createdDate = createdDate;
         this.publicationContent1 = publicationContent1;
         this.publicationContent2 = publicationContent2;
+        this.publicationType = publicationType;
         this.premium = premium;
         this.visible = visible;
     }

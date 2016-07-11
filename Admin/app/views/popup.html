@@ -134,6 +134,7 @@
 					<th>DP</th>
 					<th></th>
 					<th></th>
+					<th></th>
 				</tr>
 				<tr ng-repeat="popup in popups">
 					<td><span style="cursor:pointer" data-toggle="modal" data-target="#imageModal" ng-click="setSelectedPopupImage(popup.attachments[0].thumbnailS)">
@@ -148,6 +149,9 @@
 					</td>
 					<td style="width: 60px">
 						<button ng-click="editPopupInfo(popup.id, popup.eventId, popup.popupPage, popup.startDate, popup.endDate, popup.visible)">수정</button>
+					</td>
+					<td style="width: 60px">
+						<button ng-click="removePopup(popup.id)">삭제</button>
 					</td>
 				</tr>
 			</table>

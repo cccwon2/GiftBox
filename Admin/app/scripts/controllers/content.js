@@ -102,21 +102,22 @@ angular.module('webAdminApp')
                     publicationDate: '',
                     publicationContent1: '',
                     publicationContent2: '',
+                    publicationType: '',
                     premium: false,
                     visible: true,
                     gifts: [],
                     eventTypeCodeIds: []
                 };
-                $scope.gift1 = { product: '', count: 3 };
-                $scope.gift2 = { product: '', count: 3 };
-                $scope.gift3 = { product: '', count: 3 };
-                $scope.gift4 = { product: '', count: 3 };
-                $scope.gift5 = { product: '', count: 3 };
-                $scope.gift6 = { product: '', count: 3 };
-                $scope.gift7 = { product: '', count: 3 };
-                $scope.gift8 = { product: '', count: 3 };
-                $scope.gift9 = { product: '', count: 3 };
-                $scope.gift10 = { product: '', count: 3 };
+                $scope.gift1 = { product: '', count: 0 };
+                $scope.gift2 = { product: '', count: 0 };
+                $scope.gift3 = { product: '', count: 0 };
+                $scope.gift4 = { product: '', count: 0 };
+                $scope.gift5 = { product: '', count: 0 };
+                $scope.gift6 = { product: '', count: 0 };
+                $scope.gift7 = { product: '', count: 0 };
+                $scope.gift8 = { product: '', count: 0 };
+                $scope.gift9 = { product: '', count: 0 };
+                $scope.gift10 = { product: '', count: 0 };
                 $('#eventFile').val('');
             };
 
@@ -133,21 +134,22 @@ angular.module('webAdminApp')
                     publicationDate: '',
                     publicationContent1: '',
                     publicationContent2: '',
+                    publicationType: '',
                     premium: false,
                     visible: true,
                     gifts: [],
                     eventTypeCodeIds: []
                 };
-                $scope.editGift1 = { product: '', count: 3 };
-                $scope.editGift2 = { product: '', count: 3 };
-                $scope.editGift3 = { product: '', count: 3 };
-                $scope.editGift4 = { product: '', count: 3 };
-                $scope.editGift5 = { product: '', count: 3 };
-                $scope.editGift6 = { product: '', count: 3 };
-                $scope.editGift7 = { product: '', count: 3 };
-                $scope.editGift8 = { product: '', count: 3 };
-                $scope.editGift9 = { product: '', count: 3 };
-                $scope.editGift10 = { product: '', count: 3 };
+                $scope.editGift1 = { product: '', count: 0 };
+                $scope.editGift2 = { product: '', count: 0 };
+                $scope.editGift3 = { product: '', count: 0 };
+                $scope.editGift4 = { product: '', count: 0 };
+                $scope.editGift5 = { product: '', count: 0 };
+                $scope.editGift6 = { product: '', count: 0 };
+                $scope.editGift7 = { product: '', count: 0 };
+                $scope.editGift8 = { product: '', count: 0 };
+                $scope.editGift9 = { product: '', count: 0 };
+                $scope.editGift10 = { product: '', count: 0 };
             };
 
             $scope.eventTypePlacesInit = function() {
@@ -407,6 +409,7 @@ angular.module('webAdminApp')
                           }
                           $scope.editEventInfo.publicationContent1 = response.data.publicationContent1;
                           $scope.editEventInfo.publicationContent2 = response.data.publicationContent2;
+                          $scope.editEventInfo.publicationType = response.data.publicationType;
                           $scope.editEventInfo.premium = response.data.premium;
                           $scope.editEventInfo.visible = response.data.visible;
                           for(var i = 0; i < response.data.eventTypeCodeIds.length; i++) {
@@ -535,6 +538,7 @@ angular.module('webAdminApp')
                         'publicationDate': $scope.editEventInfo.publicationDate,
                         'publicationContent1': $scope.editEventInfo.publicationContent1,
                         'publicationContent2': $scope.editEventInfo.publicationContent2,
+                        'publicationType': $scope.editEventInfo.publicationType,
                         'premium': $scope.editEventInfo.premium,
                         'visible': $scope.editEventInfo.visible,
                         'gifts': $scope.editEventInfo.gifts,
@@ -578,6 +582,48 @@ angular.module('webAdminApp')
                 $scope.eventPageChanged();
             };
 
+            $scope.setEventPremium = function(_eventId, _premium) {
+
+                var premium = (_premium != true);
+
+                var formData = new FormData();
+                formData.append('premium', premium);
+
+                var req = {
+                    method: 'POST',
+                    url: config.apiUrl + '/admin/events/' + _eventId + '/premium',
+                    headers: {
+                        'Authorization': $scope.auth,
+                        'Content-Type': undefined
+                    },
+                    data: angular.identity(formData)
+                };
+
+                BootstrapDialog.confirm({
+                    title: '이벤트 Premium 세팅' ,
+                    message: '이벤트 ID: ' + _eventId + '\nPremium: ' + premium + '\n 위와 같이 세팅할까요?',
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    btnCancelLabel: 'Cancel',
+                    btnOKLabel: 'OK',
+                    btnOKClass: 'btn-warning',
+                    callback: function(result) {
+                        if(result) {
+                            $http(req).success(function (response) {
+                                if(response.success) {
+                                    BootstrapDialog.show({
+                                        message: '이벤트 Premium 세팅 성공!'
+                                    });
+                                }
+
+                                $scope.eventPageChanged();
+                            });
+                        }
+                    }
+                });
+            };
+
             $scope.setEventVisible = function(_eventId, _visible) {
 
                 var visible = (_visible != true);
@@ -597,7 +643,7 @@ angular.module('webAdminApp')
 
                 BootstrapDialog.confirm({
                     title: '이벤트 DP 세팅' ,
-                    message: '이벤트 ID: ' + _eventId + ', DP: ' + visible + '\n 위와 같이 세팅할까요?',
+                    message: '이벤트 ID: ' + _eventId + '\nDP: ' + visible + '\n 위와 같이 세팅할까요?',
                     type: BootstrapDialog.TYPE_WARNING,
                     closable: true,
                     draggable: true,

@@ -8,7 +8,9 @@ public class GlobalConst {
 
     public final static int TOKEN_MAX_COUNT = 3;
 
-    public final static int PAGE_SIZE = 20;
+    public final static int PAGE_SIZE = 10;
+
+    public final static int EVENT_PAGE_SIZE = 8;
 
     public final static String ADMIN_PASSWORD = "eovysnsk";
 

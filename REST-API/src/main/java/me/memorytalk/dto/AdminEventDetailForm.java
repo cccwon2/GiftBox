@@ -32,6 +32,8 @@ public class AdminEventDetailForm {
 
     private String publicationContent2;
 
+    private String publicationType;
+
     private boolean premium;
 
     private boolean visible;
@@ -52,6 +54,7 @@ public class AdminEventDetailForm {
                                 @JsonProperty("publicationDate") Date publicationDate,
                                 @JsonProperty("publicationContent1") String publicationContent1,
                                 @JsonProperty("publicationContent2") String publicationContent2,
+                                @JsonProperty("publicationType") String publicationType,
                                 @JsonProperty("premium") boolean premium,
                                 @JsonProperty("visible") boolean visible,
                                 @JsonProperty("gifts") List<AdminGiftForm> gifts,
@@ -67,6 +70,7 @@ public class AdminEventDetailForm {
         this.publicationDate = publicationDate;
         this.publicationContent1 = publicationContent1;
         this.publicationContent2 = publicationContent2;
+        this.publicationType = publicationType;
         this.premium = premium;
         this.visible = visible;
         this.gifts = gifts;

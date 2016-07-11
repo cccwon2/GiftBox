@@ -41,6 +41,8 @@ public class AdminEventModel {
 
     private String publicationContent2;
 
+    private String publicationType;
+
     private boolean premium;
 
     private boolean visible;
@@ -50,7 +52,7 @@ public class AdminEventModel {
     public AdminEventModel(Long id, String title, String description,
                            String company, String eventTarget, String eventPage, String prizePage,
                            Date startDate, Date endDate, Date publicationDate, Date createdDate,
-                           String publicationContent1, String publicationContent2,
+                           String publicationContent1, String publicationContent2, String publicationType,
                            boolean premium, boolean visible,
                            int width, int height, String url,
                            String thumbnailS, String thumbnailM, String thumbnailL) {
@@ -67,6 +69,7 @@ public class AdminEventModel {
         this.createdDate = createdDate;
         this.publicationContent1 = publicationContent1;
         this.publicationContent2 = publicationContent2;
+        this.publicationType = publicationType;
         this.premium = premium;
         this.visible = visible;
         this.attachments = new ArrayList<>();

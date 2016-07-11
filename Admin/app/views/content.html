@@ -73,7 +73,7 @@
                                             <b>설명</b>
                                         </div>
                                         <div class="col-md-10">
-                                            <textarea ng-model="eventInfo.description" style="width:500px;height:50px;" rows="3" placeholder="Description"></textarea>
+                                            <textarea ng-model="eventInfo.description" style="width:500px;height:50px;" rows="3" placeholder="Description" maxlength="1000"></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -142,24 +142,8 @@
                                  </span>
                                             </p>
                                             <input type="text" ng-model="eventInfo.publicationContent1" style="width:500px;" placeholder="Publication Content1" /><br>
-                                            <input type="text" ng-model="eventInfo.publicationContent2" style="width:500px;" placeholder="Publication Content2" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <b>체크 항목</b>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" ng-model="eventInfo.premium"> Premium
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" ng-model="eventInfo.visible"> DP
-                                                </label>
-                                            </div>
+                                            <input type="text" ng-model="eventInfo.publicationContent2" style="width:500px;" placeholder="Publication Content2" /><br>
+                                            <input type="text" ng-model="eventInfo.publicationType" style="width:500px;" placeholder="Publication Type" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -201,61 +185,61 @@
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift1.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift1.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift1.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift2.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift2.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift2.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift3.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift3.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift3.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift4.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift4.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift4.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift5.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift5.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift5.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift6.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift6.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift6.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift7.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift7.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift7.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift8.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift8.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift8.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift9.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift9.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift9.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="gift10.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="gift10.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="gift10.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                         </div>
@@ -376,24 +360,8 @@
                                  </span>
                                             </p>
                                             <input type="text" ng-model="editEventInfo.publicationContent1" style="width:500px;" placeholder="Publication Content1" /><br>
-                                            <input type="text" ng-model="editEventInfo.publicationContent2" style="width:500px;" placeholder="Publication Content2" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <b>체크 항목</b>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" ng-model="editEventInfo.premium"> Premium
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" ng-model="editEventInfo.visible"> DP
-                                                </label>
-                                            </div>
+                                            <input type="text" ng-model="editEventInfo.publicationContent2" style="width:500px;" placeholder="Publication Content2" /><br>
+                                            <input type="text" ng-model="editEventInfo.publicationType" style="width:500px;" placeholder="Publication Type" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -435,61 +403,61 @@
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift1.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift1.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift1.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift2.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift2.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift2.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift3.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift3.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift3.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift4.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift4.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift4.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift5.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift5.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift5.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift6.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift6.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift6.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift7.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift7.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift7.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift8.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift8.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift8.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift9.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift9.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift9.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <input type="text" ng-model="editGift10.product" maxlength="200" style="width:400px;" placeholder="Product" />
-                                                    <input type="number" ng-model="editGift10.count" style="width:100px;" min="1" max="9999999" />
+                                                    <input type="number" ng-model="editGift10.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
                                             </div>
                                         </div>
@@ -532,8 +500,8 @@
                         <th>이벤트 ID</th>
                         <th>이미지</th>
                         <th>제목</th>
-                        <th>시작일</th>
-                        <th>종료일</th>
+                        <th>Premium</th>
+                        <th></th>
                         <th>DP</th>
                         <th></th>
                         <th></th>
@@ -544,8 +512,10 @@
                         <td><span style="cursor:pointer" data-toggle="modal" data-target="#imageModal" ng-click="setSelectedEventImage(event.attachments[0].thumbnailS)">
                             <img ng-src="{{event.attachments[0].thumbnailS}}" style="width:30px;height: auto"></span></td>
                         <td>{{event.title}}</td>
-                        <td style="width:100px">{{event.startDate}}</td>
-                        <td style="width:100px">{{event.endDate}}</td>
+                        <td>{{event.premium}}</td>
+                        <td style="width: 60px">
+                            <button ng-click="setEventPremium(event.id, event.premium)">설정</button>
+                        </td>
                         <td>{{event.visible}}</td>
                         <td style="width: 60px">
                             <button ng-click="setEventVisible(event.id, event.visible)">설정</button>

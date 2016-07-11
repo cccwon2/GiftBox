@@ -25,20 +25,100 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
         super(Event.class);
     }
 
-    public Page<EventModel> findEventModels(String premium, Pageable pageable) {
+    public List<EventModel> findPremiumEventModels() {
 
         QEvent qEvent = QEvent.event;
         QAttachment qAttachment = QAttachment.attachment;
 
         JPQLQuery query = from(qEvent);
         query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
+        query.where(qEvent.visible.isTrue(), qEvent.premium.isTrue());
 
-        BooleanBuilder whereBuilder = new BooleanBuilder();
-        whereBuilder.and(qEvent.visible.isTrue());
-        if(!StringUtils.isEmpty(premium)) {
-            whereBuilder.and(qEvent.premium.eq(Boolean.valueOf(premium)));
+        List<EventModel> eventModels = query.list(ConstructorExpression.create(EventModel.class,
+                qEvent.id,
+                qEvent.title,
+                qEvent.company,
+                qEvent.prizePage,
+                qEvent.startDate,
+                qEvent.endDate,
+                qAttachment.width,
+                qAttachment.height,
+                qAttachment.url,
+                qAttachment.thumbnailS,
+                qAttachment.thumbnailM,
+                qAttachment.thumbnailL
+        ));
+
+        return eventModels;
+    }
+
+    public long countPremiumEventModels() {
+
+        QEvent qEvent = QEvent.event;
+        QAttachment qAttachment = QAttachment.attachment;
+
+        JPQLQuery query = from(qEvent);
+        query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
+        query.where(qEvent.visible.isTrue(), qEvent.premium.isTrue());
+
+        return query.count();
+    }
+
+    public Page<EventModel> findPremiumEventModels(Pageable pageable) {
+
+        QEvent qEvent = QEvent.event;
+        QAttachment qAttachment = QAttachment.attachment;
+
+        JPQLQuery query = from(qEvent);
+        query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
+        query.where(qEvent.visible.isTrue(), qEvent.premium.isTrue());
+
+        long total = query.count();
+        JPQLQuery pagedQuery = getQuerydsl().applyPagination(pageable, query);
+        List<EventModel> eventModels;
+
+        if(total > pageable.getOffset()) {
+            eventModels = pagedQuery.list(ConstructorExpression.create(EventModel.class,
+                    qEvent.id,
+                    qEvent.title,
+                    qEvent.company,
+                    qEvent.prizePage,
+                    qEvent.startDate,
+                    qEvent.endDate,
+                    qAttachment.width,
+                    qAttachment.height,
+                    qAttachment.url,
+                    qAttachment.thumbnailS,
+                    qAttachment.thumbnailM,
+                    qAttachment.thumbnailL
+            ));
+        } else {
+            eventModels = Collections.<EventModel>emptyList();
         }
-        query.where(whereBuilder);
+
+        return new PageImpl<>(eventModels, pageable, total);
+    }
+
+    public long countEventModels() {
+
+        QEvent qEvent = QEvent.event;
+        QAttachment qAttachment = QAttachment.attachment;
+
+        JPQLQuery query = from(qEvent);
+        query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
+        query.where(qEvent.visible.isTrue(), qEvent.premium.isFalse());
+
+        return query.count();
+    }
+
+    public Page<EventModel> findEventModels(Pageable pageable) {
+
+        QEvent qEvent = QEvent.event;
+        QAttachment qAttachment = QAttachment.attachment;
+
+        JPQLQuery query = from(qEvent);
+        query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
+        query.where(qEvent.visible.isTrue(), qEvent.premium.isFalse());
 
         long total = query.count();
         JPQLQuery pagedQuery = getQuerydsl().applyPagination(pageable, query);
@@ -86,6 +166,7 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
                 qEvent.createdDate,
                 qEvent.publicationContent1,
                 qEvent.publicationContent2,
+                qEvent.publicationType,
                 qEvent.premium
         ));
 
@@ -112,6 +193,7 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
                 qEvent.createdDate,
                 qEvent.publicationContent1,
                 qEvent.publicationContent2,
+                qEvent.publicationType,
                 qEvent.premium,
                 qEvent.visible
         ));
@@ -161,6 +243,7 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
                     qEvent.createdDate,
                     qEvent.publicationContent1,
                     qEvent.publicationContent2,
+                    qEvent.publicationType,
                     qEvent.premium,
                     qEvent.visible,
                     qAttachment.width,
