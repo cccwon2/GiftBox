@@ -252,6 +252,11 @@ angular.module('webAdminApp')
                 $('#addEventInput').click();
             };
 
+            Date.prototype.addHours= function(h){
+                this.setHours(this.getHours()+h);
+                return this;
+            };
+
             $scope.saveNewEventInfo = function() {
                 var eventTypeCodeIndex = 0;
                 for(var i = 0; i < $scope.eventTypePlaces.length; i++) {
@@ -323,6 +328,18 @@ angular.module('webAdminApp')
                 if (giftProduct10 != '') {
                     $scope.eventInfo.gifts[giftIndex] = { product: giftProduct10, count: $scope.gift10.count };
                 }
+                // Date 매핑
+
+                if($scope.eventInfo.startDate != '') {
+                    $scope.eventInfo.startDate = new Date($scope.eventInfo.startDate).addHours(9);
+                }
+
+                if($scope.eventInfo.endDate != '') {
+                    $scope.eventInfo.endDate = new Date($scope.eventInfo.endDate).addHours(9);
+                }
+
+                console.log('start: ' + $scope.eventInfo.startDate);
+                console.log('end: ' + $scope.eventInfo.endDate);
 
                 var file = document.getElementById('eventFile').files[0];
                 if(typeof file == 'undefined') {
@@ -399,9 +416,11 @@ angular.module('webAdminApp')
                           $scope.editEventInfo.eventPage = response.data.eventPage;
                           $scope.editEventInfo.prizePage = response.data.prizePage;
                           if(response.data.startDate != null) {
+                              console.log('Edit startDate: ' + response.data.startDate);
                               $scope.editEventInfo.startDate = new Date(response.data.startDate);
                           }
                           if(response.data.endDate != null) {
+                              console.log('Edit endDate: ' + response.data.endDate);
                               $scope.editEventInfo.endDate = new Date(response.data.endDate);
                           }
                           if(response.data.publicationDate != null) {

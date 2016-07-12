@@ -43,11 +43,9 @@ public class EventService {
     @Autowired
     private EventTypeCodeRepository eventTypeCodeRepository;
 
-    public Page<EventModel> getEvents(String premium, int page, int size) {
+    public Page<EventModel> getEvents(String premium, String sort, List<String> onGoings, List<Long> forms, int page) {
 
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
-        Sort sort = new Sort(order);
-        Pageable pageable = new PageRequest(page - 1, GlobalConst.PAGE_SIZE, sort);
+        Pageable pageable = new PageRequest(page - 1, GlobalConst.PAGE_SIZE);
 
         Page<EventModel> eventModels;
 
@@ -60,50 +58,49 @@ public class EventService {
             }
 
             return eventModels;
-        } else {
-            Pageable eventPageable = new PageRequest(page - 1, GlobalConst.PAGE_SIZE, sort);
-            eventModels = eventRepository.findEventModels(eventPageable);
+        } else if("".equals(premium)) {
+            TimeZone tz = TimeZone.getDefault();
+            Calendar cal = GregorianCalendar.getInstance(tz);
+            int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
+            Date now = new Date(new Date().getTime() + offsetInMillis);
+            //System.err.println("Now(UTC): " + now.toString());
 
-            for(EventModel eventModel : eventModels) {
-                List<EventTypeModel> eventTypes = eventTypeRepository.findEventTypeModels(eventModel.getId());
-                eventModel.setEventTypes(eventTypes);
-            }
+            Pageable eventPageable = new PageRequest(page - 1, GlobalConst.EVENT_PAGE_SIZE);
+            eventModels = eventRepository.findEventModels(now, sort, onGoings, forms, eventPageable);
 
-            return eventModels;
-            /*
             List<EventModel> eventModelList = new ArrayList<>();
-            List<EventModel> premiumEventModelList= eventRepository.findPremiumEventModels();
+            List<EventModel> premiumEventModelList= eventRepository.findPremiumEventModels(now, sort, onGoings, forms);
 
-            int eventModelsSize = eventModels.getSize();
-            System.err.println("eventModelsSize: " + eventModelsSize);
-            long totalEvent = eventRepository.countEventModels();
-            long totalPremiumEvent = eventRepository.countPremiumEventModels();
+            int eventModelsSize = eventModels.getContent().size();
+            //System.err.println("eventModelsSize: " + eventModelsSize);
+            long totalEvent = eventRepository.countEventModels(now, sort, onGoings, forms);
+            //System.err.println("totalEvent: " + totalEvent);
+            long totalPremiumEvent = eventRepository.countPremiumEventModels(now, sort, onGoings, forms);
+            //System.err.println("totalPremiumEvent: " + totalPremiumEvent);
             long total = totalEvent + totalPremiumEvent;
+            //System.err.println("total: " + total);
 
             // premium total 구함
-            // 일반 이벤트 10건당 프리미엄 이벤트 1건...
+            // 일반 이벤트 9건당 프리미엄 이벤트 1건...
             EventModel premiumEventMode = null;
             if(totalPremiumEvent > 0) {
                 long quotient = (totalPremiumEvent / page);
                 if(quotient > 0) {
                     premiumEventMode = premiumEventModelList.get(page - 1);
                 } else {
-                    //long remainder = (totalPremiumEvent % page);
-                    long minusIndex = totalPremiumEvent - page;
-
                     // 페이지는 계속 늘지만 나머지는 고정...
                     // 페이지 - 나머지, 총 프리미엄 개수...
-                    if(remainder > totalPremiumEvent) {
-                    } else {
-                        premiumEventMode = premiumEventModelList.get((int)remainder - 1);
-                    }
+                    // 재귀 호출
+                    int totalPremiumCount = (int)totalPremiumEvent;
+                    int premiumEventIndex = recursiveCallMinus(totalPremiumCount - page, totalPremiumCount);
+                    premiumEventMode = premiumEventModelList.get(premiumEventIndex);
                 }
             }
 
             if(totalEvent > 0) {
-                // 3보다 작은 경우 premium을 넣을지 의논...
+                // 4보다 작은 경우 premium을 넣을지 의논...
                 // 일단 넣는다!
-                if(eventModelsSize < 3) {
+                if(eventModelsSize < 4) {
                     for(EventModel eventModel: eventModels) {
                         eventModelList.add(eventModel);
                     }
@@ -113,10 +110,12 @@ public class EventService {
                 } else {
                     eventModelList.add(eventModels.getContent().get(0));
                     eventModelList.add(eventModels.getContent().get(1));
+                    eventModelList.add(eventModels.getContent().get(2));
+                    eventModelList.add(eventModels.getContent().get(3));
                     if(premiumEventMode != null) {
                         eventModelList.add(premiumEventMode);
                     }
-                    for(int i=2; i<eventModelsSize; i++) {
+                    for(int i=4; i<eventModelsSize; i++) {
                         eventModelList.add(eventModels.getContent().get(i));
                     }
                 }
@@ -136,7 +135,8 @@ public class EventService {
             }
 
             return new PageImpl<>(eventModelList, pageable, total);
-            */
+        } else {
+            return null;
         }
     }
 
@@ -169,21 +169,21 @@ public class EventService {
         int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
 
         if(requestForm.getStartDate() != null) {
-            SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd 12:00:00");
+            SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
             String startDateToString = startDateFormat.format(requestForm.getStartDate());
             startDate = transFormat.parse(startDateToString);
             startDate = new Date(startDate.getTime() + offsetInMillis);
         }
 
         if(requestForm.getEndDate() != null) {
-            SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd 12:00:00");
+            SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
             String endDateToString = endDateFormat.format(requestForm.getEndDate());
             endDate = transFormat.parse(endDateToString);
             endDate = new Date(endDate.getTime() + offsetInMillis);
         }
 
         if(requestForm.getPublicationDate() != null) {
-            SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 12:00:00");
+            SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
             String publicationDateToString = publicationDateFormat.format(requestForm.getPublicationDate());
             publicationDate = transFormat.parse(publicationDateToString);
             publicationDate = new Date(publicationDate.getTime() + offsetInMillis);
@@ -237,21 +237,21 @@ public class EventService {
         int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
 
         if(requestForm.getStartDate() != null) {
-            SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd 12:00:00");
+            SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
             String startDateToString = startDateFormat.format(requestForm.getStartDate());
             startDate = transFormat.parse(startDateToString);
             startDate = new Date(startDate.getTime() + offsetInMillis);
         }
 
         if(requestForm.getEndDate() != null) {
-            SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd 12:00:00");
+            SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
             String endDateToString = endDateFormat.format(requestForm.getEndDate());
             endDate = transFormat.parse(endDateToString);
             endDate = new Date(endDate.getTime() + offsetInMillis);
         }
 
         if(requestForm.getPublicationDate() != null) {
-            SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 12:00:00");
+            SimpleDateFormat publicationDateFormat = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
             String publicationDateToString = publicationDateFormat.format(requestForm.getPublicationDate());
             publicationDate = transFormat.parse(publicationDateToString);
             publicationDate = new Date(publicationDate.getTime() + offsetInMillis);
@@ -361,5 +361,19 @@ public class EventService {
                 eventTypeRepository.save(eventType);
             }
         }
+    }
+
+    private int recursiveCallMinus(int minus, int totalPremiumCount) {
+        // page 3, minus -1, totalPremiumCount 2 일 경우 result 1, index 0
+        // page 4, minus -2, totalPremiumCount 2 일 경우 result 0, index 1
+        // minus + totalPremiumCount 가 0 이상일때까지 돌려준다
+        int result = minus + totalPremiumCount;
+        int index = -minus - 1;
+        if(result >= 0) {
+            return index;
+        }
+        // page 5, minus -3, totalPremiumCount 2 일 경우 result -1, index 2 재귀호출 대상
+        // index >= totalPremiumCount 경우 index 에러
+        return recursiveCallMinus(minus + totalPremiumCount, totalPremiumCount);
     }
 }

@@ -7,19 +7,19 @@ import me.memorytalk.dto.EventModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.util.*;
 
 public interface EventModelRepository {
 
-    List<EventModel> findPremiumEventModels();
+    List<EventModel> findPremiumEventModels(Date now, String sort, List<String> onGoings, List<Long> forms);
 
-    long countPremiumEventModels();
+    long countPremiumEventModels(Date now, String sort, List<String> onGoings, List<Long> forms);
 
     Page<EventModel> findPremiumEventModels(Pageable pageable);
 
-    long countEventModels();
+    long countEventModels(Date now, String sort, List<String> onGoings, List<Long> forms);
 
-    Page<EventModel> findEventModels(Pageable pageable);
+    Page<EventModel> findEventModels(Date now, String sort, List<String> onGoings, List<Long> forms, Pageable pageable);
 
     EventDetailModel findEventModel(Long eventId);
 

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(value = "Event API", description = "Event API", basePath = "/event")
 @RestController
 public class EventController {
@@ -18,12 +20,14 @@ public class EventController {
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> events(
             @RequestParam("premium") String premium,
-            @RequestParam("page") int page,
-            @RequestParam("size") int size) {
+            @RequestParam("sort") String sort,
+            @RequestParam("onGoings") List<String> onGoings,
+            @RequestParam("forms") List<Long> forms,
+            @RequestParam("page") int page) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Event List",
-                eventService.getEvents(premium, page, size)),
+                eventService.getEvents(premium, sort, onGoings, forms, page)),
                 HttpStatus.OK);
     }
 
