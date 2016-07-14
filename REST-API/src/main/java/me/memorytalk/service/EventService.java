@@ -43,7 +43,7 @@ public class EventService {
     @Autowired
     private EventTypeCodeRepository eventTypeCodeRepository;
 
-    public Page<EventModel> getEvents(String premium, String sort, List<String> onGoings, List<Long> forms, int page) {
+    public Page<EventModel> getEvents(String premium, String sort, List<String> onGoings, List<Long> eventTypeCodes, int page) {
 
         Pageable pageable = new PageRequest(page - 1, GlobalConst.PAGE_SIZE);
 
@@ -66,16 +66,16 @@ public class EventService {
             //System.err.println("Now(UTC): " + now.toString());
 
             Pageable eventPageable = new PageRequest(page - 1, GlobalConst.EVENT_PAGE_SIZE);
-            eventModels = eventRepository.findEventModels(now, sort, onGoings, forms, eventPageable);
+            eventModels = eventRepository.findEventModels(now, sort, onGoings, eventTypeCodes, eventPageable);
 
             List<EventModel> eventModelList = new ArrayList<>();
-            List<EventModel> premiumEventModelList= eventRepository.findPremiumEventModels(now, sort, onGoings, forms);
+            List<EventModel> premiumEventModelList= eventRepository.findPremiumEventModels(now, sort, onGoings, eventTypeCodes);
 
             int eventModelsSize = eventModels.getContent().size();
             //System.err.println("eventModelsSize: " + eventModelsSize);
-            long totalEvent = eventRepository.countEventModels(now, sort, onGoings, forms);
+            long totalEvent = eventRepository.countEventModels(now, sort, onGoings, eventTypeCodes);
             //System.err.println("totalEvent: " + totalEvent);
-            long totalPremiumEvent = eventRepository.countPremiumEventModels(now, sort, onGoings, forms);
+            long totalPremiumEvent = eventRepository.countPremiumEventModels(now, sort, onGoings, eventTypeCodes);
             //System.err.println("totalPremiumEvent: " + totalPremiumEvent);
             long total = totalEvent + totalPremiumEvent;
             //System.err.println("total: " + total);

@@ -22,12 +22,12 @@ public class EventController {
             @RequestParam("premium") String premium,
             @RequestParam("sort") String sort,
             @RequestParam("onGoings") List<String> onGoings,
-            @RequestParam("forms") List<Long> forms,
+            @RequestParam("eventTypeCodes") List<Long> eventTypeCodes,
             @RequestParam("page") int page) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
                 "Event List",
-                eventService.getEvents(premium, sort, onGoings, forms, page)),
+                eventService.getEvents(premium, sort, onGoings, eventTypeCodes, page)),
                 HttpStatus.OK);
     }
 

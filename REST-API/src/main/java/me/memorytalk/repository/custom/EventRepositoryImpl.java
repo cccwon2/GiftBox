@@ -26,120 +26,6 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
         super(Event.class);
     }
 
-    public List<EventModel> findPremiumEventModels(Date now, String sort, List<String> onGoings, List<Long> forms) {
-
-        QEvent qEvent = QEvent.event;
-        QAttachment qAttachment = QAttachment.attachment;
-        QEventType qEventType = QEventType.eventType;
-
-        JPQLQuery query = from(qEvent);
-        query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
-        query.where(qEvent.visible.isTrue(), qEvent.premium.isTrue());
-
-        BooleanBuilder whereBuilder = new BooleanBuilder();
-        if(onGoings.size() > 0 && onGoings.size() < 3) {
-            if ("progress".equals(onGoings.get(0))) {
-                whereBuilder.and(qEvent.startDate.loe(now));
-                whereBuilder.and(qEvent.endDate.goe(now));
-            } else if ("end".equals(onGoings.get(0))) {
-                whereBuilder.and(qEvent.endDate.lt(now));
-            } else if ("oncoming".equals(onGoings.get(0))) {
-                whereBuilder.and(qEvent.startDate.gt(now));
-            }
-            if (onGoings.size() == 2) {
-                if ("progress".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.startDate.loe(now));
-                    whereBuilder.and(qEvent.endDate.goe(now));
-                } else if ("end".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.endDate.lt(now));
-                } else if ("oncoming".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.startDate.gt(now));
-                }
-            }
-        }
-        if(forms.size() > 0) {
-            whereBuilder.and(new JPASubQuery().from(qEvent.eventTypes, qEventType)
-                    .where(qEventType.eventTypeCode.id.eq(forms.get(0))).exists());
-            for(int i=1; i<forms.size(); i++) {
-                whereBuilder.or(new JPASubQuery().from(qEvent.eventTypes, qEventType)
-                        .where(qEventType.eventTypeCode.id.eq(forms.get(i))).exists());
-            }
-        }
-        if("close".equals(sort)) {
-            whereBuilder.and(qEvent.endDate.goe(now));
-            query.where(whereBuilder);
-            query.orderBy(qEvent.endDate.asc());
-        } else {
-            query.where(whereBuilder);
-            query.orderBy(qEvent.createdDate.desc());
-        }
-
-        List<EventModel> eventModels = query.list(ConstructorExpression.create(EventModel.class,
-                qEvent.id,
-                qEvent.title,
-                qEvent.company,
-                qEvent.prizePage,
-                qEvent.startDate,
-                qEvent.endDate,
-                qEvent.premium,
-                qAttachment.width,
-                qAttachment.height,
-                qAttachment.url,
-                qAttachment.thumbnailS,
-                qAttachment.thumbnailM,
-                qAttachment.thumbnailL
-        ));
-
-        return eventModels;
-    }
-
-    public long countPremiumEventModels(Date now, String sort, List<String> onGoings, List<Long> forms) {
-
-        QEvent qEvent = QEvent.event;
-        QAttachment qAttachment = QAttachment.attachment;
-        QEventType qEventType = QEventType.eventType;
-
-        JPQLQuery query = from(qEvent);
-        query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
-        query.where(qEvent.visible.isTrue(), qEvent.premium.isTrue());
-
-        BooleanBuilder whereBuilder = new BooleanBuilder();
-        if(onGoings.size() > 0 && onGoings.size() < 3) {
-            if ("progress".equals(onGoings.get(0))) {
-                whereBuilder.and(qEvent.startDate.loe(now));
-                whereBuilder.and(qEvent.endDate.goe(now));
-            } else if ("end".equals(onGoings.get(0))) {
-                whereBuilder.and(qEvent.endDate.lt(now));
-            } else if ("oncoming".equals(onGoings.get(0))) {
-                whereBuilder.and(qEvent.startDate.gt(now));
-            }
-            if (onGoings.size() == 2) {
-                if ("progress".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.startDate.loe(now));
-                    whereBuilder.and(qEvent.endDate.goe(now));
-                } else if ("end".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.endDate.lt(now));
-                } else if ("oncoming".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.startDate.gt(now));
-                }
-            }
-        }
-        if(forms.size() > 0) {
-            whereBuilder.and(new JPASubQuery().from(qEvent.eventTypes, qEventType)
-                    .where(qEventType.eventTypeCode.id.eq(forms.get(0))).exists());
-            for(int i=1; i<forms.size(); i++) {
-                whereBuilder.or(new JPASubQuery().from(qEvent.eventTypes, qEventType)
-                        .where(qEventType.eventTypeCode.id.eq(forms.get(i))).exists());
-            }
-        }
-        if("close".equals(sort)) {
-            whereBuilder.and(qEvent.endDate.goe(now));
-        }
-        query.where(whereBuilder);
-
-        return query.count();
-    }
-
     public Page<EventModel> findPremiumEventModels(Pageable pageable) {
 
         QEvent qEvent = QEvent.event;
@@ -176,6 +62,114 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
         return new PageImpl<>(eventModels, pageable, total);
     }
 
+    public long countPremiumEventModels(Date now, String sort, List<String> onGoings, List<Long> forms) {
+
+        QEvent qEvent = QEvent.event;
+        QAttachment qAttachment = QAttachment.attachment;
+        QEventType qEventType = QEventType.eventType;
+
+        JPQLQuery query = from(qEvent);
+        query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+        if(onGoings.size() == 1) {
+            if("progress".equals(onGoings.get(0))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)));
+            } else if ("end".equals(onGoings.get(0))) {
+                whereBuilder.and(qEvent.endDate.lt(now));
+            } else if ("oncoming".equals(onGoings.get(0))) {
+                whereBuilder.and(qEvent.startDate.gt(now));
+            }
+        }
+        if(onGoings.size() == 2) {
+            if(("progress".equals(onGoings.get(0)) && "end".equals(onGoings.get(1))) ||
+                    ("end".equals(onGoings.get(0)) && "progress".equals(onGoings.get(1)))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)).or(qEvent.endDate.lt(now)));
+            } else if(("progress".equals(onGoings.get(0)) && "oncoming".equals(onGoings.get(1))) ||
+                    ("oncoming".equals(onGoings.get(0)) && "progress".equals(onGoings.get(1)))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)).or(qEvent.startDate.gt(now)));
+            } else {
+                whereBuilder.and(qEvent.endDate.lt(now).or(qEvent.startDate.gt(now)));
+            }
+        }
+        if(forms.size() > 0) {
+            whereBuilder.and(new JPASubQuery().from(qEvent.eventTypes, qEventType)
+                    .where(qEventType.eventTypeCode.id.in(forms)).exists());
+        }
+        whereBuilder.and(qEvent.visible.isTrue());
+        whereBuilder.and(qEvent.premium.isTrue());
+        if("close".equals(sort)) {
+            whereBuilder.and(qEvent.endDate.goe(now));
+        }
+        query.where(whereBuilder);
+
+        return query.count();
+    }
+
+    public List<EventModel> findPremiumEventModels(Date now, String sort, List<String> onGoings, List<Long> forms) {
+
+        QEvent qEvent = QEvent.event;
+        QAttachment qAttachment = QAttachment.attachment;
+        QEventType qEventType = QEventType.eventType;
+
+        JPQLQuery query = from(qEvent);
+        query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+        if(onGoings.size() == 1) {
+            if("progress".equals(onGoings.get(0))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)));
+            } else if ("end".equals(onGoings.get(0))) {
+                whereBuilder.and(qEvent.endDate.lt(now));
+            } else if ("oncoming".equals(onGoings.get(0))) {
+                whereBuilder.and(qEvent.startDate.gt(now));
+            }
+        }
+        if(onGoings.size() == 2) {
+            if(("progress".equals(onGoings.get(0)) && "end".equals(onGoings.get(1))) ||
+                    ("end".equals(onGoings.get(0)) && "progress".equals(onGoings.get(1)))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)).or(qEvent.endDate.lt(now)));
+            } else if(("progress".equals(onGoings.get(0)) && "oncoming".equals(onGoings.get(1))) ||
+                    ("oncoming".equals(onGoings.get(0)) && "progress".equals(onGoings.get(1)))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)).or(qEvent.startDate.gt(now)));
+            } else {
+                whereBuilder.and(qEvent.endDate.lt(now).or(qEvent.startDate.gt(now)));
+            }
+        }
+        if(forms.size() > 0) {
+            whereBuilder.and(new JPASubQuery().from(qEvent.eventTypes, qEventType)
+                    .where(qEventType.eventTypeCode.id.in(forms)).exists());
+        }
+        whereBuilder.and(qEvent.visible.isTrue());
+        whereBuilder.and(qEvent.premium.isTrue());
+        if("close".equals(sort)) {
+            whereBuilder.and(qEvent.endDate.goe(now));
+            query.where(whereBuilder);
+            query.orderBy(qEvent.endDate.asc());
+        } else {
+            query.where(whereBuilder);
+            query.orderBy(qEvent.createdDate.desc());
+        }
+
+        List<EventModel> eventModels = query.list(ConstructorExpression.create(EventModel.class,
+                qEvent.id,
+                qEvent.title,
+                qEvent.company,
+                qEvent.prizePage,
+                qEvent.startDate,
+                qEvent.endDate,
+                qEvent.premium,
+                qAttachment.width,
+                qAttachment.height,
+                qAttachment.url,
+                qAttachment.thumbnailS,
+                qAttachment.thumbnailM,
+                qAttachment.thumbnailL
+        ));
+
+        return eventModels;
+    }
+
     public long countEventModels(Date now, String sort, List<String> onGoings, List<Long> forms) {
 
         QEvent qEvent = QEvent.event;
@@ -184,37 +178,34 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
 
         JPQLQuery query = from(qEvent);
         query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
-        query.where(qEvent.visible.isTrue(), qEvent.premium.isFalse());
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
-        if(onGoings.size() > 0 && onGoings.size() < 3) {
-            if ("progress".equals(onGoings.get(0))) {
-                whereBuilder.and(qEvent.startDate.loe(now));
-                whereBuilder.and(qEvent.endDate.goe(now));
+        if(onGoings.size() == 1) {
+            if("progress".equals(onGoings.get(0))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)));
             } else if ("end".equals(onGoings.get(0))) {
                 whereBuilder.and(qEvent.endDate.lt(now));
             } else if ("oncoming".equals(onGoings.get(0))) {
                 whereBuilder.and(qEvent.startDate.gt(now));
             }
-            if (onGoings.size() == 2) {
-                if ("progress".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.startDate.loe(now));
-                    whereBuilder.and(qEvent.endDate.goe(now));
-                } else if ("end".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.endDate.lt(now));
-                } else if ("oncoming".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.startDate.gt(now));
-                }
+        }
+        if(onGoings.size() == 2) {
+            if(("progress".equals(onGoings.get(0)) && "end".equals(onGoings.get(1))) ||
+                    ("end".equals(onGoings.get(0)) && "progress".equals(onGoings.get(1)))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)).or(qEvent.endDate.lt(now)));
+            } else if(("progress".equals(onGoings.get(0)) && "oncoming".equals(onGoings.get(1))) ||
+                    ("oncoming".equals(onGoings.get(0)) && "progress".equals(onGoings.get(1)))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)).or(qEvent.startDate.gt(now)));
+            } else {
+                whereBuilder.and(qEvent.endDate.lt(now).or(qEvent.startDate.gt(now)));
             }
         }
         if(forms.size() > 0) {
             whereBuilder.and(new JPASubQuery().from(qEvent.eventTypes, qEventType)
-                    .where(qEventType.eventTypeCode.id.eq(forms.get(0))).exists());
-            for(int i=1; i<forms.size(); i++) {
-                whereBuilder.or(new JPASubQuery().from(qEvent.eventTypes, qEventType)
-                        .where(qEventType.eventTypeCode.id.eq(forms.get(i))).exists());
-            }
+                    .where(qEventType.eventTypeCode.id.in(forms)).exists());
         }
+        whereBuilder.and(qEvent.visible.isTrue());
+        whereBuilder.and(qEvent.premium.isFalse());
         if("close".equals(sort)) {
             whereBuilder.and(qEvent.endDate.goe(now));
         }
@@ -231,37 +222,34 @@ public class EventRepositoryImpl extends QueryDslRepositorySupport implements Ev
 
         JPQLQuery query = from(qEvent);
         query.leftJoin(qEvent.attachments, qAttachment).on(qAttachment.sort.eq(1));
-        query.where(qEvent.visible.isTrue(), qEvent.premium.isFalse());
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
-        if(onGoings.size() > 0 && onGoings.size() < 3) {
-            if ("progress".equals(onGoings.get(0))) {
-                whereBuilder.and(qEvent.startDate.loe(now));
-                whereBuilder.and(qEvent.endDate.goe(now));
+        if(onGoings.size() == 1) {
+            if("progress".equals(onGoings.get(0))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)));
             } else if ("end".equals(onGoings.get(0))) {
                 whereBuilder.and(qEvent.endDate.lt(now));
             } else if ("oncoming".equals(onGoings.get(0))) {
                 whereBuilder.and(qEvent.startDate.gt(now));
             }
-            if (onGoings.size() == 2) {
-                if ("progress".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.startDate.loe(now));
-                    whereBuilder.and(qEvent.endDate.goe(now));
-                } else if ("end".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.endDate.lt(now));
-                } else if ("oncoming".equals(onGoings.get(1))) {
-                    whereBuilder.or(qEvent.startDate.gt(now));
-                }
+        }
+        if(onGoings.size() == 2) {
+            if(("progress".equals(onGoings.get(0)) && "end".equals(onGoings.get(1))) ||
+                    ("end".equals(onGoings.get(0)) && "progress".equals(onGoings.get(1)))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)).or(qEvent.endDate.lt(now)));
+            } else if(("progress".equals(onGoings.get(0)) && "oncoming".equals(onGoings.get(1))) ||
+                    ("oncoming".equals(onGoings.get(0)) && "progress".equals(onGoings.get(1)))) {
+                whereBuilder.and(qEvent.startDate.loe(now).and(qEvent.endDate.goe(now)).or(qEvent.startDate.gt(now)));
+            } else {
+                whereBuilder.and(qEvent.endDate.lt(now).or(qEvent.startDate.gt(now)));
             }
         }
         if(forms.size() > 0) {
             whereBuilder.and(new JPASubQuery().from(qEvent.eventTypes, qEventType)
-                    .where(qEventType.eventTypeCode.id.eq(forms.get(0))).exists());
-            for(int i=1; i<forms.size(); i++) {
-                whereBuilder.or(new JPASubQuery().from(qEvent.eventTypes, qEventType)
-                        .where(qEventType.eventTypeCode.id.eq(forms.get(i))).exists());
-            }
+                    .where(qEventType.eventTypeCode.id.in(forms)).exists());
         }
+        whereBuilder.and(qEvent.visible.isTrue());
+        whereBuilder.and(qEvent.premium.isFalse());
         if("close".equals(sort)) {
             whereBuilder.and(qEvent.endDate.goe(now));
             query.where(whereBuilder);

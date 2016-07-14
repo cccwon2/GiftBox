@@ -267,6 +267,8 @@ public class UploadService extends BaseObject {
                 formatName = "image/jpeg";
             } else if ("png".equalsIgnoreCase(reader.getFormatName())) {
                 formatName = "image/png";
+            } else if ("gif".equalsIgnoreCase(reader.getFormatName())) {
+                formatName = "image/gif";
             } else {
                 throw new IIOException(messageSource.getMessage("image.type.unsupported", null, Locale.getDefault()));
             }

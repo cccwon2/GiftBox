@@ -11,11 +11,11 @@ import java.util.*;
 
 public interface EventModelRepository {
 
-    List<EventModel> findPremiumEventModels(Date now, String sort, List<String> onGoings, List<Long> forms);
+    Page<EventModel> findPremiumEventModels(Pageable pageable);
 
     long countPremiumEventModels(Date now, String sort, List<String> onGoings, List<Long> forms);
 
-    Page<EventModel> findPremiumEventModels(Pageable pageable);
+    List<EventModel> findPremiumEventModels(Date now, String sort, List<String> onGoings, List<Long> forms);
 
     long countEventModels(Date now, String sort, List<String> onGoings, List<Long> forms);
 

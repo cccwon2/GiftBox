@@ -392,6 +392,14 @@ angular.module('webAdminApp')
 
                                 $('.loading-modal').remove();
                                 $('body').removeClass("loading");
+                            }).error(function(err) {
+                                BootstrapDialog.show({
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    message: err.message
+                                });
+
+                                $('.loading-modal').remove();
+                                $('body').removeClass("loading");
                             });
                         }
                     }
@@ -591,6 +599,14 @@ angular.module('webAdminApp')
                                     $('.loading-modal').remove();
                                     $('body').removeClass("loading");
                                 }
+                            }).error(function(err) {
+                                BootstrapDialog.show({
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    message: err.message
+                                });
+
+                                $('.loading-modal').remove();
+                                $('body').removeClass("loading");
                             });
                         }
                     }

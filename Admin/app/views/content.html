@@ -291,7 +291,7 @@
                                             <b>설명</b>
                                         </div>
                                         <div class="col-md-10">
-                                            <textarea ng-model="editEventInfo.description" style="width:500px;height:50px;" rows="3" placeholder="Description"></textarea>
+                                            <textarea ng-model="editEventInfo.description" style="width:500px;height:50px;" rows="3" placeholder="Description" maxlength="1000"></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -611,12 +611,15 @@
             <div class="col-md-12">
                 <table>
                     <tr>
+                        <th>ID</th>
                         <th>이름</th>
                         <th>컬러</th>
                         <th>분류</th>
                         <th></th>
+                        <th></th>
                     </tr>
                     <tr ng-repeat="eventTypeCode in eventTypeCodes">
+                        <td>{{eventTypeCode.id}}</td>
                         <td><input type="text" ng-model="eventTypeCode.name" maxlength="50" style="width:200px;"></td>
                         <td><input id="eventTypeCode_{{eventTypeCode.id}}" type="text" ng-model="eventTypeCode.color" class="form-control" data-control="hue" ng-bind="eventTypeCodeColorBinding(eventTypeCode.id)"></td>
                         <td>
@@ -628,6 +631,9 @@
                         </td>
                         <td style="width: 60px">
                             <button ng-click="editEventTypeCodeInfo(eventTypeCode.id, eventTypeCode.name, eventTypeCode.color, eventTypeCode.sort)">수정</button>
+                        </td>
+                        <td style="width: 60px">
+                            <button ng-click="removeEventTypeCode(eventTypeCode.id)">삭제</button>
                         </td>
                     </tr>
                 </table>
