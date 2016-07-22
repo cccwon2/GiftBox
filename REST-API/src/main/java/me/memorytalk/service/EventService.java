@@ -47,6 +47,7 @@ public class EventService {
 
         Pageable pageable = new PageRequest(page - 1, GlobalConst.PAGE_SIZE);
 
+        Pageable eventPageable;
         Page<EventModel> eventModels;
 
         if("true".equals(premium)) {
@@ -65,25 +66,25 @@ public class EventService {
             Date now = new Date(new Date().getTime() + offsetInMillis);
             //System.err.println("Now(UTC): " + now.toString());
 
-            Pageable eventPageable = new PageRequest(page - 1, GlobalConst.EVENT_PAGE_SIZE);
-            eventModels = eventRepository.findEventModels(now, sort, onGoings, eventTypeCodes, eventPageable);
-
             List<EventModel> eventModelList = new ArrayList<>();
-            List<EventModel> premiumEventModelList= eventRepository.findPremiumEventModels(now, sort, onGoings, eventTypeCodes);
-
-            int eventModelsSize = eventModels.getContent().size();
-            //System.err.println("eventModelsSize: " + eventModelsSize);
-            long totalEvent = eventRepository.countEventModels(now, sort, onGoings, eventTypeCodes);
-            //System.err.println("totalEvent: " + totalEvent);
             long totalPremiumEvent = eventRepository.countPremiumEventModels(now, sort, onGoings, eventTypeCodes);
-            //System.err.println("totalPremiumEvent: " + totalPremiumEvent);
-            long total = totalEvent + totalPremiumEvent;
-            //System.err.println("total: " + total);
 
-            // premium total 구함
-            // 일반 이벤트 9건당 프리미엄 이벤트 1건...
-            EventModel premiumEventMode = null;
             if(totalPremiumEvent > 0) {
+                eventPageable = new PageRequest(page - 1, GlobalConst.EVENT_PAGE_SIZE);
+                eventModels = eventRepository.findEventModels(now, sort, onGoings, eventTypeCodes, eventPageable);
+
+                List<EventModel> premiumEventModelList= eventRepository.findPremiumEventModels(now, sort, onGoings, eventTypeCodes);
+                int eventModelsSize = eventModels.getContent().size();
+                //System.err.println("eventModelsSize: " + eventModelsSize);
+                long totalEvent = eventRepository.countEventModels(now, sort, onGoings, eventTypeCodes);
+                //System.err.println("totalEvent: " + totalEvent);
+
+                //System.err.println("totalPremiumEvent: " + totalPremiumEvent);
+                long total = totalEvent + totalPremiumEvent;
+                // premium total 구함
+                // 일반 이벤트 9건당 프리미엄 이벤트 1건...
+                EventModel premiumEventMode = null;
+                //System.err.println("total: " + total);
                 long quotient = (totalPremiumEvent / page);
                 if(quotient > 0) {
                     premiumEventMode = premiumEventModelList.get(page - 1);
@@ -95,11 +96,6 @@ public class EventService {
                     int premiumEventIndex = recursiveCallMinus(totalPremiumCount - page, totalPremiumCount);
                     premiumEventMode = premiumEventModelList.get(premiumEventIndex);
                 }
-            }
-
-            if(totalEvent > 0) {
-                // 4보다 작은 경우 premium을 넣을지 의논...
-                // 일단 넣는다!
                 if(eventModelsSize < 4) {
                     for(EventModel eventModel: eventModels) {
                         eventModelList.add(eventModel);
@@ -119,22 +115,23 @@ public class EventService {
                         eventModelList.add(eventModels.getContent().get(i));
                     }
                 }
-            } else {
-                if(premiumEventMode != null) {
-                    eventModelList.add(premiumEventMode);
-                } else {
-                    eventModelList = Collections.<EventModel>emptyList();
-                }
-            }
-
-            if(total > 0) {
                 for (EventModel eventModel : eventModelList) {
                     List<EventTypeModel> eventTypes = eventTypeRepository.findEventTypeModels(eventModel.getId());
                     eventModel.setEventTypes(eventTypes);
                 }
-            }
 
-            return new PageImpl<>(eventModelList, pageable, total);
+                return new PageImpl<>(eventModelList, pageable, total);
+            } else {
+                eventPageable = new PageRequest(page - 1, GlobalConst.PAGE_SIZE);
+                eventModels = eventRepository.findEventModels(now, sort, onGoings, eventTypeCodes, eventPageable);
+
+                for (EventModel eventModel : eventModels) {
+                    List<EventTypeModel> eventTypes = eventTypeRepository.findEventTypeModels(eventModel.getId());
+                    eventModel.setEventTypes(eventTypes);
+                }
+
+                return eventModels;
+            }
         } else {
             return null;
         }
