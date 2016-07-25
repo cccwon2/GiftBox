@@ -328,8 +328,7 @@ angular.module('webAdminApp')
                 if (giftProduct10 != '') {
                     $scope.eventInfo.gifts[giftIndex] = { product: giftProduct10, count: $scope.gift10.count };
                 }
-                // Date 매핑
-
+                // Date UTC 매핑
                 if($scope.eventInfo.startDate != '') {
                     $scope.eventInfo.startDate = new Date($scope.eventInfo.startDate).addHours(9);
                 }
@@ -338,8 +337,13 @@ angular.module('webAdminApp')
                     $scope.eventInfo.endDate = new Date($scope.eventInfo.endDate).addHours(9);
                 }
 
-                console.log('start: ' + $scope.eventInfo.startDate);
-                console.log('end: ' + $scope.eventInfo.endDate);
+                if($scope.eventInfo.publicationDate != '') {
+                    $scope.eventInfo.publicationDate = new Date($scope.eventInfo.publicationDate).addHours(9);
+                }
+
+                console.log('Start Date: ' + $scope.eventInfo.startDate);
+                console.log('End Date: ' + $scope.eventInfo.endDate);
+                console.log('Publication Date: ' + $scope.eventInfo.publicationDate);
 
                 var file = document.getElementById('eventFile').files[0];
                 if(typeof file == 'undefined') {
@@ -432,6 +436,7 @@ angular.module('webAdminApp')
                               $scope.editEventInfo.endDate = new Date(response.data.endDate);
                           }
                           if(response.data.publicationDate != null) {
+                              console.log('Edit publicationDate: ' + response.data.publicationDate);
                               $scope.editEventInfo.publicationDate = new Date(response.data.publicationDate);
                           }
                           $scope.editEventInfo.publicationContent1 = response.data.publicationContent1;
