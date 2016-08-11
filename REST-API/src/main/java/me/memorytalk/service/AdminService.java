@@ -22,6 +22,9 @@ import java.util.List;
 public class AdminService {
 
     @Autowired
+    private AwsMigrationService awsMigrationService;
+
+    @Autowired
     private BannerService bannerService;
 
     @Autowired
@@ -279,5 +282,12 @@ public class AdminService {
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return popupService.removeAdminPopup(popupId);
+    }
+
+    public Boolean setAwsAttachmentMigration(String auth) throws IOException {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return awsMigrationService.setAwsAttachmentMigration();
     }
 }

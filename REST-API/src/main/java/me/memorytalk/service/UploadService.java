@@ -2,7 +2,7 @@ package me.memorytalk.service;
 
 import com.microsoft.azure.storage.StorageException;
 import me.memorytalk.common.base.BaseObject;
-import me.memorytalk.common.util.AzureImageUtil;
+import me.memorytalk.common.util.AmazonS3Util;
 import me.memorytalk.domain.Attachment;
 import me.memorytalk.domain.Banner;
 import me.memorytalk.domain.Event;
@@ -68,19 +68,18 @@ public class UploadService extends BaseObject {
         attachmentRepository.save(attachment);
 
         String attachmentId = attachment.getId().toString();
-        AzureImageUtil azureImage = new AzureImageUtil();
-        String azureFilename = String.format("%s_%s", attachmentId, new DateTime(DateTimeZone.UTC).toString("yyyyMMddHHmmss"));
+        AmazonS3Util amazonS3Util = new AmazonS3Util();
+        String filename = String.format("%s_%s", attachmentId, new DateTime(DateTimeZone.UTC).toString("yyyyMMddHHmmss"));
 
         // reset bufferedInputStream
         bufferedInputStream.reset();
-        String url = azureImage.upload("attachments", bufferedInputStream, size, azureFilename, contentType);
-        addThumbnails(bufferedInputStream, azureFilename, contentType);
+        String url = amazonS3Util.upload(bufferedInputStream, size, contentType, filename, "attachments");
+        addThumbnails(bufferedInputStream, filename, contentType);
 
-        String attachementName = url.substring(url.lastIndexOf("/") + 1);
-        url = String.format("http://az685860.vo.msecnd.net/attachments/%s", attachementName);
-        String thumbnailS  = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_S", attachementName);
-        String thumbnailM = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_M", attachementName);
-        String thumbnailL = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_L", attachementName);
+        String attachmentName = url.substring(url.lastIndexOf("/") + 1);
+        String thumbnailS  = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_S";
+        String thumbnailM = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_M";
+        String thumbnailL = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_L";
 
         attachment.setUrl(url);
         attachment.setThumbnailS(thumbnailS);
@@ -124,19 +123,18 @@ public class UploadService extends BaseObject {
         attachmentRepository.save(attachment);
 
         String attachmentId = attachment.getId().toString();
-        AzureImageUtil azureImage = new AzureImageUtil();
-        String azureFilename = String.format("%s_%s", attachmentId, new DateTime(DateTimeZone.UTC).toString("yyyyMMddHHmmss"));
+        AmazonS3Util amazonS3Util = new AmazonS3Util();
+        String filename = String.format("%s_%s", attachmentId, new DateTime(DateTimeZone.UTC).toString("yyyyMMddHHmmss"));
 
         // reset bufferedInputStream
         bufferedInputStream.reset();
-        String url = azureImage.upload("attachments", bufferedInputStream, size, azureFilename, contentType);
-        addThumbnails(bufferedInputStream, azureFilename, contentType);
+        String url = amazonS3Util.upload(bufferedInputStream, size, contentType, filename, "attachments");
+        addThumbnails(bufferedInputStream, filename, contentType);
 
-        String attachementName = url.substring(url.lastIndexOf("/") + 1);
-        url = String.format("http://az685860.vo.msecnd.net/attachments/%s", attachementName);
-        String thumbnailS  = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_S", attachementName);
-        String thumbnailM = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_M", attachementName);
-        String thumbnailL = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_L", attachementName);
+        String attachmentName = url.substring(url.lastIndexOf("/") + 1);
+        String thumbnailS  = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_S";
+        String thumbnailM = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_M";
+        String thumbnailL = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_L";
 
         attachment.setUrl(url);
         attachment.setThumbnailS(thumbnailS);
@@ -180,19 +178,18 @@ public class UploadService extends BaseObject {
         attachmentRepository.save(attachment);
 
         String attachmentId = attachment.getId().toString();
-        AzureImageUtil azureImage = new AzureImageUtil();
-        String azureFilename = String.format("%s_%s", attachmentId, new DateTime(DateTimeZone.UTC).toString("yyyyMMddHHmmss"));
+        AmazonS3Util amazonS3Util = new AmazonS3Util();
+        String filename = String.format("%s_%s", attachmentId, new DateTime(DateTimeZone.UTC).toString("yyyyMMddHHmmss"));
 
         // reset bufferedInputStream
         bufferedInputStream.reset();
-        String url = azureImage.upload("attachments", bufferedInputStream, size, azureFilename, contentType);
-        addThumbnails(bufferedInputStream, azureFilename, contentType);
+        String url = amazonS3Util.upload(bufferedInputStream, size, contentType, filename, "attachments");
+        addThumbnails(bufferedInputStream, filename, contentType);
 
-        String attachementName = url.substring(url.lastIndexOf("/") + 1);
-        url = String.format("http://az685860.vo.msecnd.net/attachments/%s", attachementName);
-        String thumbnailS  = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_S", attachementName);
-        String thumbnailM = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_M", attachementName);
-        String thumbnailL = String.format("http://az685860.vo.msecnd.net/attachment-thumbs/%s_thumb_L", attachementName);
+        String attachmentName = url.substring(url.lastIndexOf("/") + 1);
+        String thumbnailS  = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_S";
+        String thumbnailM = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_M";
+        String thumbnailL = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_L";
 
         attachment.setUrl(url);
         attachment.setThumbnailS(thumbnailS);
@@ -218,7 +215,7 @@ public class UploadService extends BaseObject {
         if(contentType.toLowerCase().contains("png"))
             imageFormat = "png";
         BufferedInputStream bufferedInputStream;
-        AzureImageUtil azureImage = new AzureImageUtil();
+        AmazonS3Util amazonS3Util = new AmazonS3Util();
 
         for (int i = 0; i < widths.length; i++) {
             String fileName = fName + sub[i];
@@ -239,7 +236,7 @@ public class UploadService extends BaseObject {
                 bufferedInputStream = new BufferedInputStream(new ByteArrayInputStream(baos.toByteArray()));
             }
 
-            azureImage.upload("attachment-thumbs", bufferedInputStream, size, fileName, contentType);
+            amazonS3Util.upload(bufferedInputStream, size, contentType, fileName, "attachment-thumbs");
         }
     }
 

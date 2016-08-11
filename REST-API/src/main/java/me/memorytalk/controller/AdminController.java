@@ -399,4 +399,15 @@ public class AdminController {
                 adminService.removePopup(auth, id)),
                 HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/admin/attachment-migration", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> awsAttachmentMigration(
+            @RequestHeader("Authorization") String auth)
+            throws IOException {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "AWS Attachment Migration",
+                adminService.setAwsAttachmentMigration(auth)),
+                HttpStatus.OK);
+    }
 }

@@ -43,6 +43,7 @@ springBoot {
 }
 
 dependencies {
+	compile('com.amazonaws:aws-java-sdk-s3:1.11.8')
 	compile('com.microsoft.azure:azure-storage:4.0.0')
 	compile('com.mysema.querydsl:querydsl-apt:3.7.2:jpa')
 	compile('com.mysema.querydsl:querydsl-jpa:3.7.2')

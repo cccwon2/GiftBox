@@ -9,3 +9,4 @@ gradlew
 gradlew.bat
 REST-API.iml
 AzureImageUtil.java
+AmazonS3Util.java
