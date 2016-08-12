@@ -1,6 +1,7 @@
 package me.memorytalk.service;
 
 import com.microsoft.azure.storage.StorageException;
+import me.memorytalk.common.base.BaseObject;
 import me.memorytalk.common.constant.GlobalConst;
 import me.memorytalk.domain.Event;
 import me.memorytalk.domain.EventType;
@@ -9,7 +10,10 @@ import me.memorytalk.domain.Gift;
 import me.memorytalk.dto.*;
 import me.memorytalk.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +27,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class EventService {
+public class EventService extends BaseObject {
 
     @Autowired
     private UploadService uploadService;
@@ -64,7 +68,9 @@ public class EventService {
             //Calendar cal = GregorianCalendar.getInstance(tz);
             //int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
             //Date now = new Date(new Date().getTime() + offsetInMillis);
-            Date now = new Date();
+            long hour = 3600*1000;
+            Date now = new Date(new Date().getTime() + 9*hour);
+            logger.info("Now(UTC): " + now.toString());
             //System.err.println("Now(UTC): " + now.toString());
 
             List<EventModel> eventModelList = new ArrayList<>();
