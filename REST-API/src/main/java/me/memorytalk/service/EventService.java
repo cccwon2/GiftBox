@@ -60,10 +60,11 @@ public class EventService {
 
             return eventModels;
         } else if("".equals(premium)) {
-            TimeZone tz = TimeZone.getDefault();
-            Calendar cal = GregorianCalendar.getInstance(tz);
-            int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
-            Date now = new Date(new Date().getTime() + offsetInMillis);
+            //TimeZone tz = TimeZone.getDefault();
+            //Calendar cal = GregorianCalendar.getInstance(tz);
+            //int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
+            //Date now = new Date(new Date().getTime() + offsetInMillis);
+            Date now = new Date();
             //System.err.println("Now(UTC): " + now.toString());
 
             List<EventModel> eventModelList = new ArrayList<>();
