@@ -74,7 +74,7 @@ public class UploadService extends BaseObject {
         // reset bufferedInputStream
         bufferedInputStream.reset();
         String url = amazonS3Util.upload(bufferedInputStream, size, contentType, filename, "attachments");
-        addThumbnails(bufferedInputStream, filename, contentType);
+        addThumbnails(bufferedImage, filename, contentType);
 
         String attachmentName = url.substring(url.lastIndexOf("/") + 1);
         String thumbnailS  = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_S";
@@ -129,7 +129,7 @@ public class UploadService extends BaseObject {
         // reset bufferedInputStream
         bufferedInputStream.reset();
         String url = amazonS3Util.upload(bufferedInputStream, size, contentType, filename, "attachments");
-        addThumbnails(bufferedInputStream, filename, contentType);
+        addThumbnails(bufferedImage, filename, contentType);
 
         String attachmentName = url.substring(url.lastIndexOf("/") + 1);
         String thumbnailS  = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_S";
@@ -184,7 +184,7 @@ public class UploadService extends BaseObject {
         // reset bufferedInputStream
         bufferedInputStream.reset();
         String url = amazonS3Util.upload(bufferedInputStream, size, contentType, filename, "attachments");
-        addThumbnails(bufferedInputStream, filename, contentType);
+        addThumbnails(bufferedImage, filename, contentType);
 
         String attachmentName = url.substring(url.lastIndexOf("/") + 1);
         String thumbnailS  = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_S";
@@ -199,11 +199,11 @@ public class UploadService extends BaseObject {
         return attachmentRepository.save(attachment);
     }
 
-    private void addThumbnails(InputStream inputStream, String fName, String contentType)
+    private void addThumbnails(BufferedImage originalImage, String fName, String contentType)
             throws IOException, InvalidKeyException, StorageException, URISyntaxException {
 
-        inputStream.reset();
-        BufferedImage originalImage = ImageIO.read(inputStream);
+        //inputStream.reset();
+        //BufferedImage originalImage = ImageIO.read(inputStream);
         String[] sub = {"_thumb_S", "_thumb_M", "_thumb_L"};
         // large size 는 원본으로 대체
         int width;
