@@ -42,6 +42,8 @@ public class AdminEventDetailForm {
 
     private List<Long> eventTypeCodeIds;
 
+    private List<Long> giftTypeCodeIds;
+
     @JsonCreator
     public AdminEventDetailForm(@JsonProperty("title") String title,
                                 @JsonProperty("description") String description,
@@ -58,7 +60,8 @@ public class AdminEventDetailForm {
                                 @JsonProperty("premium") boolean premium,
                                 @JsonProperty("visible") boolean visible,
                                 @JsonProperty("gifts") List<AdminGiftForm> gifts,
-                                @JsonProperty("eventTypeCodeIds") List<Long> eventTypeCodeIds) {
+                                @JsonProperty("eventTypeCodeIds") List<Long> eventTypeCodeIds,
+                                @JsonProperty("giftTypeCodeIds") List<Long> giftTypeCodeIds) {
         this.title = title;
         this.description = description;
         this.company = company;
@@ -75,5 +78,6 @@ public class AdminEventDetailForm {
         this.visible = visible;
         this.gifts = gifts;
         this.eventTypeCodeIds = eventTypeCodeIds;
+        this.giftTypeCodeIds = giftTypeCodeIds;
     }
 }

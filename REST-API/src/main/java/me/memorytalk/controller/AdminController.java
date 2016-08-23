@@ -244,7 +244,7 @@ public class AdminController {
             @RequestParam("sort") String sort) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
-                "Add EventType",
+                "Add EventTypeCode",
                 adminService.addEventTypeCode(auth, name, color, sort)),
                 HttpStatus.OK);
     }
@@ -269,8 +269,54 @@ public class AdminController {
             @PathVariable("id") Long id) {
 
         return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
-                "Remove EventType",
+                "Remove EventTypeCode",
                 adminService.removeEventTypeCode(auth, id)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/giftTypeCodes", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> giftTypeCodes(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "GiftTypeCode List",
+                adminService.getGiftTypeCodes(auth, page, size)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/giftTypeCodes", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> addGiftTypeCode(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("name") String name) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Add GiftTypeCode",
+                adminService.addGiftTypeCode(auth, name)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/giftTypeCodes/{id}", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> editGiftTypeCode(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id,
+            @RequestParam("name") String name) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Edit GiftTypeCode",
+                adminService.editGiftTypeCode(auth, id, name)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/giftTypeCodes/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RestResponse> removeGiftTypeCode(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Remove GiftTypeCode",
+                adminService.removeGiftTypeCode(auth, id)),
                 HttpStatus.OK);
     }
 

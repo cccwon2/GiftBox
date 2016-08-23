@@ -3,10 +3,7 @@ package me.memorytalk.service;
 import com.microsoft.azure.storage.StorageException;
 import me.memorytalk.common.base.BaseObject;
 import me.memorytalk.common.constant.GlobalConst;
-import me.memorytalk.domain.Event;
-import me.memorytalk.domain.EventType;
-import me.memorytalk.domain.EventTypeCode;
-import me.memorytalk.domain.Gift;
+import me.memorytalk.domain.*;
 import me.memorytalk.dto.*;
 import me.memorytalk.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +36,19 @@ public class EventService extends BaseObject {
     private EventRepository eventRepository;
 
     @Autowired
-    private GiftRepository giftRepository;
-
-    @Autowired
     private EventTypeRepository eventTypeRepository;
 
     @Autowired
     private EventTypeCodeRepository eventTypeCodeRepository;
+
+    @Autowired
+    private GiftRepository giftRepository;
+
+    @Autowired
+    private GiftTypeRepository giftTypeRepository;
+
+    @Autowired
+    private GiftTypeCodeRepository giftTypeCodeRepository;
 
     public Page<EventModel> getEvents(String premium, String sort, List<String> onGoings, List<Long> eventTypeCodes, int page) {
 
@@ -60,6 +63,9 @@ public class EventService extends BaseObject {
             for(EventModel eventModel : eventModels) {
                 List<EventTypeModel> eventTypes = eventTypeRepository.findEventTypeModels(eventModel.getId());
                 eventModel.setEventTypes(eventTypes);
+
+                List<String> giftTypes = giftTypeRepository.findGiftTypeModels(eventModel.getId());
+                eventModel.setGiftTypes(giftTypes);
             }
 
             return eventModels;
@@ -125,6 +131,9 @@ public class EventService extends BaseObject {
                 for (EventModel eventModel : eventModelList) {
                     List<EventTypeModel> eventTypes = eventTypeRepository.findEventTypeModels(eventModel.getId());
                     eventModel.setEventTypes(eventTypes);
+
+                    List<String> giftTypes = giftTypeRepository.findGiftTypeModels(eventModel.getId());
+                    eventModel.setGiftTypes(giftTypes);
                 }
 
                 return new PageImpl<>(eventModelList, pageable, total);
@@ -135,6 +144,9 @@ public class EventService extends BaseObject {
                 for (EventModel eventModel : eventModels) {
                     List<EventTypeModel> eventTypes = eventTypeRepository.findEventTypeModels(eventModel.getId());
                     eventModel.setEventTypes(eventTypes);
+
+                    List<String> giftTypes = giftTypeRepository.findGiftTypeModels(eventModel.getId());
+                    eventModel.setGiftTypes(giftTypes);
                 }
 
                 return eventModels;
@@ -150,6 +162,7 @@ public class EventService extends BaseObject {
         eventDetailModel.setAttachments(attachmentRepository.findAttachmentModels(eventId));
         eventDetailModel.setGifts(giftRepository.findGiftModels(eventId));
         eventDetailModel.setEventTypes(eventTypeRepository.findEventTypeModels(eventId));
+        eventDetailModel.setGiftTypes(giftTypeRepository.findGiftTypeModels(eventId));
 
         return eventDetailModel;
     }
@@ -215,6 +228,7 @@ public class EventService extends BaseObject {
 
         addGifts(requestForm.getGifts(), event);
         addEventTypes(requestForm.getEventTypeCodeIds(), event);
+        addGiftTypes(requestForm.getGiftTypeCodeIds(), event);
 
         return Boolean.TRUE;
     }
@@ -225,6 +239,7 @@ public class EventService extends BaseObject {
         adminEventDetailModel.setAttachments(attachmentRepository.findAttachmentModels(eventId));
         adminEventDetailModel.setGifts(giftRepository.findGiftModels(eventId));
         adminEventDetailModel.setEventTypeCodeIds(eventTypeRepository.findEventTypeCodeIds(eventId));
+        adminEventDetailModel.setGiftTypeCodeIds(giftTypeRepository.findGiftTypeCodeIds(eventId));
 
         return adminEventDetailModel;
     }
@@ -280,6 +295,7 @@ public class EventService extends BaseObject {
 
         editGifts(requestForm.getGifts(), event);
         editEventTypes(requestForm.getEventTypeCodeIds(), event);
+        editGiftTypes(requestForm.getGiftTypeCodeIds(), event);
 
         return Boolean.TRUE;
     }
@@ -363,6 +379,35 @@ public class EventService extends BaseObject {
                 eventType.setEventTypeCode(eventTypeCode);
                 eventType.setCreatedDate(new Date());
                 eventTypeRepository.save(eventType);
+            }
+        }
+    }
+
+    private void addGiftTypes(List<Long> giftTypeCodeIds, Event event) {
+
+        if(giftTypeCodeIds.size() > 0) {
+            for(Long giftTypeCodeId : giftTypeCodeIds) {
+                GiftTypeCode giftTypeCode = giftTypeCodeRepository.findById(giftTypeCodeId);
+                GiftType giftType = new GiftType();
+                giftType.setEvent(event);
+                giftType.setGiftTypeCode(giftTypeCode);
+                giftType.setCreatedDate(new Date());
+                giftTypeRepository.save(giftType);
+            }
+        }
+    }
+
+    private void editGiftTypes(List<Long> giftTypeCodeIds, Event event) {
+
+        giftTypeRepository.deleteByEventId(event.getId());
+        if(giftTypeCodeIds.size() > 0) {
+            for (Long giftTypeCodeId : giftTypeCodeIds) {
+                GiftTypeCode giftTypeCode = giftTypeCodeRepository.findById(giftTypeCodeId);
+                GiftType giftType = new GiftType();
+                giftType.setEvent(event);
+                giftType.setGiftTypeCode(giftTypeCode);
+                giftType.setCreatedDate(new Date());
+                giftTypeRepository.save(giftType);
             }
         }
     }

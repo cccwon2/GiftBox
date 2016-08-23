@@ -52,6 +52,8 @@ public class AdminEventDetailModel {
 
     private List<Long> eventTypeCodeIds;
 
+    private List<Long> giftTypeCodeIds;
+
     public AdminEventDetailModel(Long id, String title, String description,
                                  String company, String eventTarget, String eventPage, String prizePage,
                                  Date startDate, Date endDate, Date publicationDate, Date createdDate,

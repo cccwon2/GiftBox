@@ -31,6 +31,8 @@ public class EventModel {
 
     private List<EventTypeModel> eventTypes;
 
+    private List<String> giftTypes;
+
     public EventModel(Long id, String title, String company, String prizePage,
                       Date startDate, Date endDate, boolean premium,
                       int width, int height, String url,

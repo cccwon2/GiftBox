@@ -31,13 +31,16 @@ public class AdminService {
     private EventService eventService;
 
     @Autowired
-    private GiftService giftService;
-
-    @Autowired
     private EventTypeService eventTypeService;
 
     @Autowired
     private EventTypeCodeService eventTypeCodeService;
+
+    @Autowired
+    private GiftService giftService;
+
+    @Autowired
+    private GiftTypeCodeService giftTypeCodeService;
 
     @Autowired
     private PopupService popupService;
@@ -202,6 +205,37 @@ public class AdminService {
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return eventTypeCodeService.removeAdminEventTypeCode(id);
+    }
+
+    public Page<AdminGiftTypeCodeModel> getGiftTypeCodes(String auth, int page, int size) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(order));
+
+        return giftTypeCodeService.getAdminGiftTypeCodes(pageable);
+    }
+
+    public Boolean addGiftTypeCode(String auth, String name) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return giftTypeCodeService.addAdminGiftTypeCode(name);
+    }
+
+    public Boolean editGiftTypeCode(String auth, Long id, String name) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return giftTypeCodeService.editAdminGiftTypeCode(id, name);
+    }
+
+    public Boolean removeGiftTypeCode(String auth, Long id) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return giftTypeCodeService.removeAdminGiftTypeCode(id);
     }
 
     public Page<AdminBannerModel> getBanners(String auth, String visible, int page, int size) {
