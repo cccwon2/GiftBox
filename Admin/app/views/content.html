@@ -42,7 +42,7 @@
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">이벤트 추가</h4>
                         </div>
-                        <div class="modal-body" style="height: 950px">
+                        <div class="modal-body" style="height: 1000px">
                             <form name="eventForm" ng-submit="saveNewEventInfo()">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -180,7 +180,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <b>상품</b>
+                                            <b>경품</b>
                                         </div>
                                         <div class="col-md-10">
                                             <div class="row">
@@ -246,6 +246,19 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-md-2">
+                                            <b>경품 타입</b>
+                                        </div>
+                                        <div class="col-md-10" style="height: 60px;overflow: scroll;">
+                                            <div class="row col-md-10">
+                                            <span ng-repeat="giftTypeCodeModel in giftTypeCodeModels" style="float:left;width:150px;">
+                                                <input type="checkbox" ng-model="giftTypeCodeModel.checked" name="giftGroup" id="{{giftTypeCodeModel.id}}" />
+                                                <span>{{giftTypeCodeModel.name}}</span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-10">
                                         </div>
                                         <div class="col-md-2">
@@ -268,7 +281,7 @@
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">이벤트 수정</h4>
                         </div>
-                        <div class="modal-body" style="height: 950px">
+                        <div class="modal-body" style="height: 1000px">
                             <form name="editEventForm" ng-submit="saveEditEventInfo()">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -398,7 +411,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <b>상품</b>
+                                            <b>경품</b>
                                         </div>
                                         <div class="col-md-10">
                                             <div class="row">
@@ -460,6 +473,19 @@
                                                     <input type="text" ng-model="editGift10.product" maxlength="200" style="width:400px;" placeholder="Product" />
                                                     <input type="number" ng-model="editGift10.count" style="width:100px;" min="0" max="9999999" />
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>경품 타입</b>
+                                        </div>
+                                        <div class="col-md-10" style="height: 60px;overflow: scroll;">
+                                            <div class="row col-md-10">
+                                            <span ng-repeat="editGiftTypeCodeModel in editGiftTypeCodeModels" style="float:left;width:150px;">
+                                                <input type="checkbox" ng-model="editGiftTypeCodeModel.checked" name="editGiftGroup" id="{{editGiftTypeCodeModel.id}}" />
+                                                <span>{{editGiftTypeCodeModel.name}}</span>
+                                            </span>
                                             </div>
                                         </div>
                                     </div>

@@ -207,6 +207,13 @@ public class AdminService {
         return eventTypeCodeService.removeAdminEventTypeCode(id);
     }
 
+    public List<AdminGiftTypeCodeModel> getGiftTypeCodeModels(String auth) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return giftTypeCodeService.getAdminGiftTypeCodes();
+    }
+
     public Page<AdminGiftTypeCodeModel> getGiftTypeCodes(String auth, int page, int size) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");

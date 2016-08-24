@@ -10,12 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class GiftTypeCodeService {
 
     @Autowired
     private GiftTypeCodeRepository giftTypeCodeRepository;
+
+    protected List<AdminGiftTypeCodeModel> getAdminGiftTypeCodes() {
+
+        return giftTypeCodeRepository.findAdminGiftTypeCodeModels();
+    }
 
     protected Page<AdminGiftTypeCodeModel> getAdminGiftTypeCodes(Pageable pageable) {
 

@@ -19,6 +19,20 @@ public class GiftTypeCodeRepositoryImpl extends QueryDslRepositorySupport implem
         super(GiftTypeCode.class);
     }
 
+    public List<AdminGiftTypeCodeModel> findAdminGiftTypeCodeModels() {
+
+        QGiftTypeCode qGiftTypeCode = QGiftTypeCode.giftTypeCode;
+
+        JPQLQuery query = from(qGiftTypeCode);
+
+        List<AdminGiftTypeCodeModel> adminGiftTypeCodeModels = query.list(ConstructorExpression.create(AdminGiftTypeCodeModel.class,
+                qGiftTypeCode.id,
+                qGiftTypeCode.name
+        ));
+
+        return adminGiftTypeCodeModels;
+    }
+
     public Page<AdminGiftTypeCodeModel> findAdminGiftTypeCodeModels(Pageable pageable) {
 
         QGiftTypeCode qGiftTypeCode = QGiftTypeCode.giftTypeCode;

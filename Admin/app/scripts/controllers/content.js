@@ -107,7 +107,8 @@ angular.module('webAdminApp')
                     premium: false,
                     visible: true,
                     gifts: [],
-                    eventTypeCodeIds: []
+                    eventTypeCodeIds: [],
+                    giftTypeCodeIds: []
                 };
                 $scope.gift1 = { product: '', count: 0 };
                 $scope.gift2 = { product: '', count: 0 };
@@ -139,7 +140,8 @@ angular.module('webAdminApp')
                     premium: false,
                     visible: true,
                     gifts: [],
-                    eventTypeCodeIds: []
+                    eventTypeCodeIds: [],
+                    giftTypeCodeIds: []
                 };
                 $scope.editGift1 = { product: '', count: 0 };
                 $scope.editGift2 = { product: '', count: 0 };
@@ -186,6 +188,17 @@ angular.module('webAdminApp')
                 );
             };
 
+            $scope.giftTypeCodeModelsInit = function() {
+                $http.get(config.apiUrl + '/admin/giftTypeCodeModels',
+                  { headers: {'Authorization': $scope.auth }})
+                  .success(function (response) {
+                      if(response.success) {
+                          $scope.giftTypeCodeModels = response.data;
+                      }
+                  }
+                );
+            };
+
             $scope.editEventTypePlacesInit = function() {
                 $http.get(config.apiUrl + '/admin/eventTypeCodes/place',
                   { headers: {'Authorization': $scope.auth }})
@@ -214,6 +227,17 @@ angular.module('webAdminApp')
                   .success(function (response) {
                       if(response.success) {
                           $scope.editEventTypeMethods = response.data;
+                      }
+                  }
+                );
+            };
+
+            $scope.editGiftTypeCodeModelsInit = function() {
+                $http.get(config.apiUrl + '/admin/giftTypeCodeModels',
+                  { headers: {'Authorization': $scope.auth }})
+                  .success(function (response) {
+                      if(response.success) {
+                          $scope.editGiftTypeCodeModels = response.data;
                       }
                   }
                 );
@@ -250,6 +274,7 @@ angular.module('webAdminApp')
                 $scope.eventTypePlacesInit();
                 $scope.eventTypeFormsInit();
                 $scope.eventTypeMethodsInit();
+                $scope.giftTypeCodeModelsInit();
                 $('#addEventInput').click();
             };
 
@@ -329,6 +354,15 @@ angular.module('webAdminApp')
                 if (giftProduct10 != '') {
                     $scope.eventInfo.gifts[giftIndex] = { product: giftProduct10, count: $scope.gift10.count };
                 }
+                // giftTypeCodeIndex
+                var giftTypeCodeIndex = 0;
+                for(var i = 0; i < $scope.giftTypeCodeModels.length; i++) {
+                    if($scope.giftTypeCodeModels[i].checked == true) {
+                        $scope.eventInfo.giftTypeCodeIds[giftTypeCodeIndex] = $scope.giftTypeCodeModels[i].id;
+                        giftTypeCodeIndex++;
+                    }
+                }
+
                 // Date UTC 매핑
                 if($scope.eventInfo.startDate != '') {
                     $scope.eventInfo.startDate = new Date($scope.eventInfo.startDate).addHours(9);
@@ -416,6 +450,7 @@ angular.module('webAdminApp')
                 $scope.editEventTypePlacesInit();
                 $scope.editEventTypeFormsInit();
                 $scope.editEventTypeMethodsInit();
+                $scope.editGiftTypeCodeModelsInit();
 
                 $http.get(config.apiUrl + '/admin/events/' + _editEventId,
                   { headers: {'Authorization': $scope.auth }})
@@ -473,6 +508,13 @@ angular.module('webAdminApp')
                               if(i == 7) $scope.editGift8 = response.data.gifts[i];
                               if(i == 8) $scope.editGift9 = response.data.gifts[i];
                               if(i == 9) $scope.editGift10 = response.data.gifts[i];
+                          }
+                          for(var i = 0; i < response.data.giftTypeCodeIds.length; i++) {
+                              for (var j = 0; j < $scope.editGiftTypeCodeModels.length; j++) {
+                                  if (response.data.giftTypeCodeIds[i] == $scope.editGiftTypeCodeModels[j].id) {
+                                      $scope.editGiftTypeCodeModels[j].checked = true;
+                                  }
+                              }
                           }
                           $('#editEventInput').click();
                       }
@@ -551,6 +593,14 @@ angular.module('webAdminApp')
                 if (editGiftProduct10 != '') {
                     $scope.editEventInfo.gifts[editGiftIndex] = { product: editGiftProduct10, count: $scope.editGift10.count };
                 }
+                // editGiftTypeCode
+                var editGiftTypeCodeIndex = 0;
+                for(var i = 0; i < $scope.editGiftTypeCodeModels.length; i++) {
+                    if($scope.editGiftTypeCodeModels[i].checked == true) {
+                        $scope.editEventInfo.giftTypeCodeIds[editGiftTypeCodeIndex] = $scope.editGiftTypeCodeModels[i].id;
+                        editGiftTypeCodeIndex++;
+                    }
+                }
 
                 var req = {
                     method: 'POST',
@@ -575,7 +625,8 @@ angular.module('webAdminApp')
                         'premium': $scope.editEventInfo.premium,
                         'visible': $scope.editEventInfo.visible,
                         'gifts': $scope.editEventInfo.gifts,
-                        'eventTypeCodeIds': $scope.editEventInfo.eventTypeCodeIds
+                        'eventTypeCodeIds': $scope.editEventInfo.eventTypeCodeIds,
+                        'giftTypeCodeIds': $scope.editEventInfo.giftTypeCodeIds
                     }
                 };
 

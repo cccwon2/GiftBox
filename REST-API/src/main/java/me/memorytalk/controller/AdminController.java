@@ -274,6 +274,16 @@ public class AdminController {
                 HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/admin/giftTypeCodeModels", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> giftTypeCodeModels(
+            @RequestHeader("Authorization") String auth) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "GiftTypeCodeModel List",
+                adminService.getGiftTypeCodeModels(auth)),
+                HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/admin/giftTypeCodes", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> giftTypeCodes(
             @RequestHeader("Authorization") String auth,
