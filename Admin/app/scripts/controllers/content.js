@@ -20,6 +20,7 @@ angular.module('webAdminApp')
                     $('#event').addClass('in active');
                     $('#eventTypeCode').removeClass('in active');
                     $('#gift').removeClass('in active');
+                    $('#giftTypeCode').removeClass('in active');
                     return true;
                 }
                 else
@@ -751,6 +752,7 @@ angular.module('webAdminApp')
                     $('#event').removeClass('in active');
                     $('#eventTypeCode').addClass('in active');
                     $('#gift').removeClass('in active');
+                    $('#giftTypeCode').removeClass('in active');
                     return true;
                 }
                 else
@@ -971,6 +973,7 @@ angular.module('webAdminApp')
                     $('#event').removeClass('in active');
                     $('#eventTypeCode').removeClass('in active');
                     $('#gift').addClass('in active');
+                    $('#giftTypeCode').removeClass('in active');
                     return true;
                 }
                 else
@@ -1075,6 +1078,183 @@ angular.module('webAdminApp')
                                 }
 
                                 $scope.giftPageChanged();
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.giftTypeCodeTab = function() {
+                if($location.url() === '/content#giftTypeCode') {
+                    $('#event').removeClass('in active');
+                    $('#eventTypeCode').removeClass('in active');
+                    $('#gift').removeClass('in active');
+                    $('#giftTypeCode').addClass('in active');
+                    return true;
+                }
+                else
+                    return false;
+            };
+
+            $scope.totalGiftTypeCodeItems = 0;
+            $scope.currentGiftTypeCodePage = 1;
+            $scope.giftTypeCodeSize = 10;
+            $scope.maxGiftTypeCodeSize = 10;
+
+            $scope.giftTypeCodeInfoInit = function() {
+                $scope.giftTypeCodeInfo = {
+                    name: ''
+                };
+            };
+
+            $scope.giftTypeCodeInfoInit();
+
+            $scope.addGiftTypeCodeInfo = function() {
+
+                var formData = new FormData();
+                formData.append('name', $.trim($scope.giftTypeCodeInfo.name));
+
+                var req = {
+                    method: 'POST',
+                    url: config.apiUrl + '/admin/giftTypeCodes',
+                    headers: {
+                        'Authorization': $scope.auth,
+                        'Content-Type': undefined
+                    },
+                    data: angular.identity(formData)
+                };
+
+                BootstrapDialog.confirm({
+                    title: '위 경품 타입 항목을 등록할까요?',
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    btnCancelLabel: 'Cancel',
+                    btnOKLabel: 'OK',
+                    btnOKClass: 'btn-warning',
+                    callback: function (result) {
+                        if (result) {
+                            $('.close').click();
+                            $('body').append("<div class='loading-modal'></div>");
+                            $('body').addClass("loading");
+
+                            $http(req).success(function (response) {
+                                if (response.success) {
+                                    BootstrapDialog.show({
+                                        message: '경품 타입 항목 등록 성공!'
+                                    });
+                                }
+
+                                $scope.giftTypeCodeInfoInit();
+                                $scope.giftTypeCodePageChanged();
+
+                                $('.loading-modal').remove();
+                                $('body').removeClass("loading");
+                            }).error(function(err) {
+                                BootstrapDialog.show({
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    message: '이미 존재하는 경품 타입 항목입니다!'
+                                });
+
+                                $('.loading-modal').remove();
+                                $('body').removeClass("loading");
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.giftTypeCodePageChanged = function() {
+                $http.get(config.apiUrl + '/admin/giftTypeCodes?page='
+                  + $scope.currentGiftTypeCodePage + '&size=' + $scope.giftTypeCodeSize,
+                  { headers: {'Authorization': $scope.auth }})
+                  .success(function (response) {
+                      if(response.success) {
+                          $scope.giftTypeCodes = response.data.content;
+                          $scope.totalGiftTypeCodeItems= response.data.totalElements;
+                      }
+                  }
+                );
+            };
+
+            if($location.url() === '/content#giftTypeCode') {
+                $scope.giftTypeCodePageChanged();
+            }
+
+            $scope.giftTypeCodeSortChangedValue = function() {
+                $scope.giftTypeCodePageChanged();
+            };
+
+            $scope.editGiftTypeCodeInfo = function(_giftTypeCodeId, _giftTypeCodeName) {
+
+                var formData = new FormData();
+                formData.append('name', $.trim(_giftTypeCodeName));
+
+                var req = {
+                    method: 'POST',
+                    url: config.apiUrl + '/admin/giftTypeCodes/' + _giftTypeCodeId,
+                    headers: {
+                        'Authorization': $scope.auth,
+                        'Content-Type': undefined
+                    },
+                    data: angular.identity(formData)
+                };
+
+                BootstrapDialog.confirm({
+                    title: '경품 타입 항목 수정' ,
+                    message: '이름: ' + _giftTypeCodeName
+                    + '\n위와 같이 수정할까요?',
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    btnCancelLabel: 'Cancel',
+                    btnOKLabel: 'OK',
+                    btnOKClass: 'btn-warning',
+                    callback: function(result) {
+                        if(result) {
+                            $http(req).success(function (response) {
+                                if(response.success) {
+                                    BootstrapDialog.show({
+                                        message: '경품 타입 항목 수정 성공!'
+                                    });
+                                }
+
+                                $scope.giftTypeCodePageChanged();
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.removeGiftTypeCode = function(_giftTypeCodeId) {
+
+                var req = {
+                    method: 'DELETE',
+                    url: config.apiUrl + '/admin/giftTypeCodes/' + _giftTypeCodeId,
+                    headers: {
+                        'Authorization': $scope.auth
+                    }
+                };
+
+                BootstrapDialog.confirm({
+                    title: '경품 타입 항목 삭제' ,
+                    message: '경품 타입 항목 ID: ' + _giftTypeCodeId + '\n 위 경품 타입 항목을 삭제할까요?',
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    btnCancelLabel: 'Cancel',
+                    btnOKLabel: 'OK',
+                    btnOKClass: 'btn-warning',
+                    callback: function(result) {
+                        if(result) {
+                            $http(req).success(function (response) {
+                                if(response.success) {
+                                    BootstrapDialog.show({
+                                        message: '경품 타입 항목 삭제 성공!'
+                                    });
+                                }
+
+                                $scope.giftTypeCodePageChanged();
                             });
                         }
                     }

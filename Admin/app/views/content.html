@@ -4,6 +4,7 @@
         <li ng-class="{active: eventTab()}"><a data-toggle="tab" href="/content#event">이벤트</a></li>
         <li ng-class="{active: eventTypeCodeTab()}"><a data-toggle="tab" href="/content#eventTypeCode">이벤트 항목</a></li>
         <li ng-class="{active: giftTab()}"><a data-toggle="tab" href="/content#gift">경품</a></li>
+        <li ng-class="{active: giftTypeCodeTab()}"><a data-toggle="tab" href="/content#giftTypeCode">경품 항목</a></li>
     </ul>
     <div class="tab-content">
         <br>
@@ -695,6 +696,77 @@
             </div>
             <div class="col-md-12">
                 <uib-pagination total-items="totalGiftItems" ng-model="currentGiftPage" max-size="maxGiftSize" ng-change="giftPageChanged()"
+                                class="pagination-sm" boundary-link-numbers="true" rotate="false"></uib-pagination>
+            </div>
+        </div>
+
+        <div id="giftTypeCode" class="tab-pane fade">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-9">
+                    </div>
+                    <div class="col-md-3">
+                        <button id="addGiftTypeCodeButton" type="button" class="btn btn-info btn-primary" data-toggle="modal" data-target="#addGiftTypeCodeModal">경품 타입 항목 추가</button>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <div class="modal fade" id="addGiftTypeCodeModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">경품 타입 항목 추가</h4>
+                        </div>
+                        <div class="modal-body" style="height: 100px">
+                            <form name="giftTypeCodeForm" ng-submit="addGiftTypeCodeInfo()">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <b>이름</b>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" ng-model="giftTypeCodeInfo.name" maxlength="45" style="width:120px;" required />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-default btn-primary" ng-disabled="!giftTypeCodeForm.$valid">저장</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>이름</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="giftTypeCode in giftTypeCodes">
+                        <td>{{giftTypeCode.id}}</td>
+                        <td><input type="text" ng-model="giftTypeCode.name" maxlength="50" style="width:200px;"></td>
+                        <td style="width: 60px">
+                            <button ng-click="editGiftTypeCodeInfo(giftTypeCode.id, giftTypeCode.name)">수정</button>
+                        </td>
+                        <td style="width: 60px">
+                            <button ng-click="removeGiftTypeCode(giftTypeCode.id)">삭제</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <uib-pagination total-items="totalGiftTypeCodeItems" ng-model="currentGiftTypeCodePage" max-size="maxGiftTypeCodeSize" ng-change="giftTypeCodePageChanged()"
                                 class="pagination-sm" boundary-link-numbers="true" rotate="false"></uib-pagination>
             </div>
         </div>
