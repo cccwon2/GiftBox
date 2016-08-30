@@ -50,8 +50,6 @@ public class EventDetailModel {
 
     private List<EventTypeModel> eventTypes;
 
-    private List<String> giftTypes;
-
     public EventDetailModel(Long id, String title, String description,
                             String company, String eventTarget, String eventPage, String prizePage,
                             Date startDate, Date endDate, Date publicationDate, Date createdDate,

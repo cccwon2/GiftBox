@@ -466,4 +466,29 @@ public class AdminController {
                 adminService.setAwsAttachmentMigration(auth)),
                 HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/admin/pushNotifications", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> pushNotifications(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "PushNotification List",
+                adminService.getPushNotifications(auth, page, size)),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/pushNotifications", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> addPushNotification(
+            @RequestHeader("Authorization") String auth,
+            @RequestParam("title") String title,
+            @RequestParam("body") String body,
+            @RequestParam("eventId") Long eventId) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Add PushNotification",
+                adminService.addPushNotification(auth, title, body, eventId)),
+                HttpStatus.OK);
+    }
 }

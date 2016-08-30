@@ -162,7 +162,6 @@ public class EventService extends BaseObject {
         eventDetailModel.setAttachments(attachmentRepository.findAttachmentModels(eventId));
         eventDetailModel.setGifts(giftRepository.findGiftModels(eventId));
         eventDetailModel.setEventTypes(eventTypeRepository.findEventTypeModels(eventId));
-        eventDetailModel.setGiftTypes(giftTypeRepository.findGiftTypeModels(eventId));
 
         return eventDetailModel;
     }

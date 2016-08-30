@@ -45,6 +45,9 @@ public class AdminService {
     @Autowired
     private PopupService popupService;
 
+    @Autowired
+    private PushNotificationService pushNotificationService;
+
     public Boolean login(AdminLoginForm requestForm) {
 
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(requestForm.getPassword()), "Not admin user.");
@@ -330,5 +333,23 @@ public class AdminService {
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return awsMigrationService.setAwsAttachmentMigration();
+    }
+
+    public Page<AdminPushNotificationModel> getPushNotifications(String auth, int page, int size) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, GlobalConst.CREATED_DATE);
+        Sort sort = new Sort(order);
+        Pageable pageable = new PageRequest(page - 1, size, sort);
+
+        return pushNotificationService.getAdminPushNotifications(pageable);
+    }
+
+    public Boolean addPushNotification(String auth, String title, String body, Long eventId) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return pushNotificationService.addAdminPushNotification(title, body, eventId);
     }
 }

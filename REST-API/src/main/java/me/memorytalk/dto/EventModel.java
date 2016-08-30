@@ -17,6 +17,8 @@ public class EventModel {
 
     private String company;
 
+    private String eventTarget;
+
     private String prizePage;
 
     @JsonSerialize(using = DateSerializer.class)
@@ -33,13 +35,14 @@ public class EventModel {
 
     private List<String> giftTypes;
 
-    public EventModel(Long id, String title, String company, String prizePage,
+    public EventModel(Long id, String title, String company, String eventTarget, String prizePage,
                       Date startDate, Date endDate, boolean premium,
                       int width, int height, String url,
                       String thumbnailS, String thumbnailM, String thumbnailL) {
         this.id = id;
         this.title = title;
         this.company = company;
+        this.eventTarget = eventTarget;
         this.prizePage = prizePage;
         this.startDate = startDate;
         this.endDate = endDate;

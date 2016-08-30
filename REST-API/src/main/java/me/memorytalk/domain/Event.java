@@ -77,4 +77,7 @@ public class Event implements Serializable {
 
     @OneToMany(mappedBy="event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
     private List<GiftType> giftTypes;
+
+    @OneToMany(mappedBy = "event", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
+    private List<PushNotification> pushNotifications;
 }
