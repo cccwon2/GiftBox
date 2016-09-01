@@ -28,6 +28,9 @@ public class AdminService {
     private BannerService bannerService;
 
     @Autowired
+    private DeviceService deviceService;
+
+    @Autowired
     private EventService eventService;
 
     @Autowired
@@ -351,5 +354,12 @@ public class AdminService {
         Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
 
         return pushNotificationService.addAdminPushNotification(title, body, eventId);
+    }
+
+    public List<AdminDeviceModel> getDevices(String auth) {
+
+        Assert.isTrue(GlobalConst.ADMIN_PASSWORD.equals(auth), "Not admin user.");
+
+        return deviceService.getAdminDevices();
     }
 }

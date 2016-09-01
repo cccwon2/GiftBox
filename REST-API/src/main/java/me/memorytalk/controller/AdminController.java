@@ -491,4 +491,14 @@ public class AdminController {
                 adminService.addPushNotification(auth, title, body, eventId)),
                 HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/admin/devices", method = RequestMethod.GET)
+    public ResponseEntity<RestResponse> pushNotifications(
+            @RequestHeader("Authorization") String auth) {
+
+        return new ResponseEntity<>(new RestResponse(Boolean.TRUE,
+                "Device List",
+                adminService.getDevices(auth)),
+                HttpStatus.OK);
+    }
 }

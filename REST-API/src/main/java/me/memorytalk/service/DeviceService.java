@@ -2,6 +2,7 @@ package me.memorytalk.service;
 
 import me.memorytalk.common.code.DeviceOs;
 import me.memorytalk.domain.Device;
+import me.memorytalk.dto.AdminDeviceModel;
 import me.memorytalk.dto.DeviceForm;
 import me.memorytalk.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class DeviceService {
 
     @Autowired
     private DeviceRepository deviceRepository;
+
+    public List<AdminDeviceModel> getAdminDevices() {
+
+        return deviceRepository.findAdminDeviceModels();
+    }
 
     public Boolean addDevice(DeviceForm requestForm) {
 

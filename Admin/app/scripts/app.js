@@ -33,6 +33,10 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: 'views/popup.html',
       controller: 'PopupCtrl'
     })
+    .when('/push', {
+      templateUrl: 'views/push.html',
+      controller: 'PushCtrl'
+    })
     .otherwise({
       redirectTo: '/'
     });

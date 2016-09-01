@@ -1,0 +1,87 @@
+<div ng-show="checkLogin()">
+	<div class="container">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-9">
+				</div>
+				<div class="col-md-3">
+					<button id="addPushButton" type="button" class="btn btn-info btn-primary" data-toggle="modal" data-target="#addPushModal">푸쉬 등록</button>
+				</div>
+			</div>
+			<br>
+		</div>
+		<div class="modal fade" id="addPushModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">푸쉬 등록</h4>
+					</div>
+					<div class="modal-body" style="height: 200px">
+						<form name="pushForm" ng-submit="addPushInfo()">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-2">
+										<b>제목</b>
+									</div>
+									<div class="col-md-10">
+										<input type="text" ng-model="pushInfo.title" style="width:300px;" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-2">
+										<b>내용</b>
+									</div>
+									<div class="col-md-10">
+										<input type="text" ng-model="pushInfo.body" style="width:300px;" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-2">
+										<b>이벤트 ID</b>
+									</div>
+									<div class="col-md-10">
+										<input type="text" ng-model="pushInfo.eventId" style="width:300px;" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-10">
+									</div>
+									<div class="col-md-2">
+										<button class="btn btn-default btn-primary" ng-disabled="!pushForm.$valid">등록</button>
+									</div>
+								</div>
+								<br>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<table>
+				<tr>
+					<th>등록일</th>
+					<th>제목</th>
+					<th>내용</th>
+					<th>이벤트 ID</th>
+				</tr>
+				<tr ng-repeat="push in pushs">
+					<td style="width:100px;">{{push.createdDate}}</td>
+					<td style="width:200px;">{{push.title}}</td>
+					<td style="width:300px;">{{push.body}}</td>
+					<td style="width:80px;">{{push.eventId}}</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-md-12">
+			<uib-pagination total-items="totalPushItems" ng-model="currentPushPage" max-size="maxPushSize" ng-change="pushPageChanged()"
+			                class="pagination-sm" boundary-link-numbers="true" rotate="false"></uib-pagination>
+		</div>
+	</div>
+</div>
+<div style="text-align: center" ng-hide="checkLogin()">
+	<h3>로그인을 해주세요! <br><br><a href="/">Home으로 가기</a></h3>
+</div>

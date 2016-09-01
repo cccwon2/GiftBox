@@ -3,6 +3,7 @@ package me.memorytalk.repository.custom;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.types.ConstructorExpression;
 import me.memorytalk.domain.PushNotification;
+import me.memorytalk.domain.QEvent;
 import me.memorytalk.domain.QPushNotification;
 import me.memorytalk.dto.AdminPushNotificationModel;
 import org.springframework.data.domain.Page;
@@ -22,8 +23,10 @@ public class PushNotificationRepositoryImpl extends QueryDslRepositorySupport im
     public Page<AdminPushNotificationModel> findAdminPushNotificationModels(Pageable pageable) {
 
         QPushNotification qPushNotification = QPushNotification.pushNotification;
+        QEvent qEvent = QEvent.event;
 
         JPQLQuery query = from(qPushNotification);
+        query.leftJoin(qPushNotification.event, qEvent);
 
         long total = query.count();
         JPQLQuery pagedQuery = getQuerydsl().applyPagination(pageable, query);
@@ -34,7 +37,7 @@ public class PushNotificationRepositoryImpl extends QueryDslRepositorySupport im
                     qPushNotification.id,
                     qPushNotification.title,
                     qPushNotification.body,
-                    qPushNotification.event,
+                    qEvent.id,
                     qPushNotification.createdDate
             ));
         } else {
