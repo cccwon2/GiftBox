@@ -78,13 +78,13 @@ public class UploadService extends BaseObject {
 
         String attachmentName = url.substring(url.lastIndexOf("/") + 1);
         String thumbnailS  = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_S";
-        String thumbnailM = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_M";
-        String thumbnailL = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_L";
+        //String thumbnailM = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_M";
+        //String thumbnailL = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_L";
 
         attachment.setUrl(url);
         attachment.setThumbnailS(thumbnailS);
-        attachment.setThumbnailM(thumbnailM);
-        attachment.setThumbnailL(thumbnailL);
+        attachment.setThumbnailM(thumbnailS);
+        attachment.setThumbnailL(thumbnailS);
 
         return attachmentRepository.save(attachment);
     }
@@ -133,13 +133,13 @@ public class UploadService extends BaseObject {
 
         String attachmentName = url.substring(url.lastIndexOf("/") + 1);
         String thumbnailS  = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_S";
-        String thumbnailM = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_M";
-        String thumbnailL = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_L";
+        //String thumbnailM = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_M";
+        //String thumbnailL = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_L";
 
         attachment.setUrl(url);
         attachment.setThumbnailS(thumbnailS);
-        attachment.setThumbnailM(thumbnailM);
-        attachment.setThumbnailL(thumbnailL);
+        attachment.setThumbnailM(thumbnailS);
+        attachment.setThumbnailL(thumbnailS);
 
         return attachmentRepository.save(attachment);
     }
@@ -188,13 +188,13 @@ public class UploadService extends BaseObject {
 
         String attachmentName = url.substring(url.lastIndexOf("/") + 1);
         String thumbnailS  = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_S";
-        String thumbnailM = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_M";
-        String thumbnailL = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_L";
+        //String thumbnailM = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_M";
+        //String thumbnailL = AmazonS3Util.CDN_DOMAIN + "/attachment-thumbs/" + attachmentName + "_thumb_L";
 
         attachment.setUrl(url);
         attachment.setThumbnailS(thumbnailS);
-        attachment.setThumbnailM(thumbnailM);
-        attachment.setThumbnailL(thumbnailL);
+        attachment.setThumbnailM(thumbnailS);
+        attachment.setThumbnailL(thumbnailS);
 
         return attachmentRepository.save(attachment);
     }
@@ -209,7 +209,8 @@ public class UploadService extends BaseObject {
         int width;
         int originalImageWidth = originalImage.getWidth();
         int originalImageHeight = originalImage.getHeight();
-        int[] widths = {300, 600, 900};
+        //int[] widths = {300, 600, 900};
+        int[] widths = {300};
         long size;
         String imageFormat = "jpg";
         if(contentType.toLowerCase().contains("png"))
@@ -240,7 +241,7 @@ public class UploadService extends BaseObject {
         }
     }
 
-    protected String  validateImageFile(MultipartFile file)
+    protected String validateImageFile(MultipartFile file)
             throws IOException, URISyntaxException {
 
         Assert.notNull(file, "Null File.");
